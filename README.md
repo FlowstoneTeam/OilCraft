@@ -1,3 +1,3 @@
 OilCraft
 ========
-Technology mod based off of oil use.
+###This is a Minecraft Technology Moddification that uses oil a lot.
