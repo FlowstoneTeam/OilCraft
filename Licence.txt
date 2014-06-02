@@ -1,0 +1,11 @@
+ImDutch21 Mod License:
+
+You may use these mod’s code for the following.
+
+Fork and modify the code submit Pull Requests and copy parts of these codes for other mods.
+
+You may NOT use these mod’s code for any of the following.
+
+Redistribute these as source or compiled code. Create or distribute any code that contains half or more of code that attains the goal of these mod’s code.(Though use of this mod in a mod-pack is okay.)
+
+The reason these mods are open source is for other to learn how to make there own mods and for other to help these mods expand and become better.
