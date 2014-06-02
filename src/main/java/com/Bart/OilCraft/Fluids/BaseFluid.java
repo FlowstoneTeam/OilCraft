@@ -1,7 +1,6 @@
 package com.Bart.OilCraft.Fluids;
 
-import com.Bart.OilCraft.oilcraft;
-
+import com.Bart.OilCraft.OilCraft;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -33,8 +32,8 @@ public class BaseFluid extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        stillIcon = par1IconRegister.registerIcon(oilcraft.modid + ":" + "OilStillBlock");
-        flowingIcon = par1IconRegister.registerIcon(oilcraft.modid + ":" + "OilFlowingBlock");
+        stillIcon = par1IconRegister.registerIcon(OilCraft.ModId + ":" + "OilStillBlock");
+        flowingIcon = par1IconRegister.registerIcon(OilCraft.ModId + ":" + "OilFlowingBlock");
     }
 
     @Override

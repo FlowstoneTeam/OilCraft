@@ -1,4 +1,4 @@
-package com.Bart.oilcraft.Fluids;
+package com.Bart.OilCraft.Fluids;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;

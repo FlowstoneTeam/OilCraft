@@ -6,7 +6,7 @@ public class OilCraftFluids extends Fluid {
 
     public OilCraftFluids(String name) {
         super(name);
-        
+
     }
 
 }

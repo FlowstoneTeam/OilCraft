@@ -2,9 +2,9 @@ package com.Bart.OilCraft;
 
 public class ModBlocks {
 
-	
-	public static void init() {
-		
-	}
+
+    public static void init() {
+
+    }
 
 }

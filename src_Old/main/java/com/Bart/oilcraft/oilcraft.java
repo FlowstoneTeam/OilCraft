@@ -1,4 +1,4 @@
-package com.Bart.oilcraft;
+package com.Bart.OilCraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -8,7 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.Bart.oilcraft.Fluids.ModFluids;
+import com.Bart.OilCraft.Fluids.ModFluids;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;

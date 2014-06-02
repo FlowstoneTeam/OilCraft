@@ -1,4 +1,4 @@
-package com.Bart.oilcraft;
+package com.Bart.OilCraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -38,7 +38,7 @@ public class CobbleCompressor extends Block {
 	//TODO make oil
 	//public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer Player, int side, float hitX, float hiYy, float hitZ){	
 			//if(!world.isRemote){
-			//	FMLNetworkHandler.openGui(Player, oilcraft.instance, modGuiId, world, x, y, z);
+			//	FMLNetworkHandler.openGui(Player, OilCraft.instance, modGuiId, world, x, y, z);
 				//System.out.print("lol");
 			//}
 			//return false;
