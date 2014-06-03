@@ -1,6 +1,6 @@
-package com.Bart.OilCraft.Fluids;
+package com.Bart.oilcraft.Fluids;
 
-import com.Bart.OilCraft.oilcraft;
+import com.Bart.oilcraft.oilcraft;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
