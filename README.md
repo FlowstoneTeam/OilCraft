@@ -1,3 +1,3 @@
 OilCraft
 ========
-###This is a Minecraft Technology Moddification that uses oil a lot.
+###This is a Minecraft Technology Moddification that uses oil.
