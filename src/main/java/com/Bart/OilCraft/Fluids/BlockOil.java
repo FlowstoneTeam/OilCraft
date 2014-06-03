@@ -1,6 +1,6 @@
-package com.Bart.OilCraft.Fluids;
+package com.bart.oilcraft.Fluids;
 
-import com.Bart.OilCraft.OilCraft;
+import com.bart.oilcraft.OilCraftMain;
 import net.minecraftforge.fluids.Fluid;
 
 public class BlockOil extends BaseFluid {
@@ -11,7 +11,7 @@ public class BlockOil extends BaseFluid {
         ModFluids.registerFluid(this);
 
 
-        this.setCreativeTab(OilCraft.OilTab);
+        this.setCreativeTab(OilCraftMain.getCreativeTab());
     }
 
 }

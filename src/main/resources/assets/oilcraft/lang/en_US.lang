@@ -1,0 +1,4 @@
+tile.oilcraft:basicTest=Basic Test
+tile.oilcraft:CobbleCompressor=CobbleCompressor
+tile.Oil.name=Oil
+itemGroup.oilcraft= OilCraft

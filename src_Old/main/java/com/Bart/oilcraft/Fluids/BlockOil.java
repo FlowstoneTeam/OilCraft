@@ -1,7 +1,9 @@
-package com.Bart.OilCraft.Fluids;
+package com.Bart.oilcraft.Fluids;
 
-import com.Bart.OilCraft.oilcraft;
+import com.Bart.oilcraft.oilcraft;
 
+import com.bart.oilcraft.Fluids.BaseFluid;
+import com.bart.oilcraft.Fluids.ModFluids;
 import net.minecraftforge.fluids.Fluid;
 
 public class BlockOil extends BaseFluid {

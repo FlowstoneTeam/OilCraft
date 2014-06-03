@@ -1,5 +1,6 @@
-package com.Bart.OilCraft;
+package com.Bart.oilcraft;
 
+import com.bart.oilcraft.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,7 +9,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.Bart.OilCraft.Fluids.ModFluids;
+import com.bart.oilcraft.Fluids.ModFluids;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -30,7 +31,7 @@ public class oilcraft {
 	
 	
 
-	public static CreativeTabs OilTab = new CreativeTabs("OilCraft"){
+	public static CreativeTabs OilTab = new CreativeTabs("oilcraft"){
 		public Item getTabIconItem() {
 			return Items.cookie;
 	 }
@@ -46,7 +47,7 @@ public class oilcraft {
 		
 		ModFluids.init();
 		ModBlocks.init();
-		CobbleCompressor = new CobbleCompressor(Material.iron).setBlockName("CobbleCompressor").setCreativeTab(OilTab);
+		CobbleCompressor = new oilcraft.CobbleCompressor(Material.iron).setBlockName("CobbleCompressor").setCreativeTab(OilTab);
 	    GameRegistry.registerBlock(CobbleCompressor, "CobbleCompressor");
 	    GameRegistry.addRecipe(new ItemStack(CobbleCompressor), new Object[]
 	    {

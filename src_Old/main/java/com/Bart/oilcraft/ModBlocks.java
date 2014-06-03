@@ -1,4 +1,4 @@
-package com.Bart.OilCraft;
+package com.Bart.oilcraft;
 
 public class ModBlocks {
 
