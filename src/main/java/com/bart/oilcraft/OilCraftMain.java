@@ -1,9 +1,9 @@
 package com.bart.oilcraft;
 
-import com.bart.oilcraft.Fluids.ModFluids;
+import com.bart.oilcraft.fluids.ModFluids;
 import com.bart.oilcraft.blocks.ModBlocks;
 import com.bart.oilcraft.core.handler.CraftingHandler;
-import com.bart.oilcraft.core.Proxy.CommonProxy;
+import com.bart.oilcraft.core.proxy.CommonProxy;
 import com.bart.oilcraft.creativetab.OilCraftTab;
 import com.bart.oilcraft.lib.References;
 import cpw.mods.fml.common.Mod;
@@ -30,6 +30,9 @@ public class OilCraftMain {
         ModBlocks.init();
         ModFluids.init();
         CraftingHandler.init();
+
+
+        proxy.registerTileEntities();
     }
 
     @Mod.EventHandler

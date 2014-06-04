@@ -6,11 +6,11 @@ import net.minecraft.block.Block;
 
 public class ModBlocks {
 
-    public static Block cobbleCompressor;
+    public static Block OilCompressor;
 
     public static void init() {
 
-        cobbleCompressor = new CobbleCompressor();
+        OilCompressor = new OilCompressor();
     }
 
 

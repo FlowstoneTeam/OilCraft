@@ -2,19 +2,22 @@ package com.bart.oilcraft.blocks;
 
 import com.bart.oilcraft.OilCraftMain;
 import com.bart.oilcraft.lib.Strings;
+import com.bart.oilcraft.tileentities.OilCompressorEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 
-public class CobbleCompressor extends OilCraftBlock {
+public class OilCompressor extends OilCraftBlock {
     @SideOnly(Side.CLIENT)
     public IIcon[] icons;
 
-    public CobbleCompressor() {
-        this.setBlockName(Strings.CobbleCompressorName);
+    public OilCompressor() {
+        this.setBlockName(Strings.OilCompressorName);
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.setStepSound(Block.soundTypeWood);
         ModBlocks.register(this);
@@ -60,4 +63,16 @@ public class CobbleCompressor extends OilCraftBlock {
             icons[i] = iconRegister.registerIcon(getUnwrappedUnlocalizedName(super.getUnlocalizedName()) + name);
         }
     }
+    @Override
+    public boolean hasTileEntity(int meta)
+    {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, int meta)
+    {
+        return new OilCompressorEntity();
+    }
 }
+

@@ -1,4 +1,4 @@
-package com.bart.oilcraft.Fluids;
+package com.bart.oilcraft.fluids;
 
 import net.minecraftforge.fluids.Fluid;
 
