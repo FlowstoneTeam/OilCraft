@@ -5,11 +5,11 @@ import net.minecraft.block.Block;
 
 
 public class ModBlocks {
-    public static Block basicTest;
+
     public static Block cobbleCompressor;
 
     public static void init() {
-        basicTest = new BasicTest();
+
         cobbleCompressor = new CobbleCompressor();
     }
 
