@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.Fluid;
 
 public class BaseFluid extends BlockFluidClassic {
 
+
     protected IIcon stillIcon;
     protected IIcon flowingIcon;
 
