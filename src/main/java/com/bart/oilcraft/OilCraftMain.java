@@ -1,5 +1,6 @@
 package com.bart.oilcraft;
 
+import com.bart.oilcraft.core.handler.GUIHandler;
 import com.bart.oilcraft.fluids.ModFluids;
 import com.bart.oilcraft.blocks.ModBlocks;
 import com.bart.oilcraft.core.handler.CraftingHandler;
@@ -11,9 +12,12 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 
 @Mod(modid = References.MODID, name = References.MODNAME, version = References.VERSION)
+
+
 
 public class OilCraftMain {
     @SidedProxy(clientSide = References.CLIENTPROXYLOCATION, serverSide = References.COMMONPROXYLOCATION)
@@ -24,6 +28,11 @@ public class OilCraftMain {
     public static CreativeTabs getCreativeTab() {
         return oilCraftTab;
     }
+
+
+
+
+
 
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event) {
@@ -37,6 +46,8 @@ public class OilCraftMain {
 
     @Mod.EventHandler
     public static void init(FMLInitializationEvent event) {
+
+
 
     }
 
