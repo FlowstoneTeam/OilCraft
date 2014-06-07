@@ -1,27 +1,35 @@
-package com.bart.oilcraft.blocks;
+package bart.oilcraft.blocks;
 
-import com.bart.oilcraft.OilCraftMain;
-import com.bart.oilcraft.lib.Strings;
-import com.bart.oilcraft.tileentities.OilCompressorEntity;
+import bart.oilcraft.OilCraftMain;
+import bart.oilcraft.lib.References;
+import bart.oilcraft.tileentities.OilCompressorEntity;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 
-public class OilCompressor extends OilCraftBlock {
-    @SideOnly(Side.CLIENT)
+public class OilCompressor extends OilCraftBlock implements ITileEntityProvider{
+    
     public IIcon[] icons;
 
     public OilCompressor() {
-        this.setBlockName(Strings.OilCompressorName);
+        this.setBlockName(getName());
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.setStepSound(Block.soundTypeWood);
-        ModBlocks.register(this);
+        GameRegistry.registerBlock(this, getName());
         icons = new IIcon[6];
+    }
+
+    @Override
+    public String getName() {
+        return "oilCompressor";
     }
 
     @Override
@@ -36,43 +44,25 @@ public class OilCompressor extends OilCraftBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        for (int i = 0; i < icons.length; i++) {
-            String name;
-            switch (i) {
-                case 0:
-                    name = "0";
-                    break;
-                case 1:
-                    name = "1";
-                    break;
-                case 2:
-                    name = "2";
-                    break;
-                case 3:
-                    name = "3";
-                    break;
-                case 4:
-                    name = "4";
-                    break;
-                case 5:
-                    name = "5";
-                    break;
-                default:
-                    name = "0";
-            }
-            icons[i] = iconRegister.registerIcon(getUnwrappedUnlocalizedName(super.getUnlocalizedName()) + name);
+        for(int i = 0; i < icons.length; i++){
+            icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + getName() + i);
         }
     }
+
     @Override
-    public boolean hasTileEntity(int meta)
-    {
+    public boolean hasTileEntity(int meta) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int meta)
-    {
+    public TileEntity createNewTileEntity(World var1, int var2) {
         return new OilCompressorEntity();
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int meta, float hitX, float hitY, float hitZ) {
+        entityPlayer.openGui(OilCraftMain.instance, 0, world, x, y, z);
+        return true;
     }
 }
 

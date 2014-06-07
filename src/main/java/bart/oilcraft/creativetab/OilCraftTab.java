@@ -1,4 +1,4 @@
-package com.bart.oilcraft.creativetab;
+package bart.oilcraft.creativetab;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
