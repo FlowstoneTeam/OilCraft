@@ -1,6 +1,6 @@
-package com.bart.oilcraft.blocks;
+package bart.oilcraft.blocks;
 
-import com.bart.oilcraft.lib.References;
+import bart.oilcraft.lib.References;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 
 
 public class OilCraftBlock extends Block {
-
     public OilCraftBlock() {
         super(Material.rock);
     }
@@ -17,7 +16,6 @@ public class OilCraftBlock extends Block {
     public OilCraftBlock(Material material) {
         super(material);
     }
-
 
     public String getUnwrappedUnlocalizedName(String unlocalizedName) {
         return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);

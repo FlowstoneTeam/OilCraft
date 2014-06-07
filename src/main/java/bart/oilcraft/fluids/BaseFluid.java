@@ -1,6 +1,6 @@
-package com.bart.oilcraft.fluids;
+package bart.oilcraft.fluids;
 
-import com.bart.oilcraft.lib.References;
+import bart.oilcraft.lib.References;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -23,7 +23,6 @@ public class BaseFluid extends BlockFluidClassic {
         this.setTickRandomly(true);
     }
 
-
     @Override
     public IIcon getIcon(int side, int meta) {
         return (side == 0 || side == 1) ? stillIcon : flowingIcon;
@@ -45,6 +44,4 @@ public class BaseFluid extends BlockFluidClassic {
     public boolean displaceIfPossible(World world, int x, int y, int z) {
         return super.displaceIfPossible(world, x, y, z);
     }
-
-
 }

@@ -1,6 +1,6 @@
-package com.bart.oilcraft.core.handler;
+package bart.oilcraft.core.handler;
 
-import com.bart.oilcraft.blocks.ModBlocks;
+import bart.oilcraft.blocks.ModBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

@@ -1,12 +1,12 @@
-package com.bart.oilcraft;
+package bart.oilcraft;
 
-import com.bart.oilcraft.core.handler.GUIHandler;
-import com.bart.oilcraft.fluids.ModFluids;
-import com.bart.oilcraft.blocks.ModBlocks;
-import com.bart.oilcraft.core.handler.CraftingHandler;
-import com.bart.oilcraft.core.proxy.CommonProxy;
-import com.bart.oilcraft.creativetab.OilCraftTab;
-import com.bart.oilcraft.lib.References;
+import bart.oilcraft.blocks.ModBlocks;
+import bart.oilcraft.core.handler.CraftingHandler;
+import bart.oilcraft.core.handler.GUIHandler;
+import bart.oilcraft.core.proxy.CommonProxy;
+import bart.oilcraft.creativetab.OilCraftTab;
+import bart.oilcraft.fluids.ModFluids;
+import bart.oilcraft.lib.References;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -16,50 +16,32 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 
 @Mod(modid = References.MODID, name = References.MODNAME, version = References.VERSION)
-
-
-
 public class OilCraftMain {
     @SidedProxy(clientSide = References.CLIENTPROXYLOCATION, serverSide = References.COMMONPROXYLOCATION)
     public static CommonProxy proxy;
 
     private static CreativeTabs oilCraftTab = new OilCraftTab(CreativeTabs.getNextID(), References.MODID);
-
     public static CreativeTabs getCreativeTab() {
         return oilCraftTab;
     }
 
-
     @Mod.Instance
-    public static oilcraft instance;
-
-
-
-
+    public static OilCraftMain instance;
 
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event) {
         ModBlocks.init();
         ModFluids.init();
         CraftingHandler.init();
-
-
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GUIHandler());
-
-
-
         proxy.registerTileEntities();
     }
 
     @Mod.EventHandler
     public static void init(FMLInitializationEvent event) {
-
-
-
     }
 
     @Mod.EventHandler
     public static void postInit(FMLPostInitializationEvent event) {
-
     }
 }

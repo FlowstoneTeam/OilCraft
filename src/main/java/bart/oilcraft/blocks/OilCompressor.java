@@ -1,8 +1,8 @@
-package com.bart.oilcraft.blocks;
+package bart.oilcraft.blocks;
 
-import com.bart.oilcraft.OilCraftMain;
-import com.bart.oilcraft.lib.Strings;
-import com.bart.oilcraft.tileentities.OilCompressorEntity;
+import bart.oilcraft.OilCraftMain;
+import bart.oilcraft.lib.Strings;
+import bart.oilcraft.tileentities.OilCompressorEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -63,15 +63,14 @@ public class OilCompressor extends OilCraftBlock {
             icons[i] = iconRegister.registerIcon(getUnwrappedUnlocalizedName(super.getUnlocalizedName()) + name);
         }
     }
+
     @Override
-    public boolean hasTileEntity(int meta)
-    {
+    public boolean hasTileEntity(int meta) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int meta)
-    {
+    public TileEntity createTileEntity(World world, int meta) {
         return new OilCompressorEntity();
     }
 }
