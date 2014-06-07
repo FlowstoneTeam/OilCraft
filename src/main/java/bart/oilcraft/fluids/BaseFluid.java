@@ -13,14 +13,16 @@ import net.minecraftforge.fluids.Fluid;
 
 public class BaseFluid extends BlockFluidClassic {
 
-    @SideOnly(Side.CLIENT)
     protected IIcon stillIcon;
-    @SideOnly(Side.CLIENT)
     protected IIcon flowingIcon;
 
     public BaseFluid(Fluid fluid) {
         super(fluid, Material.water);
         this.setTickRandomly(true);
+    }
+
+    public String getName(){
+        return "BaseFluid";
     }
 
     @Override
@@ -31,8 +33,8 @@ public class BaseFluid extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        stillIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + this.getUnlocalizedName().substring(5) + "StillBlock");
-        flowingIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + this.getUnlocalizedName().substring(5) + "FlowingBlock");
+        stillIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + getName() + "StillBlock");
+        flowingIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + getName() + "FlowingBlock");
     }
 
     @Override

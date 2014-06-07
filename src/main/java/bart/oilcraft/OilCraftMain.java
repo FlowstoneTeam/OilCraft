@@ -17,6 +17,10 @@ import net.minecraft.creativetab.CreativeTabs;
 
 @Mod(modid = References.MODID, name = References.MODNAME, version = References.VERSION)
 public class OilCraftMain {
+
+    @Mod.Instance
+    public static OilCraftMain instance;
+
     @SidedProxy(clientSide = References.CLIENTPROXYLOCATION, serverSide = References.COMMONPROXYLOCATION)
     public static CommonProxy proxy;
 
@@ -25,20 +29,17 @@ public class OilCraftMain {
         return oilCraftTab;
     }
 
-    @Mod.Instance
-    public static OilCraftMain instance;
-
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event) {
         ModBlocks.init();
         ModFluids.init();
-        CraftingHandler.init();
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GUIHandler());
-        proxy.registerTileEntities();
     }
 
     @Mod.EventHandler
     public static void init(FMLInitializationEvent event) {
+        CraftingHandler.init();
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GUIHandler());
+        proxy.registerTileEntities();
     }
 
     @Mod.EventHandler

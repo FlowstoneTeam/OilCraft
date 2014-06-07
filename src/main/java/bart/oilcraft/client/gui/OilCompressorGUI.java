@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 public class OilCompressorGUI extends GuiScreen {
     int xSize = 174;
     int ySize = 165;
-    private static final ResourceLocation backgroundimage = new ResourceLocation(References.MODID.toLowerCase() + ":" + "textures/gui/oilcompressor.png");
+    private static final ResourceLocation backgroundimage = new ResourceLocation(References.RESOURCESPREFIX + "textures/gui/oilcompressor.png");
 
     public OilCompressorGUI() {
     }
