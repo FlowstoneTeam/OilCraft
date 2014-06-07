@@ -44,7 +44,7 @@ public class OilCompressor extends OilCraftBlock implements ITileEntityProvider{
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < icons.length; i++){
             icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + getName() + i);
         }
     }
