@@ -30,6 +30,9 @@ public class OilCraftMain {
     }
 
 
+    @Mod.Instance
+    public static oilcraft instance;
+
 
 
 
@@ -39,6 +42,10 @@ public class OilCraftMain {
         ModBlocks.init();
         ModFluids.init();
         CraftingHandler.init();
+
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GUIHandler());
+
 
 
         proxy.registerTileEntities();
