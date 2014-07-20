@@ -22,8 +22,7 @@ public class OilCompressor extends OilCraftBlock implements ITileEntityProvider{
     public OilCompressor() {
         this.setBlockName(getName());
         this.setCreativeTab(OilCraftMain.getCreativeTab());
-        this.setStepSound(Block.soundTypeWood);
-        GameRegistry.registerBlock(this, getName());
+        this.setStepSound(Block.soundTypeStone);
         icons = new IIcon[6];
     }
 
@@ -61,7 +60,7 @@ public class OilCompressor extends OilCraftBlock implements ITileEntityProvider{
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int meta, float hitX, float hitY, float hitZ) {
-        entityPlayer.openGui(OilCraftMain.instance, 0, world, x, y, z);
+        entityPlayer.openGui(OilCraftMain.instance, 1, world, x, y, z);
         return true;
     }
 }

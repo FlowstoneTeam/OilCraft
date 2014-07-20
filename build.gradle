@@ -27,11 +27,11 @@ configFile.withReader {
 }
 
 group = "bart.oilcraft"
-version = "${config.minecraft_version}-${config.major}.${config.minor}.${config.build}"
+version = "1.7.10"
 
 minecraft {
 
-    version = config.minecraft_version + "-" + config.forge_version
+    version = "1.7.10-10.13.0.1152"
     assetDir = "run/assets"
 }
 
