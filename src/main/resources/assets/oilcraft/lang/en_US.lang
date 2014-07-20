@@ -3,3 +3,5 @@ tile.oilCompressor.name=Oil Compressor
 tile.Oil.name=Oil
 itemGroup.oilcraft=OilCraft
 tile.CrudeOilOre.name=Crude Oil Ore
+item.oilcraft.OilBucket.name=Oil Bucket
+item.oilcraft.EnergyConverter.name=Energy Converter

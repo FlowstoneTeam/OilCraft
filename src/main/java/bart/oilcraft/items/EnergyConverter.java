@@ -13,7 +13,12 @@ public class EnergyConverter extends Item {
     public EnergyConverter(){
 
         this.setCreativeTab(OilCraftMain.getCreativeTab());
+        this.setUnlocalizedName(References.MODID + ".EnergyConverter");
         this.setTextureName(References.RESOURCESPREFIX + getName());
+    }
+
+    public String getName() {
+        return "EnergyConverter";
     }
 
 }

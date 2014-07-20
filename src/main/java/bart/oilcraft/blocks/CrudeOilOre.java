@@ -17,7 +17,7 @@ public class CrudeOilOre extends OilCraftBlock {
      this.setCreativeTab(OilCraftMain.getCreativeTab());
      this.setStepSound(Block.soundTypeStone);
      this.setBlockTextureName(References.RESOURCESPREFIX + getName());
-
+     this.setHardness(4f);
     }
 
 
