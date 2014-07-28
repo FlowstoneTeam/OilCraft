@@ -2,15 +2,15 @@ package bart.oilcraft;
 
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.client.gui.GuiHandler;
-import bart.oilcraft.core.handler.CraftingHandler;
+import bart.oilcraft.lib.handler.CraftingHandler;
 import bart.oilcraft.core.proxy.CommonProxy;
 import bart.oilcraft.creativetab.OilCraftTab;
 import bart.oilcraft.fluids.BucketRegistry;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
 import bart.oilcraft.lib.References;
-import bart.oilcraft.util.BucketHandler;
-import bart.oilcraft.util.WorldGenerationHandler;
+import bart.oilcraft.lib.handler.BucketHandler;
+import bart.oilcraft.lib.handler.WorldGenerationHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
+import net.minecraft.item.ItemStack;
 
 /**
  * Created by Bart on 20-7-2014.
@@ -26,9 +27,9 @@ public class ContainerOilCompressor extends Container {
     }
 
     private void createSlots(OilCompressorEntity tile, EntityPlayer player) {
-        addSlotToContainer(new Slot(tile, 0, 44, 36));
-        addSlotToContainer(new Slot(tile, 1, 80, 36));
-        addSlotToContainer(new SlotFurnace(player, tile, 2, 116, 36));
+        addSlotToContainer(new Slot(tile, 0, 57, 36));
+        addSlotToContainer(new Slot(tile, 1, 107, 36));
+        addSlotToContainer(new SlotFurnace(player, tile, 2, 152, 36));
     }
 
     private void bindPlayerInventory(InventoryPlayer inv) {
@@ -41,4 +42,11 @@ public class ContainerOilCompressor extends Container {
             addSlotToContainer(new Slot(inv, i, 8 + i * 18, 142));
         }
     }
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
+        return null;
+    }
+
+
+
 }

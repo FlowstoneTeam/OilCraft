@@ -1,4 +1,4 @@
-package bart.oilcraft.util;
+package bart.oilcraft.lib.handler;
 
 import bart.oilcraft.blocks.ModBlocks;
 import cpw.mods.fml.common.IWorldGenerator;

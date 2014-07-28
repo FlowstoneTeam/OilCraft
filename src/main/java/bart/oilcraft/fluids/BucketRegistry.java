@@ -1,9 +1,7 @@
 package bart.oilcraft.fluids;
 
-import bart.oilcraft.blocks.ModBlocks;
-import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
-import bart.oilcraft.util.BucketHandler;
+import bart.oilcraft.lib.handler.BucketHandler;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;

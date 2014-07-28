@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
  * Created by Bart on 7-6-2014.
  */
 public class OilCompressorGUI extends GuiContainer {
-    public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/guis/oilcompressor.png");
+    public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/gui/oilcompressor.png");
     @SuppressWarnings("unused")
     private ContainerOilCompressor container;
     private OilCompressorEntity te;

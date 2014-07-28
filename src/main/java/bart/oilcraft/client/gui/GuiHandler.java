@@ -16,7 +16,7 @@ public class GuiHandler implements IGuiHandler{
         TileEntity entity = world.getTileEntity(x, y, z);
         if (entity != null) {
             switch (ID)  {
-                case 0: new ContainerOilCompressor(player, (OilCompressorEntity) entity);
+                case 0: return new ContainerOilCompressor(player, (OilCompressorEntity) entity);
             }
         }
         return null;
@@ -27,7 +27,7 @@ public class GuiHandler implements IGuiHandler{
         TileEntity entity = world.getTileEntity(x, y, z);
         if (entity != null) {
             switch (ID)  {
-                case 0: new OilCompressorGUI(player, (OilCompressorEntity) entity);
+                case 0: return new OilCompressorGUI(player, (OilCompressorEntity) entity);
             }
         }
         return null;

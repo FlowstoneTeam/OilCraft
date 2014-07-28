@@ -1,4 +1,4 @@
-package bart.oilcraft.core.handler;
+package bart.oilcraft.lib.handler;
 
 import bart.oilcraft.blocks.ModBlocks;
 import net.minecraft.init.Blocks;

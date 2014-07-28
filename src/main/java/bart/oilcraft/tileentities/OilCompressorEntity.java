@@ -1,7 +1,12 @@
 package bart.oilcraft.tileentities;
 
+import bart.oilcraft.blocks.ModBlocks;
+import bart.oilcraft.containers.ContainerOilCompressor;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
@@ -27,7 +32,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
 
     @Override
     public int getSizeInventory() {
-        return 0;
+        return 2;
     }
 
     @Override
@@ -52,7 +57,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
 
     @Override
     public String getInventoryName() {
-        return null;
+        return "containers.ContainerOilCompressor";
     }
 
     @Override
@@ -62,12 +67,12 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
 
     @Override
     public int getInventoryStackLimit() {
-        return 0;
+    return 64;
     }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-        return false;
+        return true;
     }
 
     @Override
@@ -81,7 +86,17 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return false;
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+        if(stack.getItem().equals(Blocks.cobblestone) || stack.getItem().equals(ModBlocks.CrudeOilOre) && (slot == 0)){
+            return true;
+        }
+
+        if(stack.getItem().equals(Items.bucket) && (slot == 1)) {
+
+        }
+
+     return false;
+
     }
 }
