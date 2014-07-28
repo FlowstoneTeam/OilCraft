@@ -1,8 +1,8 @@
 package bart.oilcraft;
 
 import bart.oilcraft.blocks.ModBlocks;
+import bart.oilcraft.client.gui.GuiHandler;
 import bart.oilcraft.core.handler.CraftingHandler;
-import bart.oilcraft.core.handler.GUIHandler;
 import bart.oilcraft.core.proxy.CommonProxy;
 import bart.oilcraft.creativetab.OilCraftTab;
 import bart.oilcraft.fluids.BucketRegistry;
@@ -43,6 +43,7 @@ public class OilCraftMain {
         BucketRegistry.registerBucket();
 
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
+        NetworkRegistry.INSTANCE.registerGuiHandler(OilCraftMain.instance, new GuiHandler());
 
         GameRegistry.registerWorldGenerator(new WorldGenerationHandler(), 2);
     }
@@ -50,7 +51,6 @@ public class OilCraftMain {
     @Mod.EventHandler
     public static void init(FMLInitializationEvent event) {
         CraftingHandler.init();
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GUIHandler());
         proxy.registerTileEntities();
     }
 

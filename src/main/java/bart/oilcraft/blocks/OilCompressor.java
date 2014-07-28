@@ -61,9 +61,8 @@ public class OilCompressor extends OilCraftBlock implements ITileEntityProvider{
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int meta, float hitX, float hitY, float hitZ) {
-
-        if (!world.isRemote) {
-            entityPlayer.openGui(OilCraftMain.instance, 1, world, x, y, z);
+        if (world.isRemote) {
+            entityPlayer.openGui(OilCraftMain.instance, 0, world, x, y, z);
         }
         return true;
     }

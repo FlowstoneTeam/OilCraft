@@ -1,34 +1,46 @@
 package bart.oilcraft.client.gui;
 
+import bart.oilcraft.containers.ContainerOilCompressor;
 import bart.oilcraft.lib.References;
+import bart.oilcraft.tileentities.OilCompressorEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Created by Bart on 7-6-2014.
  */
-public class OilCompressorGUI extends GuiScreen {
-    int xSize = 174;
-    int ySize = 165;
-    private static final ResourceLocation backgroundimage = new ResourceLocation(References.RESOURCESPREFIX + "textures/gui/oilcompressor.png");
+public class OilCompressorGUI extends GuiContainer {
+    public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/guis/oilcompressor.png");
+    @SuppressWarnings("unused")
+    private ContainerOilCompressor container;
+    private OilCompressorEntity te;
 
-    public OilCompressorGUI() {
+    public OilCompressorGUI(EntityPlayer player, OilCompressorEntity tile) {
+        super(new ContainerOilCompressor(player, tile));
+        this.container = (ContainerOilCompressor) this.inventorySlots;
+        this.te = tile;
     }
-
 
     @Override
-    public void drawScreen(int par1, int par2, float par3) {
-        //Bind Texture
-        this.mc.getTextureManager().bindTexture(backgroundimage);
-        // set the x for the texture, Total width - textureSize / 2
-        par2 = (this.width - xSize) / 2;
-        // set the y for the texture, Total height - textureSize - 30 (up) / 2,
-        int j = (this.height - ySize - 30) / 2;
-        // draw the texture
-        drawTexturedModalRect(par2, j, 0, 0, xSize, ySize);
+    protected void drawGuiContainerForegroundLayer(int x, int y) {
+        fontRendererObj.drawString(StatCollector.translateToLocal("gui.oil.compressor"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.oil.compressor")) / 2, 2, 0xffffff);
+        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 4, 0xffffff);
     }
 
-    public boolean doesGuiPauseGame() {
-        return false;
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+
+        Minecraft.getMinecraft().getTextureManager().bindTexture(gui);
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+
+        int xStart = (width - xSize) / 2;
+        int yStart = (height - ySize) / 2;
+        this.drawTexturedModalRect(xStart, yStart, 0, 0, xSize, ySize);
     }
 }
