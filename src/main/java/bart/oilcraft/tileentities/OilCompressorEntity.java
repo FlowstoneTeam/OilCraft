@@ -7,27 +7,36 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
 
 /**
  * Created by Bart on 4-6-2014.
  */
 public class OilCompressorEntity extends TileEntity implements ISidedInventory{
 
+    public ItemStack[] items = new ItemStack[3];
+
     @Override
     public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[0];
+        return new int[] {0, 1};
     }
 
     @Override
-    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
-        return false;
+    public boolean canInsertItem(int slot, ItemStack stack, int side) {
+
+     if (slot == 0 && stack.getItem().equals(Blocks.cobblestone) || stack.getItem().equals(ModBlocks.CrudeOilOre) && side != ForgeDirection.DOWN.ordinal()) return true;
+     if (slot == 1 && stack.getItem().equals(Items.bucket) && side != ForgeDirection.DOWN.ordinal()) return true;
+    return false;
     }
 
     @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return false;
+    public boolean canExtractItem(int slot, ItemStack stack, int side) {
+
+        return slot == 2 && side == ForgeDirection.DOWN.ordinal();
     }
 
     @Override
@@ -36,23 +45,52 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_) {
-        return null;
+    public ItemStack getStackInSlot(int var1) {
+        if (var1 > items.length) return null;
+        return items[var1];
     }
 
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-        return null;
+     public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
+        this.items[par1] = par2ItemStack;
+
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        }
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-        return null;
+    public ItemStack getStackInSlotOnClosing(int par1) {
+        if (this.items[par1] != null) {
+            ItemStack itemstack = this.items[par1];
+            this.items[par1] = null;
+            return itemstack;
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
+    public ItemStack decrStackSize(int par1, int par2) {
+        if (this.items[par1] != null) {
+            ItemStack itemstack;
 
+            if (this.items[par1].stackSize <= par2) {
+                itemstack = this.items[par1];
+                this.items[par1] = null;
+                return itemstack;
+            } else {
+                itemstack = this.items[par1].splitStack(par2);
+
+                if (this.items[par1].stackSize == 0) {
+                    this.items[par1] = null;
+                }
+
+                return itemstack;
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -99,4 +137,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
      return false;
 
     }
+
+
+
 }

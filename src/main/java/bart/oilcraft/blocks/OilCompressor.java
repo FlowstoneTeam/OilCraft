@@ -3,7 +3,6 @@ package bart.oilcraft.blocks;
 import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.lib.References;
 import bart.oilcraft.tileentities.OilCompressorEntity;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -60,11 +59,17 @@ public class OilCompressor extends OilCraftBlock implements ITileEntityProvider{
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int meta, float hitX, float hitY, float hitZ) {
-        if (world.isRemote) {
-            entityPlayer.openGui(OilCraftMain.instance, 0, world, x, y, z);
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
+        super.onBlockActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);
+        if (entityPlayer.isSneaking()) return false;
+        else
+        {
+            if (!world.isRemote)
+            {
+                entityPlayer.openGui(OilCraftMain.instance, 0, world, x, y, z);
+            }
+            return true;
         }
-        return true;
     }
 }
 
