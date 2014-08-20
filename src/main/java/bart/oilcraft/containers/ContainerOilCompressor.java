@@ -1,8 +1,11 @@
 package bart.oilcraft.containers;
 
+import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.tileentities.OilCompressorEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
@@ -12,6 +15,10 @@ import net.minecraft.item.ItemStack;
  * Created by Bart on 20-7-2014.
  */
 public class ContainerOilCompressor extends Container {
+
+    public static final ItemStack[] slot0 = new ItemStack[] { new ItemStack(Blocks.cobblestone), new ItemStack(ModBlocks.CrudeOilOre) };
+    public static final ItemStack[] slot1 = new ItemStack[] { new ItemStack(Items.bucket) };
+
     public ContainerOilCompressor(EntityPlayer player, OilCompressorEntity entity) {
         createSlots(entity, player);
         bindPlayerInventory(player.inventory);
@@ -27,9 +34,9 @@ public class ContainerOilCompressor extends Container {
     }
 
     private void createSlots(OilCompressorEntity tile, EntityPlayer player) {
-        addSlotToContainer(new Slot(tile, 0, 57, 36));
-        addSlotToContainer(new Slot(tile, 1, 107, 36));
-        addSlotToContainer(new SlotFurnace(player, tile, 2, 152, 36));
+        addSlotToContainer(new SlotWhitelist(tile, 0, 57, 36, slot0));
+        addSlotToContainer(new SlotWhitelist(tile, 1, 107, 36, slot1));
+        addSlotToContainer(new Slot(tile, 2, 152, 36));
     }
 
     private void bindPlayerInventory(InventoryPlayer inv) {

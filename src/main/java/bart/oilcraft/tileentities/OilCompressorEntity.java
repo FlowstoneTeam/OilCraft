@@ -2,6 +2,7 @@ package bart.oilcraft.tileentities;
 
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.containers.ContainerOilCompressor;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -18,28 +19,29 @@ import net.minecraftforge.fluids.FluidRegistry;
  */
 public class OilCompressorEntity extends TileEntity implements ISidedInventory{
 
+    public static final int[] slotsInsert = new int[] { 0, 1 };
+    public static final int[] slotsExtract = new int[] { 2 };
+
     public ItemStack[] items = new ItemStack[3];
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[] {0, 1};
+    public int[] getAccessibleSlotsFromSide(int side) {
+        return side == 0 ? slotsExtract : slotsInsert;
     }
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-     if (slot == 0 && (stack.getItem().equals(Blocks.cobblestone) || stack.getItem().equals(ModBlocks.CrudeOilOre)) && side != ForgeDirection.DOWN.ordinal()) return true;
-     if (slot == 1 && (stack.getItem().equals(Items.bucket)) && side != ForgeDirection.DOWN.ordinal()) return true;
-        else {
-         return false;
-        }
+        System.out.println("Item 1: " + stack.getItem() + "  Item 2: " + Item.getItemFromBlock(Blocks.cobblestone));
+
+        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
+               (slot == 1 && stack.getItem() == Items.bucket);
      }
 
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
-
-        return slot == 2 && side == ForgeDirection.DOWN.ordinal();
+        return slot == 2;
     }
 
     @Override
@@ -112,7 +114,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+    public boolean isUseableByPlayer(EntityPlayer player) {
         return true;
     }
 
@@ -128,18 +130,8 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-
-        if(stack.getItem().equals(Blocks.cobblestone) || stack.getItem().equals(ModBlocks.CrudeOilOre) && (slot == 0)){
-            return true;
-        }
-
-        if(stack.getItem().equals(Items.bucket) && (slot == 1)) {
-            return true;
-        }
-        else {return false;}
-
-
-
+        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
+               (slot == 1 && stack.getItem() == Items.bucket);
     }
 
 
