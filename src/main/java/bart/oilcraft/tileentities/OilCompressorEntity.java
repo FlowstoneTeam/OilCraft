@@ -28,10 +28,13 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-     if (slot == 0 && stack.getItem().equals(Blocks.cobblestone) || stack.getItem().equals(ModBlocks.CrudeOilOre) && side != ForgeDirection.DOWN.ordinal()) return true;
-     if (slot == 1 && stack.getItem().equals(Items.bucket) && side != ForgeDirection.DOWN.ordinal()) return true;
-    return false;
-    }
+     if (slot == 0 && (stack.getItem().equals(Blocks.cobblestone) || stack.getItem().equals(ModBlocks.CrudeOilOre)) && side != ForgeDirection.DOWN.ordinal()) return true;
+     if (slot == 1 && (stack.getItem().equals(Items.bucket)) && side != ForgeDirection.DOWN.ordinal()) return true;
+        else {
+         return false;
+        }
+     }
+
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
@@ -131,10 +134,11 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
         }
 
         if(stack.getItem().equals(Items.bucket) && (slot == 1)) {
-
+            return true;
         }
+        else {return false;}
 
-     return false;
+
 
     }
 
