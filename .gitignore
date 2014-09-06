@@ -23,6 +23,7 @@ build/
 *.ipr
 *.iws
 out/
+run/
 
 # External tool builders
 .externalToolBuilders/
