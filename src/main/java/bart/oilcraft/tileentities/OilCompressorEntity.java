@@ -42,7 +42,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
         //System.out.println("Item 1: " + stack.getItem() + "  Item 2: " + Item.getItemFromBlock(Blocks.cobblestone));
-
+        //add block to list to make it be accepted
         return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
                (slot == 1 && stack.getItem() == Items.bucket);
      }
@@ -136,7 +136,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public void closeInventory() {
 
     }
-
+//add block to list to make it be accepted
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
@@ -213,7 +213,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         return tank;
     }
 
-
+//add block and amount of oil it gives
     public static int getOilLevel(ItemStack stack)
     {
         if (stack == null)
