@@ -2,6 +2,7 @@ package bart.oilcraft.tileentities;
 
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.containers.ContainerOilCompressor;
+import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
 import bart.oilcraft.util.Util;
 import net.minecraft.block.Block;
@@ -13,21 +14,24 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.*;
 
 /**
  * Created by Bart on 4-6-2014.
  */
-public class OilCompressorEntity extends TileEntity implements ISidedInventory{
+public class OilCompressorEntity extends TileEntity implements ISidedInventory, IFluidHandler{
 
     public static final int[] slotsInsert = new int[] { 0, 1 };
     public static final int[] slotsExtract = new int[] { 2 };
 
     public ItemStack[] items = new ItemStack[3];
-
-    public int oilLevel, progress;
+    public FluidTank tank = new FluidTank(10000);
+    public int progress;
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
@@ -143,11 +147,14 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
     public void updateEntity() {
         if (worldObj.isRemote) return;
         if (getOilLevel(items[0]) > 0) {
-            if (progress >= 100) {
-                if (oilLevel + getOilLevel(items[0]) <= 10000) {
-                    progress = 0;
-                    oilLevel += getOilLevel(items[0]);
+            if (progress >= 80) {
+                int add = getOilLevel(items[0]);
+
+                if(tank.getFluidAmount() + add <= tank.getCapacity()){
+                    tank.fill(new FluidStack(ModFluids.Oil, add), true);
+                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                     setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
+                    progress = 0;
                 }
             }
             else {
@@ -160,11 +167,14 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
             progress = 0;
         }
 
-        if (oilLevel >= 1000 && items[1] != null && items[1].getItem() == Items.bucket && items[2] == null) {
-            oilLevel -= 1000;
+        if (tank.getFluidAmount() >= 1000 && items[1] != null && items[1].getItem() == Items.bucket && items[2] == null) {
+            tank.drain(1000, true);
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             setInventorySlotContents(1, items[1].stackSize == 1 ? null : new ItemStack(items[1].getItem(), items[1].stackSize - 1));
             setInventorySlotContents(2, new ItemStack(ModItems.OilBucket));
         }
+
+
     }
 
     @Override
@@ -172,7 +182,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
     {
         super.readFromNBT(nbt);
 
-        oilLevel = nbt.getInteger("oilLevel");
+        tank.readFromNBT(nbt);
 
         Util.loadInventory(nbt, this);
     }
@@ -182,10 +192,27 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
     {
         super.writeToNBT(nbt);
 
-        nbt.setInteger("oilLevel", oilLevel);
+        tank.writeToNBT(nbt);
 
         Util.saveInventory(nbt, this);
     }
+
+    @Override
+    public Packet getDescriptionPacket(){
+        NBTTagCompound Tag = new NBTTagCompound();
+        tank.writeToNBT(Tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
+    }
+
+    @Override
+    public void onDataPacket( NetworkManager Net, S35PacketUpdateTileEntity Packet){
+        tank.readFromNBT(Packet.func_148857_g());
+    }
+
+    public FluidTank getTank(){
+        return tank;
+    }
+
 
     public static int getOilLevel(ItemStack stack)
     {
@@ -199,10 +226,46 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory{
                 return 1;
             }
             if (stack.getItem() == Item.getItemFromBlock(ModBlocks.CrudeOilOre)) {
-                return 1000;
+                return 500;
             }
 
+            if (stack.getItem() == Items.diamond){
+                return 1000;
+            }
         }
         return 0;
+    }
+
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        return 0;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
+            return null;
+        }
+        return drain(from, resource.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return tank.drain(maxDrain, doDrain);
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return false;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return true;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[]{new FluidTankInfo(tank)};
     }
 }
