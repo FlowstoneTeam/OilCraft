@@ -43,7 +43,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
         //System.out.println("Item 1: " + stack.getItem() + "  Item 2: " + Item.getItemFromBlock(Blocks.cobblestone));
 
-        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
+        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
                (slot == 1 && stack.getItem() == Items.bucket);
      }
 
@@ -139,7 +139,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
+        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
                (slot == 1 && stack.getItem() == Items.bucket);
     }
 
