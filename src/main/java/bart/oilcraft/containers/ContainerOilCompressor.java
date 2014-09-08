@@ -2,6 +2,7 @@ package bart.oilcraft.containers;
 
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.tileentities.OilCompressorEntity;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -16,7 +17,7 @@ import net.minecraft.item.ItemStack;
  */
 public class ContainerOilCompressor extends Container {
 
-    public static final ItemStack[] slot0 = new ItemStack[] { new ItemStack(Blocks.cobblestone), new ItemStack(ModBlocks.CrudeOilOre) };
+    public static final ItemStack[] slot0 = new ItemStack[] { new ItemStack(Blocks.cobblestone),new ItemStack(Items.diamond), new ItemStack(GameRegistry.findItem("oodmod", "Kroostyl")), new ItemStack(ModBlocks.CrudeOilOre)};
     public static final ItemStack[] slot1 = new ItemStack[] { new ItemStack(Items.bucket) };
 
     public ContainerOilCompressor(EntityPlayer player, OilCompressorEntity entity) {

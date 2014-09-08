@@ -4,7 +4,13 @@ import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.containers.ContainerOilCompressor;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
+import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.util.Util;
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyConnection;
+import cofh.api.energy.IEnergyHandler;
+import com.google.common.collect.Lists;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,19 +25,26 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import net.minecraftforge.fluids.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Bart on 4-6-2014.
  */
-public class OilCompressorEntity extends TileEntity implements ISidedInventory, IFluidHandler{
+public class OilCompressorEntity extends TileEntity implements ISidedInventory, IFluidHandler, IEnergyHandler {
 
-    public static final int[] slotsInsert = new int[] { 0, 1 };
-    public static final int[] slotsExtract = new int[] { 2 };
+    public static final int[] slotsInsert = new int[]{0, 1};
+    public static final int[] slotsExtract = new int[]{2};
 
     public ItemStack[] items = new ItemStack[3];
     public FluidTank tank = new FluidTank(10000);
     public int progress;
+    public EnergyStorage energy = new EnergyStorage(8000, 1000);
+    public List<String> canItemConvert = new ArrayList <String>();
+
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
@@ -43,9 +56,9 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
         //System.out.println("Item 1: " + stack.getItem() + "  Item 2: " + Item.getItemFromBlock(Blocks.cobblestone));
         //add block to list to make it be accepted
-        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
-               (slot == 1 && stack.getItem() == Items.bucket);
-     }
+        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")) ||Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
+                (slot == 1 && stack.getItem() == Items.bucket);
+    }
 
 
     @Override
@@ -65,7 +78,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     }
 
     @Override
-     public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
         this.items[par1] = par2ItemStack;
 
         if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
@@ -119,7 +132,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
     @Override
     public int getInventoryStackLimit() {
-    return 64;
+        return 64;
     }
 
     @Override
@@ -136,34 +149,38 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public void closeInventory() {
 
     }
-//add block to list to make it be accepted
+
+    //add block to list to make it be accepted
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
-               (slot == 1 && stack.getItem() == Items.bucket);
+        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")) ||Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
+                (slot == 1 && stack.getItem() == Items.bucket);
     }
 
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
         if (getOilLevel(items[0]) > 0) {
-            if (progress >= 80) {
-                int add = getOilLevel(items[0]);
+            if(energy.getEnergyStored() >= getRFAmount(items[0])) {
+                //System.out.println("test");
+                energy.extractEnergy(getRFAmount(items[0]), true);
+                if (progress >= getProsesTime(items[0])) {
 
-                if(tank.getFluidAmount() + add <= tank.getCapacity()){
-                    tank.fill(new FluidStack(ModFluids.Oil, add), true);
-                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                    setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
-                    progress = 0;
+                    int add = getOilLevel(items[0]);
+
+                    if (tank.getFluidAmount() + add <= tank.getCapacity()) {
+                        tank.fill(new FluidStack(ModFluids.Oil, add), true);
+                        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                        setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
+                        progress = 0;
+                    }
+
+
+                } else {
+                    progress++;
                 }
             }
-            else {
-                progress++;
-            }
-
-        }
-        else
-        {
+        } else {
             progress = 0;
         }
 
@@ -178,63 +195,113 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
+    public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
 
         tank.readFromNBT(nbt);
 
         Util.loadInventory(nbt, this);
+        energy.readFromNBT(nbt);
+
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
+    public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
 
         tank.writeToNBT(nbt);
 
         Util.saveInventory(nbt, this);
+
+        energy.writeToNBT(nbt);
+
     }
 
     @Override
-    public Packet getDescriptionPacket(){
+    public Packet getDescriptionPacket() {
         NBTTagCompound Tag = new NBTTagCompound();
         tank.writeToNBT(Tag);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
     }
 
     @Override
-    public void onDataPacket( NetworkManager Net, S35PacketUpdateTileEntity Packet){
+    public void onDataPacket(NetworkManager Net, S35PacketUpdateTileEntity Packet) {
         tank.readFromNBT(Packet.func_148857_g());
     }
 
-    public FluidTank getTank(){
+    public FluidTank getTank() {
         return tank;
     }
 
-//add block and amount of oil it gives
-    public static int getOilLevel(ItemStack stack)
-    {
-        if (stack == null)
-        {
+    //add block and amount of oil it gives
+    public static int getOilLevel(ItemStack stack) {
+        if (stack == null) {
             return 0;
-        }
-        else {
+        } else {
 
             if (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone)) {
-                return 1;
+                return ConfigurationHandler.cobbleOil;
             }
             if (stack.getItem() == Item.getItemFromBlock(ModBlocks.CrudeOilOre)) {
-                return 500;
+                return ConfigurationHandler.crudeOil;
             }
 
-            if (stack.getItem() == Items.diamond){
-                return 1000;
+            if (stack.getItem() == Items.diamond) {
+                return ConfigurationHandler.diamondOil;
+            }
+            if (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")){
+                return ConfigurationHandler.kroostylOil;
             }
         }
         return 0;
     }
+    //add block and amount of energy it uses
+    public static int getRFAmount(ItemStack stack){
+        if (stack == null) {
+            return 0;
+        } else {
+
+            if (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone)) {
+                return ConfigurationHandler.cobbleRf;
+            }
+            if (stack.getItem() == Item.getItemFromBlock(ModBlocks.CrudeOilOre)) {
+                return ConfigurationHandler.crudeRf;
+            }
+
+            if (stack.getItem() == Items.diamond) {
+                return ConfigurationHandler.diamondRf;
+            }
+            if (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")){
+                return ConfigurationHandler.kroostylRf;
+            }
+        }
+        return 0;
+    }
+    //Add block and amount of time it takes to proses
+    public static int getProsesTime(ItemStack stack){
+        if (stack == null) {
+            return 0;
+        } else {
+
+            if (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone)) {
+                return ConfigurationHandler.cobbleProses;
+            }
+            if (stack.getItem() == Item.getItemFromBlock(ModBlocks.CrudeOilOre)) {
+                return ConfigurationHandler.crudeProses;
+            }
+
+            if (stack.getItem() == Items.diamond) {
+                return ConfigurationHandler.diamondProses;
+            }
+            if (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")){
+                return ConfigurationHandler.kroostylProses;
+            }
+        }
+        return 0;
+    }
+
+
+
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -268,4 +335,34 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         return new FluidTankInfo[]{new FluidTankInfo(tank)};
     }
+
+
+
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
+        return true;
+    }
+
+    @Override
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        return energy.receiveEnergy(maxReceive, simulate);
+    }
+
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public int getEnergyStored(ForgeDirection from) {
+        return energy.getEnergyStored();
+    }
+
+    @Override
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return energy.getMaxEnergyStored();
+    }
+
 }
+
