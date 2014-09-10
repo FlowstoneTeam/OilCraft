@@ -1,5 +1,6 @@
 package bart.oilcraft.tileentities;
 
+import bart.oilcraft.blocks.CrudeOilOre;
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.containers.ContainerOilCompressor;
 import bart.oilcraft.fluids.ModFluids;
@@ -11,7 +12,7 @@ import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import com.google.common.collect.Lists;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -28,8 +29,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import net.minecraftforge.fluids.*;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by Bart on 4-6-2014.
@@ -42,8 +42,8 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public ItemStack[] items = new ItemStack[3];
     public FluidTank tank = new FluidTank(10000);
     public int progress;
+
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
-    public List<String> canItemConvert = new ArrayList <String>();
 
 
     @Override
@@ -161,23 +161,108 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public void updateEntity() {
         if (worldObj.isRemote) return;
         if (getOilLevel(items[0]) > 0) {
-            if(energy.getEnergyStored() >= getRFAmount(items[0])) {
-                //System.out.println("test");
-                energy.extractEnergy(getRFAmount(items[0]), true);
-                if (progress >= getProsesTime(items[0])) {
 
-                    int add = getOilLevel(items[0]);
+            if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) instanceof CrudeOilOre) {
+                if (energy.getEnergyStored() >= (getRFAmount(items[0])/100)*ConfigurationHandler.energyEfficiencyUpgradePercentage) {
+                    if (progress >= getProsesTime(items[0])) {
 
-                    if (tank.getFluidAmount() + add <= tank.getCapacity()) {
-                        tank.fill(new FluidStack(ModFluids.Oil, add), true);
-                        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                        setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
-                        progress = 0;
+                        int add = getOilLevel(items[0]);
+
+                        if (tank.getFluidAmount() + add <= tank.getCapacity()) {
+                            tank.fill(new FluidStack(ModFluids.Oil, add), true);
+                            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                            setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
+                            progress = 0;
+                            energy.extractEnergy(((getRFAmount(items[0])/100)*ConfigurationHandler.energyEfficiencyUpgradePercentage), true);
+                        }
+
+
+                    } else {
+                        progress++;
+                    }
+                }
+            }
+            else {
+
+                if (energy.getEnergyStored() >= getRFAmount(items[0])) {
+                    //System.out.println("test");
+                    if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) instanceof BlockEnchantmentTable) {
+                        if (progress >= ((getProsesTime(items[0]) / 100) * ConfigurationHandler.speedUpgradePercentage)) {
+
+                            int add = getOilLevel(items[0]);
+
+                            if (tank.getFluidAmount() + add <= tank.getCapacity()) {
+                                tank.fill(new FluidStack(ModFluids.Oil, add), true);
+                                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                                setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
+                                progress = 0;
+                                energy.extractEnergy(getRFAmount(items[0]), true);
+                            }
+
+
+                        } else {
+                            progress++;
+                        }
+                    } else {
+                        if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) instanceof BlockBeacon){
+                            if (items[0].stackSize >= ConfigurationHandler.stackUpgradeNumber) {
+                                if (progress >= getProsesTime(items[0]) * ConfigurationHandler.stackUpgradeProses) {
+                                    if (progress >= getProsesTime(items[0])) {
+                                        int add = getOilLevel(items[0]) * ConfigurationHandler.stackUpgradeNumber;
+                                        if (tank.getFluidAmount() + add <= tank.getCapacity()) {
+                                            tank.fill(new FluidStack(ModFluids.Oil, add), true);
+                                            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+
+                                            setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - ConfigurationHandler.stackUpgradeNumber));
+                                            progress = 0;
+                                            energy.extractEnergy(getRFAmount(items[0]), true);
+                                        }
+                                    }
+                                } else {
+                                    progress++;
+                                }
+                            }
+                            else {
+                                if (progress >= getProsesTime(items[0])) {
+
+                                    int add = getOilLevel(items[0]);
+
+                                    if (tank.getFluidAmount() + add <= tank.getCapacity()) {
+                                        tank.fill(new FluidStack(ModFluids.Oil, add), true);
+                                        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+
+                                        setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
+                                        progress = 0;
+                                        energy.extractEnergy(getRFAmount(items[0]), true);
+                                    }
+
+
+                                } else {
+                                    progress++;
+                                }
+                            }
+                        }
+                        else {
+                            if (progress >= getProsesTime(items[0])) {
+
+                                int add = getOilLevel(items[0]);
+
+                                if (tank.getFluidAmount() + add <= tank.getCapacity()) {
+                                    tank.fill(new FluidStack(ModFluids.Oil, add), true);
+                                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+
+                                    setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
+                                    progress = 0;
+                                    energy.extractEnergy(getRFAmount(items[0]), true);
+                                }
+
+
+                            } else {
+                                progress++;
+                            }
+                        }
                     }
 
-
-                } else {
-                    progress++;
                 }
             }
         } else {
@@ -190,8 +275,9 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
             setInventorySlotContents(1, items[1].stackSize == 1 ? null : new ItemStack(items[1].getItem(), items[1].stackSize - 1));
             setInventorySlotContents(2, new ItemStack(ModItems.OilBucket));
         }
-
-
+        if (true) {
+            System.out.println(energy.getMaxEnergyStored());
+        }
     }
 
     @Override
@@ -361,8 +447,11 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
     @Override
     public int getMaxEnergyStored(ForgeDirection from) {
-        return energy.getMaxEnergyStored();
+            return energy.getMaxEnergyStored();
     }
+
+
+
 
 }
 

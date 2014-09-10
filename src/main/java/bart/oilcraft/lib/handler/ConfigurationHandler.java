@@ -26,8 +26,11 @@ public class ConfigurationHandler {
     public static int crudeProses;
     public static int diamondProses;
     public static int kroostylProses;
-
-
+    public static int speedUpgradePercentage;
+    public static int capacityUpgradePercentage;
+    public static int energyEfficiencyUpgradePercentage;
+    public static int stackUpgradeNumber;
+    public static int stackUpgradeProses;
     public static void Init(File configFile){
         if(configuration == null ){
             configuration = new Configuration(configFile);
@@ -56,10 +59,15 @@ public class ConfigurationHandler {
 
 
         cobbleProses = configuration.get("You can set the amount of times it takes to proses the block/item (20 = 1 sec)", "CobbleStone", 40).getInt(40);
-        crudeProses = configuration.get("You can set the amount of times it takes to proses the block/item (20 = 1 sec)", "CrudeOil" +" "+ "Ore", 80).getInt(80);
+        crudeProses = configuration.get("You can set the amount of times it takes to proses the block/item (20 = 1 sec)", "CrudeOilOre", 80).getInt(80);
         diamondProses = configuration.get("You can set the amount of times it takes to proses the block/item (20 = 1 sec)", "Diamond", 120).getInt(120);
-        kroostylProses = configuration.get("You can set the amount of times it takes to proses the block/item (20 = 1 sec)", "Kroostyl(only with Ood's mod instaled)", 140).getInt(140);
+        kroostylProses = configuration.get("You can set the amount of times it takes to proses the block/item (20 = 1 sec)", "Kroostyl(only with Ood's mod installed)", 140).getInt(140);
 
+        speedUpgradePercentage = configuration.get("You can set the percentage upgrades will upgrade the machine", "SpeedUpgrade", 80).getInt(80);
+        //capacityUpgradePercentage = configuration.get("You can set the percentage upgrades will upgrade the machine", "CapacityUpgrade", 120).getInt(120);
+        energyEfficiencyUpgradePercentage = configuration.get("You can set the percentage upgrades will upgrade the machine", "EnergyEfficiencyUpgrade", 80).getInt(80);
+        stackUpgradeNumber = configuration.get("You can set the percentage upgrades will upgrade the machine ", "StackUpgrade(change this to the number of items to consume)", 16).getInt(16);
+        stackUpgradeProses = configuration.get("You can set the percentage upgrades will upgrade the machine ", "StackUpgrade(the amount of times the proses takes more))", 2).getInt(2);
         if(configuration.hasChanged()){
             configuration.save();
         }
