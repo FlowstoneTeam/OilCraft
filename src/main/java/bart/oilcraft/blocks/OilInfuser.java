@@ -2,6 +2,7 @@ package bart.oilcraft.blocks;
 
 import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.tileentities.OilCompressorEntity;
+import bart.oilcraft.tileentities.OilInfuserEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.tileentity.TileEntity;
@@ -28,6 +29,6 @@ public class OilInfuser extends OilCraftBlock implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World var1, int var2) {
-        return new OilCompressorEntity();
+        return new OilInfuserEntity();
     }
 }

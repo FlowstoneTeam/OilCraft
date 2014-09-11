@@ -275,9 +275,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
             setInventorySlotContents(1, items[1].stackSize == 1 ? null : new ItemStack(items[1].getItem(), items[1].stackSize - 1));
             setInventorySlotContents(2, new ItemStack(ModItems.OilBucket));
         }
-        if (true) {
-            System.out.println(energy.getMaxEnergyStored());
-        }
+
     }
 
     @Override
