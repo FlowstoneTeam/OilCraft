@@ -1,23 +1,43 @@
 package bart.oilcraft.tileentities;
 
+import bart.oilcraft.containers.ContainerOilInfuser;
+import bart.oilcraft.fluids.BlockOil;
+import bart.oilcraft.fluids.ModFluids;
+import bart.oilcraft.util.Util;
+import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 
 /**
  * Created by Bart on 10-9-2014.
  */
 public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFluidHandler, IEnergyHandler {
+
+    public static final int[] slotsInsert = new int[]{0, 1};
+    public static final int[] slotsExtract = new int[]{2};
+
+    public ItemStack[] items = new ItemStack[3];
+    public FluidTank tank = new FluidTank(10000);
+    public int progress;
+
+    public EnergyStorage energy = new EnergyStorage(8000, 1000);
+
+
+
+
     @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        return 0;
+        return energy.receiveEnergy(maxReceive, simulate);
     }
 
     @Override
@@ -27,22 +47,24 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
 
     @Override
     public int getEnergyStored(ForgeDirection from) {
-        return 0;
+        return energy.getEnergyStored();
     }
 
     @Override
     public int getMaxEnergyStored(ForgeDirection from) {
-        return 0;
+        return energy.getMaxEnergyStored();
     }
 
     @Override
     public boolean canConnectEnergy(ForgeDirection from) {
-        return false;
+        return true;
     }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        return 0;
+        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        return tank.fill(resource, doFill);
+
     }
 
     @Override
@@ -56,8 +78,12 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(ForgeDirection from, Fluid fluid) { if (fluid == ModFluids.Oil){
+        return true;
+    }
+        else {
         return false;
+    }
     }
 
     @Override
@@ -67,52 +93,85 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[0];
+        return new FluidTankInfo[]{new FluidTankInfo(tank)};
+    }
+
+    public FluidTank getTank() {
+        return tank;
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return new int[0];
+    public int[] getAccessibleSlotsFromSide(int side) {
+        return side == 0 ? slotsExtract : slotsInsert;
     }
 
     @Override
-    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
-        return false;
+    public boolean canInsertItem(int slot, ItemStack stack, int side) {
+        return (slot == 0 && (stack.getItem() == Items.diamond));
     }
 
     @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-        return false;
+    public boolean canExtractItem(int slot, ItemStack stack, int side) {
+        return (slot == 1);
     }
 
     @Override
     public int getSizeInventory() {
-        return 0;
+        return 1;
     }
 
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_) {
-        return null;
+    public ItemStack getStackInSlot(int var1) {
+        if (var1 > items.length) return null;
+        return items[var1];
     }
 
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-        return null;
+    public ItemStack decrStackSize(int par1, int par2) {
+        if (this.items[par1] != null) {
+            ItemStack itemstack;
+
+            if (this.items[par1].stackSize <= par2) {
+                itemstack = this.items[par1];
+                this.items[par1] = null;
+                return itemstack;
+            } else {
+                itemstack = this.items[par1].splitStack(par2);
+
+                if (this.items[par1].stackSize == 0) {
+                    this.items[par1] = null;
+                }
+
+                return itemstack;
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-        return null;
+    public ItemStack getStackInSlotOnClosing(int par1) {
+        if (this.items[par1] != null) {
+            ItemStack itemstack = this.items[par1];
+            this.items[par1] = null;
+            return itemstack;
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
+        this.items[par1] = par2ItemStack;
 
+        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
+            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        }
     }
 
     @Override
     public String getInventoryName() {
-        return null;
+        return "containers.ContainerOilInfuser";
     }
 
     @Override
@@ -122,12 +181,12 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
 
     @Override
     public int getInventoryStackLimit() {
-        return 0;
+        return 64;
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-        return false;
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return true;
     }
 
     @Override
@@ -141,7 +200,52 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
     }
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return false;
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+        return (slot == 1 && (stack.getItem() == Items.diamond));
     }
+
+
+    @Override
+    public void updateEntity(){
+
+        if (worldObj.isRemote) return;
+    }
+
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+
+        tank.readFromNBT(nbt);
+
+        Util.loadInventory(nbt, this);
+        energy.readFromNBT(nbt);
+
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+
+        tank.writeToNBT(nbt);
+
+        Util.saveInventory(nbt, this);
+
+        energy.writeToNBT(nbt);
+
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound Tag = new NBTTagCompound();
+        tank.writeToNBT(Tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager Net, S35PacketUpdateTileEntity Packet) {
+        tank.readFromNBT(Packet.func_148857_g());
+    }
+
+
 }

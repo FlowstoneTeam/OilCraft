@@ -2,6 +2,7 @@ package bart.oilcraft.containers;
 
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.tileentities.OilCompressorEntity;
+import bart.oilcraft.tileentities.OilInfuserEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
