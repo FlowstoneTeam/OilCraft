@@ -316,12 +316,15 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public Packet getDescriptionPacket() {
         NBTTagCompound Tag = new NBTTagCompound();
         tank.writeToNBT(Tag);
+        energy.writeToNBT(Tag);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
+
     }
 
     @Override
     public void onDataPacket(NetworkManager Net, S35PacketUpdateTileEntity Packet) {
         tank.readFromNBT(Packet.func_148857_g());
+        energy.readFromNBT(Packet.func_148857_g());
     }
 
     public FluidTank getTank() {
@@ -443,6 +446,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
     @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         return energy.receiveEnergy(maxReceive, simulate);
     }
 
