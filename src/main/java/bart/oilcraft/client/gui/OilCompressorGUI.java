@@ -70,7 +70,6 @@ public class OilCompressorGUI extends GuiContainer {
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
         int color = fluid.getColor();
         GL11.glColor3ub((byte) (color >> 16 & 0xFF), (byte) (color >> 8 & 0xFF), (byte) (color & 0xFF));
-
         drawTiledTexture(x, y, fluid.getIcon(), width, height);
     }
 
