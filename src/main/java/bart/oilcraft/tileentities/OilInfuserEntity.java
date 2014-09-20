@@ -3,6 +3,7 @@ package bart.oilcraft.tileentities;
 import bart.oilcraft.containers.ContainerOilInfuser;
 import bart.oilcraft.fluids.BlockOil;
 import bart.oilcraft.fluids.ModFluids;
+import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
@@ -205,11 +206,6 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
     }
 
 
-    @Override
-    public void updateEntity(){
-
-        if (worldObj.isRemote) return;
-    }
 
 
     @Override
@@ -239,12 +235,34 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
     public Packet getDescriptionPacket() {
         NBTTagCompound Tag = new NBTTagCompound();
         tank.writeToNBT(Tag);
+        energy.writeToNBT(Tag);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
+
     }
 
     @Override
     public void onDataPacket(NetworkManager Net, S35PacketUpdateTileEntity Packet) {
         tank.readFromNBT(Packet.func_148857_g());
+        energy.readFromNBT(Packet.func_148857_g());
+    }
+
+    @Override
+    public void updateEntity() {
+
+
+    }
+
+
+    public int getOilLevel(ItemStack stack){
+        if (stack == null){
+            return 0;
+        }
+        else{
+            if (stack.getItem() == Items.diamond){
+                   return ConfigurationHandler.oilyDiamondOil;
+            }
+        }
+        return 0;
     }
 
 

@@ -2,6 +2,7 @@ package bart.oilcraft;
 
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.client.gui.GuiHandler;
+import bart.oilcraft.enchants.EnchantRegistry;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.lib.handler.CraftingHandler;
 import bart.oilcraft.core.proxy.CommonProxy;
@@ -44,6 +45,7 @@ public class OilCraftMain {
         ModFluids.init();
         ModItems.Init();
         BucketRegistry.registerBucket();
+        EnchantRegistry.registerEnchants();
 
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         NetworkRegistry.INSTANCE.registerGuiHandler(OilCraftMain.instance, new GuiHandler());
