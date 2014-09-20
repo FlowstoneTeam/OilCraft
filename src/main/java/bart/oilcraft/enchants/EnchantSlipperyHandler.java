@@ -1,6 +1,7 @@
 package bart.oilcraft.enchants;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -12,19 +13,22 @@ public class EnchantSlipperyHandler {
 
     public int Process;
 
-    public void Slippery(EntityPlayer Player) {
-        if (Player.getHeldItem() != null) {
-            if ((EnchantmentHelper.getEnchantments(Player.getHeldItem()).containsKey(EnchantRegistry.SlipperyEnchant.effectId))) {
+
+    @SubscribeEvent
+    public void Slippery(TickEvent.PlayerTickEvent event) {
+        if (event.player.getHeldItem() != null) {
+            System.out.println("Item droped");
+            if ((EnchantmentHelper.getEnchantments(event.player.getHeldItem()).containsKey(EnchantRegistry.SlipperyEnchant.effectId))) {
                 if (Process == 140) {
-                    Player.dropOneItem(true);
+                    event.player.dropOneItem(true);
+                    Process = 0;
+                    System.out.println("Item droped");
                 } else {
                     Process++;
                 }
             } else {
                 Process = 0;
             }
-
-            System.out.println(Process);
         }
     }
 }
