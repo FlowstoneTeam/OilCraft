@@ -12,26 +12,21 @@ public class EnchantSlipperyHandler {
 
     public int Process;
 
-    @SubscribeEvent
-    public void Slippery(EntityPlayer Player){
-        if(Player.getHeldItem() == null) return;
-        if(!(Player.getHeldItem().isItemEnchanted())) return;
-           itemDrop(Player);
-    }
-
-    public void itemDrop(EntityPlayer player){
-        if((EnchantmentHelper.getEnchantments(player.getHeldItem()).containsKey(EnchantRegistry.SlipperyEnchant.effectId))){
-            if(Process == 140){
-                player.dropOneItem(true);
-            }
-            else{
-             Process++;
-            }
-        }
-        else{
+    public void Slippery(EntityPlayer Player) {
+        if (Player.getHeldItem() != null) {
+            if ((EnchantmentHelper.getEnchantments(Player.getHeldItem()).containsKey(EnchantRegistry.SlipperyEnchant.effectId))) {
+                if (Process == 140) {
+                    Player.dropOneItem(true);
+                } else {
+                    Process++;
+                }
+            } else {
                 Process = 0;
             }
 
+            System.out.println(Process);
+        }
     }
-
 }
+
+

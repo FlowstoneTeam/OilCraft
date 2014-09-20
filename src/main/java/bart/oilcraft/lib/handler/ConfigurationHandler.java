@@ -34,7 +34,7 @@ public class ConfigurationHandler {
     public static int oilyDiamondOil;
     public static int oilyDiamondProses;
     public static int oilyDiamondRF;
-    public static int slipperyEnchant;
+    public static int slipperyEnchantID;
 
     public static void Init(File configFile){
         if(configuration == null ){
@@ -81,7 +81,10 @@ public class ConfigurationHandler {
         stackUpgradeNumber = configuration.get("You can set the percentage upgrades will upgrade the machine ", "StackUpgrade(change this to the number of items to consume)", 16).getInt(16);
         stackUpgradeProses = configuration.get("You can set the percentage upgrades will upgrade the machine ", "StackUpgrade(the amount of times the proses takes more))", 2).getInt(2);
 
-        slipperyEnchant = configuration.get("You can set the enchantment id here", "Slippery enchantmen", 49).getInt(49);
+        slipperyEnchantID = configuration.get("You can set the enchantment id here", "Slippery enchantmen", 70).getInt(70);
+
+
+
         if(configuration.hasChanged()){
             configuration.save();
         }

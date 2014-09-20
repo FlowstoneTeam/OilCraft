@@ -27,7 +27,7 @@ snooperEnabled:true
 fullscreen:false
 enableVsync:true
 hideServerAddress:false
-advancedItemTooltips:true
+advancedItemTooltips:false
 pauseOnLostFocus:true
 showCape:true
 touchscreen:false
@@ -85,6 +85,10 @@ key_key.hotbar.6:7
 key_key.hotbar.7:8
 key_key.hotbar.8:9
 key_key.hotbar.9:10
+key_Glider Toggle:34
+key_Sound Locator:38
+key_Night Vision:25
+key_Yeta Wrench Mode:21
 key_railcraft.keybind.loco.faster:52
 key_railcraft.keybind.loco.slower:51
 key_railcraft.keybind.loco.mode:50

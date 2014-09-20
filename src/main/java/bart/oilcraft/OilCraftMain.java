@@ -41,6 +41,8 @@ public class OilCraftMain {
 
     @Mod.EventHandler
     public static void preInit(FMLPreInitializationEvent event) {
+
+        ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
         ModBlocks.init();
         ModFluids.init();
         ModItems.Init();
@@ -50,7 +52,7 @@ public class OilCraftMain {
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         NetworkRegistry.INSTANCE.registerGuiHandler(OilCraftMain.instance, new GuiHandler());
 
-        ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
+
         GameRegistry.registerWorldGenerator(new WorldGenerationHandler(), 2);
 
         FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
