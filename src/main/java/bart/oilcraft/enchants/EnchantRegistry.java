@@ -1,6 +1,7 @@
 package bart.oilcraft.enchants;
 
 import bart.oilcraft.lib.handler.ConfigurationHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
@@ -11,7 +12,7 @@ public class EnchantRegistry {
 
     public static void registerEnchants() {
         SlipperyEnchant = new EnchantSlippery(ConfigurationHandler.slipperyEnchantID, 0);
-        MinecraftForge.EVENT_BUS.register(new EnchantSlipperyHandler());
+        FMLCommonHandler.instance().bus().register(new EnchantSlipperyHandler());
     }
 
 }

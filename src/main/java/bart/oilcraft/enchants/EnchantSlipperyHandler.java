@@ -17,12 +17,10 @@ public class EnchantSlipperyHandler {
     @SubscribeEvent
     public void Slippery(TickEvent.PlayerTickEvent event) {
         if (event.player.getHeldItem() != null) {
-            System.out.println("Item droped");
             if ((EnchantmentHelper.getEnchantments(event.player.getHeldItem()).containsKey(EnchantRegistry.SlipperyEnchant.effectId))) {
                 if (Process == 140) {
                     event.player.dropOneItem(true);
                     Process = 0;
-                    System.out.println("Item droped");
                 } else {
                     Process++;
                 }
