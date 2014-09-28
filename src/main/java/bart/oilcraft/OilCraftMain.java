@@ -65,8 +65,8 @@ public class OilCraftMain {
 
         FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
 
-        TileEntity.addMapping(OilInfuserEntity.class, "oilcraft.infuser");
-        TileEntity.addMapping(OilCompressorEntity.class, "oilcraft.compressor");
+        TileEntity.registerTileEntity(OilInfuserEntity.class, "oilcraft.infuser");
+        TileEntity.registerTileEntity(OilCompressorEntity.class, "oilcraft.compressor");
     }
 
     @EventHandler
