@@ -1,9 +1,12 @@
 package bart.oilcraft.tileentities;
 
 import bart.oilcraft.containers.ContainerOilInfuser;
+import bart.oilcraft.containers.SlotWhitelist;
 import bart.oilcraft.fluids.BlockOil;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
+import bart.oilcraft.util.OilCompressorRegistry;
+import bart.oilcraft.util.OilInfuserRegistry;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
@@ -79,12 +82,13 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) { if (fluid == ModFluids.Oil){
-        return true;
-    }
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        if (fluid == ModFluids.Oil) {
+            return true;
+        }
         else {
-        return false;
-    }
+            return false;
+        }
     }
 
     @Override
@@ -108,7 +112,7 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return (slot == 0 && (stack.getItem() == Items.diamond));
+        return (slot == 0 && SlotWhitelist.arrayContains(OilInfuserRegistry.allowedItemsIn, stack));
     }
 
     @Override
@@ -202,7 +206,7 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return (slot == 1 && (stack.getItem() == Items.diamond));
+        return (slot == 0 && SlotWhitelist.arrayContains(OilInfuserRegistry.allowedItemsIn, stack));
     }
 
 
@@ -211,9 +215,7 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-
         tank.readFromNBT(nbt);
-
         Util.loadInventory(nbt, this);
         energy.readFromNBT(nbt);
 
@@ -222,13 +224,9 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-
         tank.writeToNBT(nbt);
-
         Util.saveInventory(nbt, this);
-
         energy.writeToNBT(nbt);
-
     }
 
     @Override
@@ -237,7 +235,6 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
         tank.writeToNBT(Tag);
         energy.writeToNBT(Tag);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
-
     }
 
     @Override
@@ -248,22 +245,69 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
 
     @Override
     public void updateEntity() {
+        if (worldObj.isRemote) return;
+        //if(getOilUsage(items[0]) > 0 && energy.getEnergyStored() >= getItemRF(items[0]) && (items[1] == null || (stacksEqual(items[1], OilInfuserRegistry.allowedItemsOut[OilInfuserRegistry.getItemIndex(items[0])]) && items[1].getMaxStackSize() > items[1].stackSize))){
+            if(getOilUsage(items[0]) > 0) {
+                System.out.println("past part 1");
+                if (energy.getEnergyStored() >= getItemRF(items[0])) {
+                    System.out.println("past part 2");
+                    if ((items[1] == null || (stacksEqual(items[1], OilInfuserRegistry.allowedItemsOut[OilInfuserRegistry.getItemIndex(items[0])]) && items[1].getMaxStackSize() > items[1].stackSize))) {
+                        System.out.println("past part 3");
+                        if (progress >= getItemProcess(items[0])) {
+                            System.out.println("past part 2");
+                            int remove = getOilUsage(items[0]);
+                            if (tank.getFluidAmount() - remove > 0) {
+                                System.out.println("past part 3");
+                                tank.drain(remove, true);
+                                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                                setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
+                                setInventorySlotContents(1, new ItemStack(OilInfuserRegistry.allowedItemsOut[OilInfuserRegistry.getItemIndex(items[0])].getItem(), items[1].stackSize + 1, OilInfuserRegistry.allowedItemsOut[OilInfuserRegistry.getItemIndex(items[0])].getItemDamage()));
+                                progress = 0;
+                                energy.extractEnergy(getItemRF(items[0]), true);
+                            }
 
+                        } else {
+                            progress++;
+                        }
+                    }
+                }
+            }
+        else{
+            progress = 0;
+        }
 
     }
 
+    public boolean stacksEqual(ItemStack stack1, ItemStack stack2)
+    {
+        return stack1.getItem() == stack2.getItem() && stack1.getItemDamage() == stack2.getItemDamage();
+    }
 
-    public int getOilLevel(ItemStack stack){
-        if (stack == null){
+
+    public int getOilUsage(ItemStack stack){
+        if (stack == null || OilInfuserRegistry.getItemIndex(stack) < 0){
+
+
             return 0;
         }
         else{
-            if (stack.getItem() == Items.diamond){
-                   return ConfigurationHandler.oilyDiamondOil;
-            }
+            return OilInfuserRegistry.oil[OilCompressorRegistry.getItemIndex(stack)];
         }
-        return 0;
     }
-
-
+    public int getItemProcess(ItemStack stack){
+        if (stack == null || OilInfuserRegistry.getItemIndex(stack) < 0){
+            return 0;
+        }
+        else{
+            return OilInfuserRegistry.time[OilCompressorRegistry.getItemIndex(stack)];
+        }
+    }
+    public int getItemRF(ItemStack stack){
+        if (stack == null || OilInfuserRegistry.getItemIndex(stack) < 0){
+            return 0;
+        }
+        else {
+            return OilInfuserRegistry.energy[OilCompressorRegistry.getItemIndex(stack)];
+        }
+    }
 }

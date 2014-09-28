@@ -23,16 +23,11 @@ public class EnchantSlippery extends Enchantment {
     public int getMinEnchantability(int level) {
         return 20;
     }
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        return canApply(stack);
-    }
 
-    @Override
-    public boolean canApply(ItemStack itemStack) {
-        return this.type.canEnchantItem(itemStack.getItem());
+    public int getWeight()
+    {
+        return 6;
     }
-
 
     public static void addToBookList(Enchantment enchantment) {
         com.google.common.collect.ObjectArrays.concat(enchantmentsBookList, enchantment);

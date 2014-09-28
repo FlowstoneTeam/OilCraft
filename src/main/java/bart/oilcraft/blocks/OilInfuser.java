@@ -1,6 +1,7 @@
 package bart.oilcraft.blocks;
 
 import bart.oilcraft.OilCraftMain;
+import bart.oilcraft.lib.References;
 import bart.oilcraft.tileentities.OilCompressorEntity;
 import bart.oilcraft.tileentities.OilInfuserEntity;
 import net.minecraft.block.Block;
@@ -19,8 +20,9 @@ public class OilInfuser extends OilCraftBlock implements ITileEntityProvider {
     public OilInfuser(){
         this.setBlockName(getName());
         this.setCreativeTab(OilCraftMain.getCreativeTab());
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setHardness(4f);
+        this.setBlockTextureName(References.RESOURCESPREFIX + "general_machine");
     }
 
     @Override

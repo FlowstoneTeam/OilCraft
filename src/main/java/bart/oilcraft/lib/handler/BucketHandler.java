@@ -1,9 +1,10 @@
 package bart.oilcraft.lib.handler;
 
 import java.util.HashMap; 
-import java.util.Map; 
-  
-import cpw.mods.fml.common.eventhandler.Event.Result; 
+import java.util.Map;
+
+import bart.oilcraft.enchants.EnchantRegistry;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent; 
 import net.minecraft.block.Block; 
 import net.minecraft.item.Item; 
@@ -40,7 +41,7 @@ public class BucketHandler {
         Item bucket = buckets.get(block); 
         if (bucket != null && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) { 
             world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ); 
-            return new ItemStack(bucket); 
+            return new ItemStack(bucket);
         } else
             return null; 
   

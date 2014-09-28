@@ -4,6 +4,7 @@ import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.blocks.OilInfuser;
 import bart.oilcraft.tileentities.OilCompressorEntity;
 import bart.oilcraft.tileentities.OilInfuserEntity;
+import bart.oilcraft.util.OilCompressorRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -23,7 +24,6 @@ public class ContainerOilInfuser extends Container {
         bindPlayerInventory(player.inventory);
     }
 
-    public static final ItemStack[] slot0 = new ItemStack[] {new ItemStack(Items.diamond)};
 
     private void bindPlayerInventory(InventoryPlayer inv) {
         for (int i = 0; i < 3; i++) {
@@ -42,7 +42,7 @@ public class ContainerOilInfuser extends Container {
     }
 
     private void createSlots(OilInfuserEntity tile, EntityPlayer player) {
-        addSlotToContainer(new SlotWhitelist(tile, 0, 57, 36, slot0));
+        addSlotToContainer(new SlotWhitelist(tile, 0, 57, 36, OilCompressorRegistry.allowedItems));
         addSlotToContainer(new Slot(tile, 1, 100, 36));
     }
 

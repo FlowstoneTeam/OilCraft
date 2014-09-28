@@ -1,8 +1,11 @@
 package bart.oilcraft.containers;
 
 import bart.oilcraft.blocks.ModBlocks;
+import bart.oilcraft.blocks.OilCompressor;
+import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.tileentities.OilCompressorEntity;
 import bart.oilcraft.tileentities.OilInfuserEntity;
+import bart.oilcraft.util.OilCompressorRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,13 +16,16 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
+import javax.security.auth.login.Configuration;
+
 /**
  * Created by Bart on 20-7-2014.
  */
 public class ContainerOilCompressor extends Container {
 
-    public static final ItemStack[] slot0 = new ItemStack[] { new ItemStack(Blocks.cobblestone),new ItemStack(Items.diamond), new ItemStack(GameRegistry.findItem("oodmod", "Kroostyl")), new ItemStack(ModBlocks.CrudeOilOre)};
-    public static final ItemStack[] slot1 = new ItemStack[] { new ItemStack(Items.bucket) };
+    public static final ItemStack[] slot1 = new ItemStack[] {new ItemStack(Items.bucket)};
+
+    public Slot input;
 
     public ContainerOilCompressor(EntityPlayer player, OilCompressorEntity entity) {
         createSlots(entity, player);
@@ -36,7 +42,7 @@ public class ContainerOilCompressor extends Container {
     }
 
     private void createSlots(OilCompressorEntity tile, EntityPlayer player) {
-        addSlotToContainer(new SlotWhitelist(tile, 0, 57, 36, slot0));
+        addSlotToContainer(new SlotWhitelist(tile, 0, 57, 36, OilCompressorRegistry.allowedItems));
         addSlotToContainer(new SlotWhitelist(tile, 1, 107, 36, slot1));
         addSlotToContainer(new Slot(tile, 2, 152, 36));
     }

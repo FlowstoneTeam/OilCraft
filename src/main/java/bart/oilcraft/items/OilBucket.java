@@ -14,6 +14,7 @@ public class OilBucket extends ItemBucket {
         this.setTextureName(References.RESOURCESPREFIX + getName());
         this.setUnlocalizedName(References.MODID + ".OilBucket");
         this.setCreativeTab(OilCraftMain.getCreativeTab());
+        
     }
 
     public String getName() {

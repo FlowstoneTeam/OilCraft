@@ -1,24 +1,18 @@
 package bart.oilcraft.tileentities;
 
 import bart.oilcraft.blocks.CrudeOilOre;
-import bart.oilcraft.blocks.ModBlocks;
-import bart.oilcraft.containers.ContainerOilCompressor;
+import bart.oilcraft.containers.SlotWhitelist;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
+import bart.oilcraft.util.OilCompressorRegistry;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
-import com.google.common.collect.Lists;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -56,7 +50,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
         //System.out.println("Item 1: " + stack.getItem() + "  Item 2: " + Item.getItemFromBlock(Blocks.cobblestone));
         //add block to list to make it be accepted
-        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")) ||Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
+        return (slot == 0 && SlotWhitelist.arrayContains(OilCompressorRegistry.allowedItems, stack)) ||
                 (slot == 1 && stack.getItem() == Items.bucket);
     }
 
@@ -153,7 +147,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     //add block to list to make it be accepted
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return (slot == 0 && (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone) || (stack.getItem() == Items.diamond) || (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")) ||Item.getIdFromItem(stack.getItem()) == Block.getIdFromBlock(ModBlocks.CrudeOilOre))) ||
+        return (slot == 0 && (slot == 0 && SlotWhitelist.arrayContains(OilCompressorRegistry.allowedItems, stack))) ||
                 (slot == 1 && stack.getItem() == Items.bucket);
     }
 
@@ -163,13 +157,13 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         //speed
         if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) instanceof CrudeOilOre) {
             if (getOilLevel(items[0]) > 0 && energy.getEnergyStored() >= getRFAmount(items[0])){
-                if (progress >= (getProsesTime(items[0])/100)*ConfigurationHandler.speedUpgradePercentage){
+                if (progress >= (getProcessTime(items[0])/100)*ConfigurationHandler.speedUpgradePercentage){
                     int add = getOilLevel(items[0]);
                     if (tank.getFluidAmount() + add <= tank.getCapacity()) {
                         tank.fill(new FluidStack(ModFluids.Oil, add), true);
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 
-                        setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
+                        setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
                         progress = 0;
                         energy.extractEnergy(getRFAmount(items[0]), true);
                     }
@@ -185,11 +179,12 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
                 defaultElse();
             }
 
+
         }
         //energy efficiency
         else if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) instanceof BlockBookshelf) {
             if (getOilLevel(items[0]) > 0 && energy.getEnergyStored() >= (getRFAmount(items[0])/100)*ConfigurationHandler.energyEfficiencyUpgradePercentage){
-                if (progress >= getProsesTime(items[0])){
+                if (progress >= getProcessTime(items[0])){
                     int add = getOilLevel(items[0]);
                     if (tank.getFluidAmount() + add <= tank.getCapacity()) {
                         tank.fill(new FluidStack(ModFluids.Oil, add), true);
@@ -210,13 +205,15 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
                 defaultElse();
             }
 
+
+
         }
         //stack
 
-        //TODO: fix stack upgrade
+
         else if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) instanceof BlockBeacon) {
             if (getOilLevel(items[0]) > 0 && energy.getEnergyStored() >= getRFAmount(items[0]) && items[0].stackSize >= ConfigurationHandler.stackUpgradeNumber){
-                if (progress >= (getProsesTime(items[0])/100)*ConfigurationHandler.stackUpgradeProses){
+                if (progress >= (getProcessTime(items[0])/100)*ConfigurationHandler.stackUpgradeProses){
                     int add = getOilLevel(items[0])*ConfigurationHandler.stackUpgradeNumber;
                     progress = 0;
                     if (tank.getFluidAmount() + add <= tank.getCapacity()) {
@@ -257,14 +254,17 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             setInventorySlotContents(1, items[1].stackSize == 1 ? null : new ItemStack(items[1].getItem(), items[1].stackSize - 1));
             setInventorySlotContents(2, new ItemStack(ModItems.OilBucket));
+
         }
+
+
 
     }
 
     private void defaultElse(){
         if (getOilLevel(items[0]) > 0) {
             if (energy.getEnergyStored() >= getRFAmount(items[0])) {
-                if (progress >= getProsesTime(items[0])) {
+                if (progress >= getProcessTime(items[0])) {
                     int add = getOilLevel(items[0]);
                     if (tank.getFluidAmount() + add <= tank.getCapacity()) {
                         tank.fill(new FluidStack(ModFluids.Oil, add), true);
@@ -283,6 +283,8 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         else {
             progress = 0;
         }
+
+
 
     }
 
@@ -303,13 +305,9 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-
         tank.writeToNBT(nbt);
-
         Util.saveInventory(nbt, this);
-
         energy.writeToNBT(nbt);
-
     }
 
     @Override
@@ -318,7 +316,6 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         tank.writeToNBT(Tag);
         energy.writeToNBT(Tag);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
-
     }
 
     @Override
@@ -333,71 +330,28 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
     //add block and amount of oil it gives
     public static int getOilLevel(ItemStack stack) {
-        if (stack == null) {
+        if (stack == null || OilCompressorRegistry.getItemIndex(stack) < 0) {
             return 0;
         } else {
-
-            if (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone)) {
-                return ConfigurationHandler.cobbleOil;
-            }
-            if (stack.getItem() == Item.getItemFromBlock(ModBlocks.CrudeOilOre)) {
-                return ConfigurationHandler.crudeOil;
-            }
-
-            if (stack.getItem() == Items.diamond) {
-                return ConfigurationHandler.diamondOil;
-            }
-            if (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")){
-                return ConfigurationHandler.kroostylOil;
-            }
+            return OilCompressorRegistry.output[OilCompressorRegistry.getItemIndex(stack)];
         }
-        return 0;
     }
     //add block and amount of energy it uses
     public static int getRFAmount(ItemStack stack){
-        if (stack == null) {
+        if (stack == null || OilCompressorRegistry.getItemIndex(stack) < 0) {
             return 0;
         } else {
-
-            if (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone)) {
-                return ConfigurationHandler.cobbleRf;
-            }
-            if (stack.getItem() == Item.getItemFromBlock(ModBlocks.CrudeOilOre)) {
-                return ConfigurationHandler.crudeRf;
-            }
-
-            if (stack.getItem() == Items.diamond) {
-                return ConfigurationHandler.diamondRf;
-            }
-            if (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")){
-                return ConfigurationHandler.kroostylRf;
-            }
+            return OilCompressorRegistry.energy[OilCompressorRegistry.getItemIndex(stack)];
         }
-        return 0;
     }
     //Add block and amount of time it takes to proses
-    public static int getProsesTime(ItemStack stack){
-        if (stack == null) {
+    public static int getProcessTime(ItemStack stack){
+        if (stack == null || OilCompressorRegistry.getItemIndex(stack) < 0) {
             return 0;
         } else {
-
-            if (stack.getItem() == Item.getItemFromBlock(Blocks.cobblestone)) {
-                return ConfigurationHandler.cobbleProses;
-            }
-            if (stack.getItem() == Item.getItemFromBlock(ModBlocks.CrudeOilOre)) {
-                return ConfigurationHandler.crudeProses;
-            }
-
-            if (stack.getItem() == Items.diamond) {
-                return ConfigurationHandler.diamondProses;
-            }
-            if (stack.getItem() == GameRegistry.findItem("oodmod", "Kroostyl")){
-                return ConfigurationHandler.kroostylProses;
-            }
+            return OilCompressorRegistry.time[OilCompressorRegistry.getItemIndex(stack)];
         }
-        return 0;
     }
-
 
 
 

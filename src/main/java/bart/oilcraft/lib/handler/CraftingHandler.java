@@ -13,7 +13,6 @@ public class CraftingHandler {
     }
 
     public static void registerRecipes() {
-
-        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "CPC", "I I", "CCC", 'C', Blocks.cobblestone, 'P', Blocks.piston, 'I', Items.iron_ingot);
+        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "IPI", "I I", "IPI", 'P', Blocks.piston, 'I', Items.iron_ingot);
     }
 }

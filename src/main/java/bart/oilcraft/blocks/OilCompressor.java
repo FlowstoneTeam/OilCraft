@@ -11,17 +11,19 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 
 public class OilCompressor extends OilCraftBlock implements ITileEntityProvider{
     
     public IIcon[] icons;
+    public int side;
 
     public OilCompressor() {
         this.setBlockName(getName());
         this.setCreativeTab(OilCraftMain.getCreativeTab());
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setHardness(4f);
         icons = new IIcon[6];
     }
@@ -44,9 +46,26 @@ public class OilCompressor extends OilCraftBlock implements ITileEntityProvider{
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
         for(int i = 0; i < icons.length; i++){
-            icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + getName() + i);
+
+            if(i == 0 ){
+                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "general_machine");
+            }
+
+            if (i == 1) {
+                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_top");
+            }
+            else if(i == 2){
+                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + getName() + "_front");
+            }
+            else{
+                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_side");
+            }
         }
     }
+
+
+
+
 
     @Override
     public boolean hasTileEntity(int meta) {
