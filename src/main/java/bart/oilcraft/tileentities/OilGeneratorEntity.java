@@ -20,6 +20,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
     public static int RfForOil;
     public int process;
+
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
