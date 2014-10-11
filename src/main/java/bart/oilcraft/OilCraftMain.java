@@ -64,9 +64,6 @@ public class OilCraftMain {
         GameRegistry.registerWorldGenerator(new WorldGenerationHandler(), 2);
 
         FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
-
-        TileEntity.registerTileEntity(OilInfuserEntity.class, "oilcraft.infuser");
-        TileEntity.registerTileEntity(OilCompressorEntity.class, "oilcraft.compressor");
     }
 
     @EventHandler

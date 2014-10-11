@@ -9,9 +9,11 @@ import net.minecraftforge.common.MinecraftForge;
  */
 public class EnchantRegistry {
     public static EnchantSlippery SlipperyEnchant;
+    public static int slipperyEnchantId;
+
 
     public static void registerEnchants() {
-        SlipperyEnchant = new EnchantSlippery(ConfigurationHandler.slipperyEnchantID, 0);
+        SlipperyEnchant = new EnchantSlippery(8, 0);
         FMLCommonHandler.instance().bus().register(new EnchantSlipperyHandler());
     }
 

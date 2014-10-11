@@ -18,6 +18,7 @@ public class BlockMachineFrame extends OilCraftBlock {
 
 
     protected IIcon[] icons = new IIcon[16];
+    public static boolean EnableConnectedTextures;
 
     public BlockMachineFrame() {
         this.setBlockName(getName());
@@ -66,7 +67,7 @@ public class BlockMachineFrame extends OilCraftBlock {
     }
 
     public IIcon getConnectedBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5, IIcon[] icons) {
-        if (!ConfigurationHandler.enableConnectedTextures) {
+        if (!EnableConnectedTextures) {
             return icons[0];
         }
 

@@ -8,5 +8,6 @@ public class OilCraftFluids extends Fluid {
     public OilCraftFluids(String name) {
         super(name);
         FluidRegistry.registerFluid(this);
+        this.viscosity = 600;
     }
 }

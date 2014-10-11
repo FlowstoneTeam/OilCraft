@@ -1,5 +1,7 @@
 package bart.oilcraft.lib.handler;
 
+import bart.oilcraft.blocks.BlockMachineFrame;
+import bart.oilcraft.enchants.EnchantRegistry;
 import bart.oilcraft.util.OilCompressorRegistry;
 import bart.oilcraft.util.OilInfuserRegistry;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -20,16 +22,7 @@ public class ConfigurationHandler {
 
 
     public static Configuration configuration;
-    public static int speedUpgradePercentage;
-    public static int capacityUpgradePercentage;
-    public static int energyEfficiencyUpgradePercentage;
-    public static int stackUpgradeNumber;
-    public static int stackUpgradeProses;
-    public static int oilyDiamondOil;
-    public static int oilyDiamondProses;
-    public static int oilyDiamondRF;
-    public static int slipperyEnchantID;
-    public static boolean enableConnectedTextures;
+
 
 
     public static void Init(File configFile){
@@ -47,16 +40,14 @@ public class ConfigurationHandler {
 
     }
     private static void loadConfiguration(){
-        speedUpgradePercentage = configuration.get("You can set the percentage upgrades will upgrade the machine", "SpeedUpgrade", 80).getInt(80);
-        //capacityUpgradePercentage = configuration.get("You can set the percentage upgrades will upgrade the machine", "CapacityUpgrade", 120).getInt(120);
-        energyEfficiencyUpgradePercentage = configuration.get("You can set the percentage upgrades will upgrade the machine", "EnergyEfficiencyUpgrade", 80).getInt(80);
-        stackUpgradeNumber = configuration.get("You can set the percentage upgrades will upgrade the machine ", "StackUpgrade(change this to the number of items to consume)", 16).getInt(16);
-        stackUpgradeProses = configuration.get("You can set the percentage upgrades will upgrade the machine ", "StackUpgrade(the amount of times the proses takes more))", 2).getInt(2);
 
-        slipperyEnchantID = configuration.get("You can set the enchantment id here", "Slippery enchantment", 80).getInt(80);
+        Property slipperyEnchant = configuration.get("EnchantmentId", "Slippery enchantment", 80);
+        slipperyEnchant.comment = "Enchantment id's";
+        EnchantRegistry.slipperyEnchantId = slipperyEnchant.getInt();
 
-
-        enableConnectedTextures = configuration.get("You can enable/disable the connected textures", "Enable connected textures", true).getBoolean(true);
+        Property connectedTextures = configuration.get("You can enable/disable the connected textures", "Enable connected textures", true);
+        connectedTextures.comment = "Connected textures";
+        BlockMachineFrame.EnableConnectedTextures = connectedTextures.getBoolean();
 
         Property propValues = configuration.get("Customization", "CustomOilValues", new String[]{"1000:1000:120:minecraft:diamond", "1:10:40:minecraft:cobblestone", "500:500:80:oilcraft:CrudeOilOre", "4000:2000:140:oodmod:Kroostyl"});
         propValues.comment = "Custom oil compressor 'recipes'. Syntax: output:energy:time:modid:name[:metadata]";
