@@ -185,9 +185,6 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
             setInventorySlotContents(2, new ItemStack(ModItems.OilBucket));
 
         }
-
-
-
     }
 
 

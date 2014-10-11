@@ -8,6 +8,8 @@ public class ModBlocks {
     public static Block CrudeOilOre;
     public static Block OilInfuser;
     public static Block BlockMachineFrame;
+    public static Block OilGenerator;
+
     public static void init() {
         OilCompressor = new OilCompressor();
             GameRegistry.registerBlock(OilCompressor, "OilCompressor");
@@ -16,6 +18,8 @@ public class ModBlocks {
         OilInfuser = new OilInfuser();
             GameRegistry.registerBlock(OilInfuser, "OilInfuser");
         BlockMachineFrame = new BlockMachineFrame();
-            GameRegistry.registerBlock(BlockMachineFrame, "SpeedUpgrade");
+            GameRegistry.registerBlock(BlockMachineFrame, "MachineFrame");
+        OilGenerator = new OilGenerator();
+            GameRegistry.registerBlock(OilGenerator, "OilGenerator");
     }
 }

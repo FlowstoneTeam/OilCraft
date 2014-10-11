@@ -22,9 +22,6 @@ public class CrudeOilOre extends OilCraftBlock {
      this.setHardness(4f);
     }
 
-
-
-
     @Override
     public String getName() {
         return "CrudeOilOre";

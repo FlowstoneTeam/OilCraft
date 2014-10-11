@@ -1,9 +1,14 @@
+itemGroup.oilcraft=OilCraft
+
 tile.oilcraft:basicTest=Basic Test
 tile.OilCompressor.name=Oil Compressor
 tile.Oil.name=Oil
-itemGroup.oilcraft=OilCraft
 tile.CrudeOilOre.name=Crude Oil Ore
+tile.MachineFrame.name=Machine Frame
+
 item.oilcraft.OilBucket.name=Oil Bucket
 item.oilcraft.EnergyConverter.name=Energy Converter
+
 gui.oil.compressor=Oil Compressor
+
 enchantment.oilcraft.Slippery=Slippery

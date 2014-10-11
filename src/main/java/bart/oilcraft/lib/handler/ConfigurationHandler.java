@@ -2,6 +2,8 @@ package bart.oilcraft.lib.handler;
 
 import bart.oilcraft.blocks.BlockMachineFrame;
 import bart.oilcraft.enchants.EnchantRegistry;
+import bart.oilcraft.tileentities.OilGeneratorEntity;
+import bart.oilcraft.util.ConnectedTextureHelper;
 import bart.oilcraft.util.OilCompressorRegistry;
 import bart.oilcraft.util.OilInfuserRegistry;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -42,21 +44,24 @@ public class ConfigurationHandler {
     private static void loadConfiguration(){
 
         Property slipperyEnchant = configuration.get("EnchantmentId", "Slippery enchantment", 80);
-        slipperyEnchant.comment = "Enchantment id's";
+        slipperyEnchant.comment = "Enchantment ids";
         EnchantRegistry.slipperyEnchantId = slipperyEnchant.getInt();
 
-        Property connectedTextures = configuration.get("You can enable/disable the connected textures", "Enable connected textures", true);
-        connectedTextures.comment = "Connected textures";
-        BlockMachineFrame.EnableConnectedTextures = connectedTextures.getBoolean();
+        Property connectedTextures = configuration.get("Connected textures", "Connected textures", true);
+        connectedTextures.comment = "Enable connected textures";
+        ConnectedTextureHelper.EnableConnectedTextures = connectedTextures.getBoolean();
 
         Property propValues = configuration.get("Customization", "CustomOilValues", new String[]{"1000:1000:120:minecraft:diamond", "1:10:40:minecraft:cobblestone", "500:500:80:oilcraft:CrudeOilOre", "4000:2000:140:oodmod:Kroostyl"});
         propValues.comment = "Custom oil compressor 'recipes'. Syntax: output:energy:time:modid:name[:metadata]";
         OilCompressorRegistry.buffer = propValues.getStringList();
 
-
         Property infuserValues = configuration.get("Customization", "CustomInfusion", new String[]{"oilcraft:OilyDiamond:500:1000:200:minecraft:diamond"});
         infuserValues.comment = "Custom oil infuser 'recipes'. Syntax: modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]";
         OilInfuserRegistry.buffer = infuserValues.getStringList();
+
+        Property oilGeneratorValue = configuration.get("Customization", "CustomGenerator", 11);
+        oilGeneratorValue.comment = "Custom oil generator rf amount per 10 millibuckets";
+        OilGeneratorEntity.RfForOil = propValues.getInt();
 
         configuration.save();
     }
