@@ -31,8 +31,8 @@ public class WorldGenerationHandler implements IWorldGenerator {
 
     private void generateSurface(World world, Random rand, int chunkX, int chunkZ) {
         for (int k = 0; k < 10; k++) {
-            int firstBlockXCoord = chunkX + rand.nextInt(16);
-            int firstBlockZCoord = chunkZ + rand.nextInt(16);
+            int firstBlockXCoord = (16 * chunkX) + rand.nextInt(16);
+            int firstBlockZCoord = (16 * chunkZ) + rand.nextInt(16);
             int firstBlockYCoord = rand.nextInt(60);
 
             (new WorldGenMinable(ModBlocks.CrudeOilOre, 0, 4, Blocks.stone)).generate(world, rand, firstBlockXCoord, firstBlockYCoord, firstBlockZCoord);
