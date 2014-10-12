@@ -4,10 +4,12 @@ import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import net.minecraft.block.BlockSign;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
@@ -19,7 +21,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     public FluidTank tank = new FluidTank(10000);
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
     public static int RfForOil;
-    public int process;
+    public int progress;
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -64,9 +66,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
 
 
     @Override
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        return 0;
-    }
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {return energy.receiveEnergy(maxReceive, simulate);}
 
     @Override
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
@@ -90,16 +90,20 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     @Override
     public void updateEntity() {
     if(worldObj.isRemote) return;
-        if(tank.getFluidAmount() >= 10 && energy.getEnergyStored() + RfForOil <= energy.getMaxEnergyStored()){
-            if(process >= 20){
+        signEdit();
+        if(tank.getFluidAmount() >= 30 && energy.getEnergyStored() + RfForOil <= energy.getMaxEnergyStored()){
                 this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                tank.drain(10, true);
-                energy.receiveEnergy(RfForOil, true);
-            }
-            else process++;
+                tank.drain(30, true);
+                energy.receiveEnergy(RfForOil, false);
+                distributePower();
         }
-        else process = 0;
-        distributePower();
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        tank.readFromNBT(nbt);
+        energy.readFromNBT(nbt);
     }
 
     @Override
@@ -108,7 +112,6 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
         tank.writeToNBT(nbt);
         energy.writeToNBT(nbt);
     }
-
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound Tag = new NBTTagCompound();
@@ -125,13 +128,25 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
             TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
 
             if(te instanceof IEnergyHandler){
-                int sending = 100;
+                int sending = 11;
                 int received = ((IEnergyHandler)te).receiveEnergy(direction, sending, true);
-                if (received <= sending && received > 0) {
+                if (received <= sending && received > 0 && energy.getEnergyStored() >= sending) {
                     energy.extractEnergy(received, false);
                     ((IEnergyHandler)te).receiveEnergy(direction, received, false);
                 }
            }
+        }
+    }
+
+    public void signEdit(){
+        TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
+
+        if (te instanceof TileEntitySign){
+            worldObj.markBlockForUpdate(xCoord, yCoord+1, zCoord);
+            ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
+            ((TileEntitySign) te).signText[1]="Fluid " + tank.getFluidAmount() + "/" + tank.getCapacity();
+            ((TileEntitySign) te).signText[2]="Process " + "This block does not have a process";
+            ((TileEntitySign) te).signText[3]="Block: Oil Generator";
         }
     }
 }

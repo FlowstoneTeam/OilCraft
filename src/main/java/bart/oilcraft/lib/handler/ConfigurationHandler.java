@@ -59,9 +59,9 @@ public class ConfigurationHandler {
         infuserValues.comment = "Custom oil infuser 'recipes'. Syntax: modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]";
         OilInfuserRegistry.buffer = infuserValues.getStringList();
 
-        Property oilGeneratorValue = configuration.get("Customization", "CustomGenerator", 11);
-        oilGeneratorValue.comment = "Custom oil generator rf amount per 10 millibuckets";
-        OilGeneratorEntity.RfForOil = propValues.getInt();
+        Property oilGeneratorValue = configuration.get("Customization", "CustomGenerator", 60);
+        oilGeneratorValue.comment = "Custom oil generator rf amount per tick";
+        OilGeneratorEntity.RfForOil = oilGeneratorValue.getInt();
 
         configuration.save();
     }

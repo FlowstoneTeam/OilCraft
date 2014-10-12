@@ -19,6 +19,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import net.minecraftforge.fluids.*;
@@ -154,6 +155,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
+        signEdit();
         if (getOilLevel(items[0]) > 0) {
             if (energy.getEnergyStored() >= getRFAmount(items[0])) {
                 if (progress >= getProcessTime(items[0])) {
@@ -320,7 +322,17 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     }
 
 
+    public void signEdit(){
+        TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
 
+        if (te instanceof TileEntitySign){
+            worldObj.markBlockForUpdate(xCoord, yCoord+1, zCoord);
+            ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
+            ((TileEntitySign) te).signText[1]="Fluid " + tank.getFluidAmount() + "/" + tank.getCapacity();
+            ((TileEntitySign) te).signText[2]="Process " + progress + "/" + getProcessTime(items[0]);
+            ((TileEntitySign) te).signText[3]="Block: Oil Compressor";
+        }
+    }
 
 }
 

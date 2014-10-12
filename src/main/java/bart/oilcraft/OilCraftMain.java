@@ -53,7 +53,7 @@ public class OilCraftMain {
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
         ModBlocks.init();
         ModFluids.init();
-        ModItems.Init();
+        ModItems.init();
         BucketRegistry.registerBucket();
 
 

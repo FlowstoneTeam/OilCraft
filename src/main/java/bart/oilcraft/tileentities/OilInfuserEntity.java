@@ -19,6 +19,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
@@ -246,6 +247,7 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
+        signEdit();
         //if(getOilUsage(items[0]) > 0 && energy.getEnergyStored() >= getItemRF(items[0]) && (items[1] == null || (stacksEqual(items[1], OilInfuserRegistry.allowedItemsOut[OilInfuserRegistry.getItemIndex(items[0])]) && items[1].getMaxStackSize() > items[1].stackSize))){
             if(getOilUsage(items[0]) > 0) {
                 System.out.println("past part 1");
@@ -308,6 +310,18 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
         }
         else {
             return OilInfuserRegistry.energy[OilCompressorRegistry.getItemIndex(stack)];
+        }
+    }
+
+    public void signEdit(){
+        TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
+
+        if (te instanceof TileEntitySign){
+            worldObj.markBlockForUpdate(xCoord, yCoord+1, zCoord);
+            ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
+            ((TileEntitySign) te).signText[1]="Fluid " + tank.getFluidAmount() + "/" + tank.getCapacity();
+            ((TileEntitySign) te).signText[2]="Process " + progress + "/" + getItemProcess(items[0]);
+            ((TileEntitySign) te).signText[3]="Block: Oil Infuser";
         }
     }
 }
