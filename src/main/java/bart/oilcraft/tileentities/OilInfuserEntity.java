@@ -5,7 +5,6 @@ import bart.oilcraft.containers.SlotWhitelist;
 import bart.oilcraft.fluids.BlockOil;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
-import bart.oilcraft.util.OilCompressorRegistry;
 import bart.oilcraft.util.OilInfuserRegistry;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
@@ -288,12 +287,10 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
 
     public int getOilUsage(ItemStack stack){
         if (stack == null || OilInfuserRegistry.getItemIndex(stack) < 0){
-
-
             return 0;
         }
         else{
-            return OilInfuserRegistry.oil[OilCompressorRegistry.getItemIndex(stack)];
+            return OilInfuserRegistry.oil[OilInfuserRegistry.getItemIndex(stack)];
         }
     }
     public int getItemProcess(ItemStack stack){
@@ -301,7 +298,7 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
             return 0;
         }
         else{
-            return OilInfuserRegistry.time[OilCompressorRegistry.getItemIndex(stack)];
+            return OilInfuserRegistry.time[OilInfuserRegistry.getItemIndex(stack)];
         }
     }
     public int getItemRF(ItemStack stack){
@@ -309,7 +306,7 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
             return 0;
         }
         else {
-            return OilInfuserRegistry.energy[OilCompressorRegistry.getItemIndex(stack)];
+            return OilInfuserRegistry.energy[OilInfuserRegistry.getItemIndex(stack)];
         }
     }
 

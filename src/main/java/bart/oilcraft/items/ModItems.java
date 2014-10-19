@@ -1,5 +1,8 @@
 package bart.oilcraft.items;
 
+import bart.oilcraft.blocks.ModBlocks;
+import bart.oilcraft.fluids.BlockOil;
+import bart.oilcraft.fluids.ModFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 
@@ -13,5 +16,7 @@ public class ModItems {
     public static void init() {
         EnergyExceptor = new EnergyAcceptor();
         GameRegistry.registerItem(EnergyExceptor, "EnergyExceptor");
+        OilBucket = new OilBucket(ModFluids.OilBlock);
+        GameRegistry.registerItem(OilBucket, "OilBucket");
     }
 }

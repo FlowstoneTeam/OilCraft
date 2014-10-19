@@ -91,11 +91,11 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     public void updateEntity() {
     if(worldObj.isRemote) return;
         signEdit();
+        distributePower();
         if(tank.getFluidAmount() >= 30 && energy.getEnergyStored() + RfForOil <= energy.getMaxEnergyStored()){
                 this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                 tank.drain(30, true);
                 energy.receiveEnergy(RfForOil, false);
-                distributePower();
         }
     }
 
@@ -122,9 +122,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
 
     public void distributePower(){
         for (int i =0; i < ForgeDirection.VALID_DIRECTIONS.length; i++){
-
             ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
-
             TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
 
             if(te instanceof IEnergyHandler){
