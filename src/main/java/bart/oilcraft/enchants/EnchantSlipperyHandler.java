@@ -25,7 +25,6 @@ public class EnchantSlipperyHandler {
                 if (Process == 140) {
                     event.player.dropOneItem(true);
                     Process = 0;
-
                 } else {
                     Process++;
                 }
