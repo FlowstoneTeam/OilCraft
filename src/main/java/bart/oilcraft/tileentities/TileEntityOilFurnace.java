@@ -225,17 +225,19 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public void updateEntity() {
         if (worldObj.isRemote) return;
         int whitelistID = OilFurnaceRegistry.getItemIndex(items[0]);
-        if ((OilFurnaceRegistry.allowedItemsOut[whitelistID] != null)) {
-            if (energy.getEnergyStored() >= getItemRF(items[0]) && tank.getFluidAmount() >= getOilUsage(items[0])) {
-                if (progress >= getItemProcess(items[0])) {
-                    ItemStack output = OilFurnaceRegistry.allowedItemsOut[whitelistID];
-                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                    setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
-                    setInventorySlotContents(1, items[1].stackSize == 0 ? items[1] = output : new ItemStack(items[0].getItem(), items[1].stackSize + 1));
-                    progress = 0;
-                    energy.extractEnergy(getItemRF(items[0]), true);
-                    tank.drain(getOilUsage(items[0]), true);
-                } else progress++;
+        if ( whitelistID < 0 || whitelistID >= OilFurnaceRegistry.allowedItemsOut.length) {
+            if ((OilFurnaceRegistry.allowedItemsOut[whitelistID] != null)) {
+                if (energy.getEnergyStored() >= getItemRF(items[0]) && tank.getFluidAmount() >= getOilUsage(items[0])) {
+                    if (progress >= getItemProcess(items[0])) {
+                        ItemStack output = OilFurnaceRegistry.allowedItemsOut[whitelistID];
+                        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                        setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
+                        setInventorySlotContents(1, items[1].stackSize == 0 ? items[1] = output : new ItemStack(items[0].getItem(), items[1].stackSize + 1));
+                        progress = 0;
+                        energy.extractEnergy(getItemRF(items[0]), true);
+                        tank.drain(getOilUsage(items[0]), true);
+                    } else progress++;
+                }
             }
         } else if (canSmelt()) {
             if (((items[1].getItem().equals(FurnaceRecipes.smelting().getSmeltingResult(items[0])) && items[1].stackSize + 1 <= items[1].getMaxStackSize()) || items[1].stackSize == 0) && energy.getEnergyStored() >= 100) {
