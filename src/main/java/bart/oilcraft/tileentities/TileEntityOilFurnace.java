@@ -3,7 +3,6 @@ package bart.oilcraft.tileentities;
 import bart.oilcraft.containers.SlotWhitelist;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.util.OilFurnaceRegistry;
-import bart.oilcraft.util.OilInfuserRegistry;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
@@ -12,6 +11,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -104,7 +104,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return (slot == 0 && SlotWhitelist.arrayContains(OilInfuserRegistry.allowedItemsIn, stack));
+        return (slot == 0);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
 
     @Override
     public String getInventoryName() {
-        return "containers.ContainerOilInfuser";
+        return "containers.ContainerOilFurnace";
     }
 
     @Override
@@ -195,7 +195,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return (slot == 0 && SlotWhitelist.arrayContains(OilInfuserRegistry.allowedItemsIn, stack));
+        return (slot == 0);
     }
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
@@ -221,11 +221,20 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
         energy.writeToNBT(Tag);
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
     }
+
+    @Override
+    public void onDataPacket(NetworkManager Net, S35PacketUpdateTileEntity Packet) {
+        tank.readFromNBT(Packet.func_148857_g());
+        energy.readFromNBT(Packet.func_148857_g());
+    }
+
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
+        signEdit();
         int whitelistID = OilFurnaceRegistry.getItemIndex(items[0]);
-        if ( whitelistID < 0 || whitelistID >= OilFurnaceRegistry.allowedItemsOut.length) {
+        if ( whitelistID < 0 || whitelistID >= OilFurnaceRegistry.allowedItemsOut.length) return;
+            System.out.println("custom");
             if ((OilFurnaceRegistry.allowedItemsOut[whitelistID] != null)) {
                 if (energy.getEnergyStored() >= getItemRF(items[0]) && tank.getFluidAmount() >= getOilUsage(items[0])) {
                     if (progress >= getItemProcess(items[0])) {
@@ -238,19 +247,20 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
                         tank.drain(getOilUsage(items[0]), true);
                     } else progress++;
                 }
-            }
-        } else if (canSmelt()) {
+            } else if (canSmelt()) {
             if (((items[1].getItem().equals(FurnaceRecipes.smelting().getSmeltingResult(items[0])) && items[1].stackSize + 1 <= items[1].getMaxStackSize()) || items[1].stackSize == 0) && energy.getEnergyStored() >= 100) {
                 if (tank.getFluidAmount() > 100) {
+                    System.out.println("oil");
                     if (progress >= getItemProcess(items[0])/100*75) {
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                         setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
-                        setInventorySlotContents(1, items[1].stackSize == 0 ? new ItemStack(FurnaceRecipes.smelting().getSmeltingResult(items[0]).getItem()) : new ItemStack(items[0].getItem(), items[1].stackSize + 1));
+                        setInventorySlotContents(1, items[1].stackSize == 0 ? new ItemStack(FurnaceRecipes.smelting().getSmeltingResult(items[0]).getItem()) : new ItemStack(items[0].getItem(), items[1].stackSize + FurnaceRecipes.smelting().getSmeltingResult(items[0]).stackSize));
                         progress = 0;
                         energy.extractEnergy(getItemRF(items[0]), true);
                         tank.drain(getOilUsage(items[0]), true);
                     } else progress++;
-                }else if (progress >= getItemProcess(items[0])) {
+                }else System.out.println("normal");
+                if (progress >= getItemProcess(items[0])) {
                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                     setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
                     setInventorySlotContents(1, items[1].stackSize == 0 ? new ItemStack(FurnaceRecipes.smelting().getSmeltingResult(items[0]).getItem()) : new ItemStack(items[0].getItem(), items[1].stackSize + FurnaceRecipes.smelting().getSmeltingResult(items[0]).stackSize));
@@ -305,14 +315,13 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
             if (items[1] == null) return true;
             if (!items[1].isItemEqual(itemstack)) return false;
             int result = items[1].stackSize + itemstack.stackSize;
-            return result <= getInventoryStackLimit() && result <= items[1].getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
+            return result <= getInventoryStackLimit() && result <= items[1].getMaxStackSize();
         }
     }
 
 
     public void signEdit(){
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
-
         if (te instanceof TileEntitySign){
             worldObj.markBlockForUpdate(xCoord, yCoord+1, zCoord);
             ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();

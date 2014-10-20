@@ -42,7 +42,7 @@ public class OilFurnaceGUI extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        fontRendererObj.drawString(StatCollector.translateToLocal("gui.oil.infuser"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.oil.infuser")) / 2, 2, 0xffffff);
+        fontRendererObj.drawString(StatCollector.translateToLocal("gui.oil.furnace"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.oil.furnace")) / 2, 2, 0xffffff);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 4, 0xffffff);
         int amount = getScaled();
         drawFluid(143, 14 + 58 - amount, ModFluids.Oil, 16, amount);

@@ -1,9 +1,11 @@
 package bart.oilcraft.client.gui;
 
 import bart.oilcraft.containers.ContainerOilCompressor;
+import bart.oilcraft.containers.ContainerOilFurnace;
 import bart.oilcraft.containers.ContainerOilInfuser;
 import bart.oilcraft.tileentities.OilCompressorEntity;
 import bart.oilcraft.tileentities.OilInfuserEntity;
+import bart.oilcraft.tileentities.TileEntityOilFurnace;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -20,6 +22,7 @@ public class GuiHandler implements IGuiHandler{
             switch (ID)  {
                 case 0: return new ContainerOilCompressor(player, (OilCompressorEntity) entity);
                 case 1: return new ContainerOilInfuser(player, (OilInfuserEntity) entity);
+                case 2: return new ContainerOilFurnace(player, (TileEntityOilFurnace) entity);
             }
         }
         return null;
@@ -32,6 +35,7 @@ public class GuiHandler implements IGuiHandler{
             switch (ID)  {
                 case 0: return new OilCompressorGUI(player, (OilCompressorEntity) entity);
                 case 1: return new OilInfuserGUI(player, (OilInfuserEntity) entity);
+                case 2: return new OilFurnaceGUI(player, (TileEntityOilFurnace) entity);
             }
         }
         return null;
