@@ -69,14 +69,8 @@ public class OilFurnaceRegistry {
     public static int getItemIndex(ItemStack item)
     {
         for (int i = 0; i < allowedItemsIn.length; i++)
-            if(allowedItemsIn[i] != null){
-                System.out.println("1");
-                if(allowedItemsIn[i].getItem() == item.getItem()){
-                    System.out.println("2");
-                    if(allowedItemsIn[i].getItemDamage() == item.getItemDamage()){
-                        System.out.println("3");
-                    }
-                }
+            if(allowedItemsIn[i] != null && allowedItemsIn[i].getItem() == item.getItem() && allowedItemsIn[i].getItemDamage() == item.getItemDamage()){
+                return i;
             }
         return -1;
     }

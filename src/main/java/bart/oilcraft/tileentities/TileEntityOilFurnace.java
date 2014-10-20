@@ -224,10 +224,17 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
-        if ((OilFurnaceRegistry.allowedItemsOut[OilFurnaceRegistry.getItemIndex(items[0])] != null)) {
-            if (energy.getEnergyStored() >= getItemRF(items[0])) {
+        int whitelistID = OilFurnaceRegistry.getItemIndex(items[0]);
+        if ((OilFurnaceRegistry.allowedItemsOut[whitelistID] != null)) {
+            if (energy.getEnergyStored() >= getItemRF(items[0]) && tank.getFluidAmount() >= getOilUsage(items[0])) {
                 if (progress >= getItemProcess(items[0])) {
-
+                    ItemStack output = OilFurnaceRegistry.allowedItemsOut[whitelistID];
+                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                    setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
+                    setInventorySlotContents(1, items[1].stackSize == 0 ? items[1] = output : new ItemStack(items[0].getItem(), items[1].stackSize + 1));
+                    progress = 0;
+                    energy.extractEnergy(getItemRF(items[0]), true);
+                    tank.drain(getOilUsage(items[0]), true);
                 } else progress++;
             }
         } else if (canSmelt()) {
@@ -244,7 +251,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
                 }else if (progress >= getItemProcess(items[0])) {
                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                     setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
-                    setInventorySlotContents(1, items[1].stackSize == 0 ? new ItemStack(FurnaceRecipes.smelting().getSmeltingResult(items[0]).getItem()) : new ItemStack(items[0].getItem(), items[1].stackSize + 1));
+                    setInventorySlotContents(1, items[1].stackSize == 0 ? new ItemStack(FurnaceRecipes.smelting().getSmeltingResult(items[0]).getItem()) : new ItemStack(items[0].getItem(), items[1].stackSize + FurnaceRecipes.smelting().getSmeltingResult(items[0]).stackSize));
                     progress = 0;
                     energy.extractEnergy(getItemRF(items[0]), true);
                 } else progress++;
