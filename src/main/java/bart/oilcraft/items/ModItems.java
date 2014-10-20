@@ -10,13 +10,16 @@ import net.minecraft.item.Item;
  * Created by Bart on 20-7-2014.
  */
 public class ModItems {
-    public static Item EnergyExceptor;
+    public static Item EnergyAcceptor;
     public static Item OilBucket;
+    public static Item OilyDiamond;
 
     public static void init() {
-        EnergyExceptor = new EnergyAcceptor();
-        GameRegistry.registerItem(EnergyExceptor, "EnergyExceptor");
+        EnergyAcceptor = new EnergyAcceptor();
+        GameRegistry.registerItem(EnergyAcceptor, "EnergyAcceptor");
         OilBucket = new OilBucket(ModFluids.OilBlock);
         GameRegistry.registerItem(OilBucket, "OilBucket");
+        OilyDiamond = new OilyDiamond();
+        GameRegistry.registerItem(OilyDiamond, "OilyDiamond");
     }
 }

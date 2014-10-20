@@ -5,6 +5,7 @@ import bart.oilcraft.enchants.EnchantRegistry;
 import bart.oilcraft.tileentities.OilGeneratorEntity;
 import bart.oilcraft.util.ConnectedTextureHelper;
 import bart.oilcraft.util.OilCompressorRegistry;
+import bart.oilcraft.util.OilFurnaceRegistry;
 import bart.oilcraft.util.OilInfuserRegistry;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -58,6 +59,10 @@ public class ConfigurationHandler {
         Property infuserValues = configuration.get("Customization", "CustomInfusion", new String[]{"oilcraft:OilyDiamond:500:1000:200:minecraft:diamond"});
         infuserValues.comment = "Custom oil infuser 'recipes'. Syntax: modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]";
         OilInfuserRegistry.buffer = infuserValues.getStringList();
+
+        Property customSmelting = configuration.get("Customization", "CustomInfusion", new String[]{"oilcraft:OilyDiamond:500:1000:200:minecraft:diamond"});
+        customSmelting.comment = "Custom oil smelting 'recipes'. Syntax: modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]";
+        OilFurnaceRegistry.buffer = customSmelting.getStringList();
 
         Property oilGeneratorValue = configuration.get("Customization", "CustomGenerator", 60);
         oilGeneratorValue.comment = "Custom oil generator rf amount per tick";

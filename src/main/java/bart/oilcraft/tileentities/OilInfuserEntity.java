@@ -68,7 +68,6 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         return tank.fill(resource, doFill);
-
     }
 
     @Override
