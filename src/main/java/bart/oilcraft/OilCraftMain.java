@@ -18,6 +18,7 @@ import bart.oilcraft.lib.handler.WorldGenerationHandler;
 import bart.oilcraft.tileentities.OilCompressorEntity;
 import bart.oilcraft.tileentities.OilInfuserEntity;
 import bart.oilcraft.util.OilCompressorRegistry;
+import bart.oilcraft.util.OilFurnaceRegistry;
 import bart.oilcraft.util.OilInfuserRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -77,6 +78,7 @@ public class OilCraftMain {
     public static void postInit(FMLPostInitializationEvent event) {
         OilCompressorRegistry.processBuffer();
         OilInfuserRegistry.processBuffer();
+        OilFurnaceRegistry.processBuffer();
     }
 
 }

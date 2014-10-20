@@ -9,6 +9,7 @@ tile.OilGenerator.name=Oil Generator
 
 item.oilcraft.OilBucket.name=Oil Bucket
 item.oilcraft.EnergyAcceptor.name=Energy Acceptor
+item.oilcraft.OilyDiamond.name=Oily Diamond
 
 gui.oil.compressor=Oil Compressor
 

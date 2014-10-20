@@ -14,9 +14,9 @@ public class CraftingHandler {
     }
 
     public static void registerRecipes() {
-        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', ModItems.EnergyExceptor);
-        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', ModItems.EnergyExceptor);
-        CraftingManager.getInstance().addRecipe(new ItemStack(ModItems.EnergyExceptor), "RRR", "RGR", "RRR", 'R', Items.redstone, 'G', Items.gold_nugget);
+        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', ModItems.EnergyAcceptor);
+        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', ModItems.EnergyAcceptor);
+        CraftingManager.getInstance().addRecipe(new ItemStack(ModItems.EnergyAcceptor), "RRR", "RGR", "RRR", 'R', Items.redstone, 'G', Items.gold_nugget);
     }
 
 }

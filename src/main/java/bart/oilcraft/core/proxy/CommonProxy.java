@@ -5,6 +5,7 @@ import bart.oilcraft.blocks.OilInfuser;
 import bart.oilcraft.tileentities.OilCompressorEntity;
 import bart.oilcraft.tileentities.OilGeneratorEntity;
 import bart.oilcraft.tileentities.OilInfuserEntity;
+import bart.oilcraft.tileentities.TileEntityOilFurnace;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -15,5 +16,6 @@ public class CommonProxy implements IProxy {
         GameRegistry.registerTileEntity(OilCompressorEntity.class, "OilCompressorEntity");
         GameRegistry.registerTileEntity(OilInfuserEntity.class, "OilInfuserEntity");
         GameRegistry.registerTileEntity(OilGeneratorEntity.class, "OilGeneratorEntity");
+        GameRegistry.registerTileEntity(TileEntityOilFurnace.class, "TileEntityOilFurnace");
     }
 }

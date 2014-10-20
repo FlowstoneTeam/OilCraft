@@ -10,6 +10,7 @@ import cofh.api.energy.IEnergyHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -222,14 +223,42 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     }
     @Override
     public void updateEntity() {
-        if(worldObj.isRemote) return;
+        if (worldObj.isRemote) return;
+        if ((OilFurnaceRegistry.allowedItemsOut[OilFurnaceRegistry.getItemIndex(items[0])] != null)) {
+            if (energy.getEnergyStored() >= getItemRF(items[0])) {
+                if (progress >= getItemProcess(items[0])) {
 
+                } else progress++;
+            }
+        } else if (canSmelt()) {
+            if (((items[1].getItem().equals(FurnaceRecipes.smelting().getSmeltingResult(items[0])) && items[1].stackSize + 1 <= items[1].getMaxStackSize()) || items[1].stackSize == 0) && energy.getEnergyStored() >= 100) {
+                if (tank.getFluidAmount() > 100) {
+                    if (progress >= getItemProcess(items[0])/100*75) {
+                        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                        setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
+                        setInventorySlotContents(1, items[1].stackSize == 0 ? new ItemStack(FurnaceRecipes.smelting().getSmeltingResult(items[0]).getItem()) : new ItemStack(items[0].getItem(), items[1].stackSize + 1));
+                        progress = 0;
+                        energy.extractEnergy(getItemRF(items[0]), true);
+                        tank.drain(getOilUsage(items[0]), true);
+                    } else progress++;
+                }else if (progress >= getItemProcess(items[0])) {
+                    this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                    setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
+                    setInventorySlotContents(1, items[1].stackSize == 0 ? new ItemStack(FurnaceRecipes.smelting().getSmeltingResult(items[0]).getItem()) : new ItemStack(items[0].getItem(), items[1].stackSize + 1));
+                    progress = 0;
+                    energy.extractEnergy(getItemRF(items[0]), true);
+                } else progress++;
+            }
+
+        }
     }
     public int getOilUsage(ItemStack stack){
         if (stack == null || OilFurnaceRegistry.getItemIndex(stack) < 0){
             return 0;
         }
-        else{
+        else if(canSmelt()) {
+            return 100;
+        }else {
             return OilFurnaceRegistry.oil[OilFurnaceRegistry.getItemIndex(stack)];
         }
     }
@@ -237,19 +266,39 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
         if (stack == null || OilFurnaceRegistry.getItemIndex(stack) < 0){
             return 0;
         }
-        else{
+        else if(canSmelt()) {
+            return 150;
+        } else{
             return OilFurnaceRegistry.time[OilFurnaceRegistry.getItemIndex(stack)];
         }
     }
     public int getItemRF(ItemStack stack){
         if (stack == null || OilFurnaceRegistry.getItemIndex(stack) < 0){
             return 0;
+        } else if(canSmelt()){
+            return 100;
         }
         else {
             return OilFurnaceRegistry.energy[OilFurnaceRegistry.getItemIndex(stack)];
         }
     }
 
+    private boolean canSmelt()
+    {
+        if (items[0] == null)
+        {
+            return false;
+        }
+        else
+        {
+            ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(items[0]);
+            if (itemstack == null) return false;
+            if (items[1] == null) return true;
+            if (!items[1].isItemEqual(itemstack)) return false;
+            int result = items[1].stackSize + itemstack.stackSize;
+            return result <= getInventoryStackLimit() && result <= items[1].getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
+        }
+    }
 
 
     public void signEdit(){
@@ -260,7 +309,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
             ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
             ((TileEntitySign) te).signText[1]="Fluid " + tank.getFluidAmount() + "/" + tank.getCapacity();
             ((TileEntitySign) te).signText[2]="Process " + progress + "/" + getItemProcess(items[0]);
-            ((TileEntitySign) te).signText[3]="Block: Oil Infuser";
+            ((TileEntitySign) te).signText[3]="Block: Oil Furnace";
         }
     }
 }
