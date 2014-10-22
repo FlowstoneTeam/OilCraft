@@ -248,13 +248,9 @@ public class OilInfuserEntity extends TileEntity implements ISidedInventory, IFl
         signEdit();
         //if(getOilUsage(items[0]) > 0 && energy.getEnergyStored() >= getItemRF(items[0]) && (items[1] == null || (stacksEqual(items[1], OilInfuserRegistry.allowedItemsOut[OilInfuserRegistry.getItemIndex(items[0])]) && items[1].getMaxStackSize() > items[1].stackSize))){
             if(getOilUsage(items[0]) > 0) {
-                System.out.println("past part 1");
                 if (energy.getEnergyStored() >= getItemRF(items[0])) {
-                    System.out.println("past part 2");
                     if ((items[1] == null || (stacksEqual(items[1], OilInfuserRegistry.allowedItemsOut[OilInfuserRegistry.getItemIndex(items[0])]) && items[1].getMaxStackSize() > items[1].stackSize))) {
-                        System.out.println("past part 3");
                         if (progress >= getItemProcess(items[0])) {
-                            System.out.println("past part 2");
                             int remove = getOilUsage(items[0]);
                             if (tank.getFluidAmount() - remove > 0) {
                                 System.out.println("past part 3");

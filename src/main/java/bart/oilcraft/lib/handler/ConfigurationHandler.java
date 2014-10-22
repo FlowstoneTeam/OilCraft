@@ -60,7 +60,7 @@ public class ConfigurationHandler {
         infuserValues.comment = "Custom oil infuser 'recipes'. Syntax: modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]";
         OilInfuserRegistry.buffer = infuserValues.getStringList();
 
-        Property customSmelting = configuration.get("Customization", "CustomInfusion", new String[]{"oilcraft:OilyDiamond:500:1000:200:minecraft:diamond"});
+        Property customSmelting = configuration.get("Customization", "CustomInfusion", new String[]{"minecraft:dirt:500:1000:200:minecraft:diamond"});
         customSmelting.comment = "Custom oil smelting 'recipes'. Syntax: modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]";
         OilFurnaceRegistry.buffer = customSmelting.getStringList();
 
