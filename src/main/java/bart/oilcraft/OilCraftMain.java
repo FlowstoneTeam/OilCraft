@@ -5,6 +5,7 @@ import bart.oilcraft.blocks.OilCompressor;
 import bart.oilcraft.blocks.OilInfuser;
 import bart.oilcraft.client.gui.GuiHandler;
 import bart.oilcraft.enchants.EnchantRegistry;
+import bart.oilcraft.entities.EntityGooBall;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.lib.handler.CraftingHandler;
 import bart.oilcraft.core.proxy.CommonProxy;
@@ -28,8 +29,10 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -49,33 +52,35 @@ public class OilCraftMain {
     }
 
     @EventHandler
-    public static void preInit(FMLPreInitializationEvent event) {
-
+    public void preInit(FMLPreInitializationEvent event) {
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
         ModBlocks.init();
         ModFluids.init();
         ModItems.init();
         BucketRegistry.registerBucket();
 
-
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         NetworkRegistry.INSTANCE.registerGuiHandler(OilCraftMain.instance, new GuiHandler());
-
 
         GameRegistry.registerWorldGenerator(new WorldGenerationHandler(), 2);
 
         FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
+
     }
 
     @EventHandler
-    public static void init(FMLInitializationEvent event) {
+    public void init(FMLInitializationEvent event) {
         CraftingHandler.init();
         proxy.registerTileEntities();
         EnchantRegistry.registerEnchants();
+
+        proxy.registerRenderInformation();
+        EntityRegistry.registerModEntity(EntityGooBall.class, "GooBall", 2, this, 20, 3, true);
+        EntityRegistry.addSpawn(EntityGooBall.class, 5, 2, 3, EnumCreatureType.monster);
     }
 
     @EventHandler
-    public static void postInit(FMLPostInitializationEvent event) {
+    public void postInit(FMLPostInitializationEvent event) {
         OilCompressorRegistry.processBuffer();
         OilInfuserRegistry.processBuffer();
         OilFurnaceRegistry.processBuffer();

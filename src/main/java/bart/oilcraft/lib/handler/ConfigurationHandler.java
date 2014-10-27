@@ -52,7 +52,7 @@ public class ConfigurationHandler {
         connectedTextures.comment = "Enable connected textures";
         ConnectedTextureHelper.EnableConnectedTextures = connectedTextures.getBoolean();
 
-        Property propValues = configuration.get("Customization", "CustomOilValues", new String[]{"1000:1000:120:minecraft:diamond", "1:10:40:minecraft:cobblestone", "500:500:80:oilcraft:CrudeOilOre", "4000:2000:140:oodmod:Kroostyl"});
+        Property propValues = configuration.get("Customization", "CustomOilValues", new String[]{"1000:1000:120:minecraft:diamond", "1:10:40:minecraft:cobblestone", "500:500:80:oilcraft:ShaleOilOre", "4000:2000:140:oodmod:Kroostyl"});
         propValues.comment = "Custom oil compressor 'recipes'. Syntax: output:energy:time:modid:name[:metadata]";
         OilCompressorRegistry.buffer = propValues.getStringList();
 
@@ -64,7 +64,7 @@ public class ConfigurationHandler {
         customSmelting.comment = "Custom oil smelting 'recipes'. Syntax: modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]";
         OilFurnaceRegistry.buffer = customSmelting.getStringList();
 
-        Property oilGeneratorValue = configuration.get("Customization", "CustomGenerator", 60);
+        Property oilGeneratorValue = configuration.get("Customization", "CustomGenerator", 80);
         oilGeneratorValue.comment = "Custom oil generator rf amount per tick";
         OilGeneratorEntity.RfForOil = oilGeneratorValue.getInt();
 

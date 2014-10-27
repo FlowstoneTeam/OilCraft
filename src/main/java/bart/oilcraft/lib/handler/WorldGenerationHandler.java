@@ -35,7 +35,7 @@ public class WorldGenerationHandler implements IWorldGenerator {
             int firstBlockZCoord = (16 * chunkZ) + rand.nextInt(16);
             int firstBlockYCoord = rand.nextInt(60);
 
-            (new WorldGenMinable(ModBlocks.CrudeOilOre, 0, 4, Blocks.stone)).generate(world, rand, firstBlockXCoord, firstBlockYCoord, firstBlockZCoord);
+            (new WorldGenMinable(ModBlocks.ShaleOilOre, 0, 4, Blocks.stone)).generate(world, rand, firstBlockXCoord, firstBlockYCoord, firstBlockZCoord);
         }
     }
 }

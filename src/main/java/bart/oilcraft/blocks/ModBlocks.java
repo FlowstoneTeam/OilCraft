@@ -10,6 +10,7 @@ public class ModBlocks {
     public static Block BlockMachineFrame;
     public static Block OilGenerator;
     public static Block OilFurnace;
+    public static Block ShaleOilOre;
 
     public static void init() {
         OilCompressor = new OilCompressor();
@@ -24,5 +25,7 @@ public class ModBlocks {
             GameRegistry.registerBlock(OilGenerator, "OilGenerator");
         OilFurnace = new BlockOilFurnace();
             GameRegistry.registerBlock(OilFurnace, "OilFurnace");
+        ShaleOilOre = new ShaleOilOre();
+            GameRegistry.registerBlock(ShaleOilOre, "ShaleOilOre");
     }
 }

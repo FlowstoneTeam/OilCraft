@@ -13,6 +13,7 @@ public class ModItems {
     public static Item EnergyAcceptor;
     public static Item OilBucket;
     public static Item OilyDiamond;
+    public static Item OilBall;
 
     public static void init() {
         EnergyAcceptor = new EnergyAcceptor();
@@ -21,5 +22,7 @@ public class ModItems {
         GameRegistry.registerItem(OilBucket, "OilBucket");
         OilyDiamond = new OilyDiamond();
         GameRegistry.registerItem(OilyDiamond, "OilyDiamond");
+        OilBall = new OilBall();
+        GameRegistry.registerItem(OilBall, "OilBall");
     }
 }
