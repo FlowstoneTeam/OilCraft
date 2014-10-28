@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
  */
 public class EnchantSlippery extends Enchantment {
     public EnchantSlippery(int par1, int par2) {
-        super(par1, par2, EnumEnchantmentType.digger);
+        super(par1, par2, EnumEnchantmentType.all);
         this.setName(References.MODID + ".Slippery");
     }
 

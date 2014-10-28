@@ -1,15 +1,19 @@
 itemGroup.oilcraft=OilCraft
 
+
 tile.OilCompressor.name=Oil Compressor
 tile.Oil.name=Oil
-tile.CrudeOilOre.name=Crude Oil Ore
+tile.ShaleOilOre.name=Shale Oil Ore
 tile.BlockMachineFrame.name=Machine Frame
 tile.OilInfuser.name=Oil Infuser
 tile.OilGenerator.name=Oil Generator
+tile.OilLayer.name=Oil Layer
+tile.BlockOilFurnace.name=Oil Furnace
 
 item.oilcraft.OilBucket.name=Oil Bucket
 item.oilcraft.EnergyAcceptor.name=Energy Acceptor
 item.oilcraft.OilyDiamond.name=Oily Diamond
+item.oilcraft.OilBall.name=Oil Ball
 
 gui.oil.compressor=Oil Compressor
 

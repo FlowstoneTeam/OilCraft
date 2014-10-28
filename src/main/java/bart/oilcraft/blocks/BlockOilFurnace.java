@@ -32,6 +32,7 @@ public class BlockOilFurnace extends OilCraftBlock implements ITileEntityProvide
     public TileEntity createNewTileEntity(World var1, int var2) {
         return new TileEntityOilFurnace();
     }
+
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
         super.onBlockActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);

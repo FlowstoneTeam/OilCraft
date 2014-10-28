@@ -1,8 +1,15 @@
 package bart.oilcraft.entities;
 
+import bart.oilcraft.enchants.EnchantRegistry;
 import bart.oilcraft.fluids.BlockOil;
+import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.passive.EntityWaterMob;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySlime;
@@ -13,13 +20,14 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
 /**
  * Created by Bart on 27-10-2014.
  */
-public class EntityGooBall extends EntitySlime{
+public class EntityGooBall extends EntitySlime {
 
     public float squishAmount;
     public float squishFactor;
@@ -166,6 +174,14 @@ public class EntityGooBall extends EntitySlime{
             i = this.getSlimeSize();
             this.setSize(0.6F * (float)i, 0.6F * (float)i);
         }
+        for (int h =0; h < ForgeDirection.VALID_DIRECTIONS.length; h++) {
+            ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[h];
+            Block block = worldObj.getBlock(this.chunkCoordX + direction.offsetX, this.chunkCoordY + direction.offsetY, this.chunkCoordZ + direction.offsetZ);
+
+            if (this.getMaxHealth() < this.getMaxHealth() && block instanceof BlockOil) {
+                this.heal(.5F);
+            }
+        }
     }
 
     @Override
@@ -262,6 +278,9 @@ public class EntityGooBall extends EntitySlime{
     @Override
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
+        if(par1EntityPlayer.getHeldItem() != null && !(EnchantmentHelper.getEnchantments(par1EntityPlayer.getHeldItem()).containsKey(EnchantRegistry.SlipperyEnchant.effectId))){
+            par1EntityPlayer.getHeldItem().addEnchantment(EnchantRegistry.SlipperyEnchant, 1);
+        }
         if (this.canDamagePlayer())
         {
             int i = this.getSlimeSize();
