@@ -1,8 +1,6 @@
 package bart.oilcraft;
 
 import bart.oilcraft.blocks.ModBlocks;
-import bart.oilcraft.blocks.OilCompressor;
-import bart.oilcraft.blocks.OilInfuser;
 import bart.oilcraft.client.gui.GuiHandler;
 import bart.oilcraft.enchants.EnchantRegistry;
 import bart.oilcraft.entities.EntityGooBall;
@@ -16,11 +14,8 @@ import bart.oilcraft.items.ModItems;
 import bart.oilcraft.lib.References;
 import bart.oilcraft.lib.handler.BucketHandler;
 import bart.oilcraft.lib.handler.WorldGenerationHandler;
-import bart.oilcraft.tileentities.OilCompressorEntity;
-import bart.oilcraft.tileentities.OilInfuserEntity;
 import bart.oilcraft.util.OilCompressorRegistry;
 import bart.oilcraft.util.OilFurnaceRegistry;
-import bart.oilcraft.util.OilInfuserRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.*;
@@ -33,7 +28,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
 
 
@@ -76,13 +71,12 @@ public class OilCraftMain {
 
         proxy.registerRenderInformation();
         EntityRegistry.registerModEntity(EntityGooBall.class, "GooBall", 2, this, 20, 3, true);
-        EntityRegistry.addSpawn(EntityGooBall.class, 5, 2, 3, EnumCreatureType.monster);
+        EntityRegistry.addSpawn(EntityGooBall.class, 5, 2, 3, EnumCreatureType.monster, BiomeGenBase.plains);
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         OilCompressorRegistry.processBuffer();
-        OilInfuserRegistry.processBuffer();
         OilFurnaceRegistry.processBuffer();
     }
 

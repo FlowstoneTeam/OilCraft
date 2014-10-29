@@ -1,14 +1,18 @@
 package bart.oilcraft.entities;
 
+import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.enchants.EnchantRegistry;
 import bart.oilcraft.fluids.BlockOil;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntityWaterMob;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -182,6 +186,18 @@ public class EntityGooBall extends EntitySlime {
                 this.heal(.5F);
             }
         }
+
+        for (int l = 0; l < 4; ++l)
+        {
+            int h = MathHelper.floor_double(this.posX + (double)((float)(l % 2 * 2 - 1) * 0.25F));
+            int j = MathHelper.floor_double(this.posY);
+            int k = MathHelper.floor_double(this.posZ + (double)((float)(l / 2 % 2 * 2 - 1) * 0.25F));
+
+            if (this.worldObj.getBlock(h, j, k).getMaterial() == Material.air && this.worldObj.getBlock(h, j-1, k).getMaterial() != Material.air && !(this.worldObj.getBlock(h, j, k) instanceof BlockOil) && this.worldObj.getBlock(h, j, k).isReplaceable(this.worldObj, h, j, k) && this.worldObj.getBlock(h, j-1, k).renderAsNormalBlock())
+            {
+                this.worldObj.setBlock(h, j, k, ModBlocks.OilLayer);
+            }
+        }
     }
 
     @Override
@@ -237,7 +253,7 @@ public class EntityGooBall extends EntitySlime {
     @Override
     protected int getJumpDelay()
     {
-        return this.rand.nextInt(20) + 10;
+        return this.rand.nextInt(40) + 10;
     }
 
     @Override
@@ -340,9 +356,7 @@ public class EntityGooBall extends EntitySlime {
     @Override
     public boolean getCanSpawnHere()
     {
-        if(worldObj.getBlock(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ) instanceof BlockOil)  return true;
-        else return false;
-
+        return true;
     }
 
     /**

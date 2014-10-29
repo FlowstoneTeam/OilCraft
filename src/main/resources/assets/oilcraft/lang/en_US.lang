@@ -18,3 +18,5 @@ item.oilcraft.OilBall.name=Oil Ball
 gui.oil.compressor=Oil Compressor
 
 enchantment.oilcraft.Slippery=Slippery
+
+entity.GooBall0.name=GooBall

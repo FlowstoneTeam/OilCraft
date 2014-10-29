@@ -1,6 +1,6 @@
 package bart.oilcraft.tileentities;
 
-import bart.oilcraft.containers.SlotWhitelist;
+
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.util.OilFurnaceRegistry;
 import bart.oilcraft.util.Util;
@@ -24,8 +24,8 @@ import net.minecraftforge.fluids.*;
  * Created by bart on 18-10-2014.
  */
 public class TileEntityOilFurnace extends TileEntity implements ISidedInventory, IFluidHandler, IEnergyHandler {
-    public static final int[] slotsInsert = new int[]{0, 1};
-    public static final int[] slotsExtract = new int[]{2};
+    public static final int[] slotsInsert = new int[]{0};
+    public static final int[] slotsExtract = new int[]{1};
 
     public ItemStack[] items = new ItemStack[3];
     public FluidTank tank = new FluidTank(10000);
@@ -33,6 +33,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public int cycles;
 
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
+
 
     @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
@@ -234,6 +235,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
+        distributePower();
         signEdit();
         customSmelting();
         furnaceSmelt();
@@ -343,6 +345,23 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
             }
         }
     }
+
+    public void distributePower(){
+        for (int i =0; i < ForgeDirection.VALID_DIRECTIONS.length; i++){
+            ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
+            TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+            if(te instanceof IEnergyHandler){
+                int sending = 10;
+                int received = ((IEnergyHandler)te).receiveEnergy(direction, sending, true);
+                if (received <= sending && received > 0 && energy.getEnergyStored() >= sending &&  energy.getEnergyStored() - ((IEnergyHandler)te).getEnergyStored(direction) >= sending) {
+                    energy.extractEnergy(received, false);
+                    ((IEnergyHandler)te).receiveEnergy(direction, received, false);
+                }
+            }
+        }
+    }
+
+
 
     public void signEdit(){
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);

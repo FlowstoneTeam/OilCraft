@@ -2,10 +2,10 @@ package bart.oilcraft.client.gui;
 
 import bart.oilcraft.containers.ContainerOilCompressor;
 import bart.oilcraft.containers.ContainerOilFurnace;
-import bart.oilcraft.containers.ContainerOilInfuser;
+import bart.oilcraft.containers.ContainerSlipperyRemover;
 import bart.oilcraft.tileentities.OilCompressorEntity;
-import bart.oilcraft.tileentities.OilInfuserEntity;
 import bart.oilcraft.tileentities.TileEntityOilFurnace;
+import bart.oilcraft.tileentities.TileEntitySlipperyRemover;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +21,7 @@ public class GuiHandler implements IGuiHandler{
         if (entity != null) {
             switch (ID)  {
                 case 0: return new ContainerOilCompressor(player, (OilCompressorEntity) entity);
-                case 1: return new ContainerOilInfuser(player, (OilInfuserEntity) entity);
+                case 1: return new ContainerSlipperyRemover(player, (TileEntitySlipperyRemover) entity);
                 case 2: return new ContainerOilFurnace(player, (TileEntityOilFurnace) entity);
             }
         }
@@ -34,7 +34,7 @@ public class GuiHandler implements IGuiHandler{
         if (entity != null) {
             switch (ID)  {
                 case 0: return new OilCompressorGUI(player, (OilCompressorEntity) entity);
-                case 1: return new OilInfuserGUI(player, (OilInfuserEntity) entity);
+                case 1: return new SlipperyRemoverGUI(player, (TileEntitySlipperyRemover) entity);
                 case 2: return new OilFurnaceGUI(player, (TileEntityOilFurnace) entity);
             }
         }

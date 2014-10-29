@@ -1,9 +1,6 @@
 package bart.oilcraft.containers;
 
-import bart.oilcraft.tileentities.OilInfuserEntity;
 import bart.oilcraft.tileentities.TileEntityOilFurnace;
-import bart.oilcraft.util.OilCompressorRegistry;
-import bart.oilcraft.util.OilFurnaceRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

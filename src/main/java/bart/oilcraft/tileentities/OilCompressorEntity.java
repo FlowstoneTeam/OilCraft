@@ -156,6 +156,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public void updateEntity() {
         if (worldObj.isRemote) return;
         signEdit();
+        distributePower();
         if (getOilLevel(items[0]) > 0) {
             if (energy.getEnergyStored() >= getRFAmount(items[0])) {
                 if (progress >= getProcessTime(items[0])) {
@@ -163,7 +164,6 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
                     if (tank.getFluidAmount() + add <= tank.getCapacity()) {
                         tank.fill(new FluidStack(ModFluids.Oil, add), true);
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-
                         setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
                         progress = 0;
                         energy.extractEnergy(getRFAmount(items[0]), true);
@@ -177,8 +177,6 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         else {
             progress = 0;
         }
-
-
 
         if (tank.getFluidAmount() >= 1000 && items[1] != null && items[1].getItem() == Items.bucket && items[2] == null) {
             tank.drain(1000, true);
@@ -320,6 +318,22 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public int getMaxEnergyStored(ForgeDirection from) {
             return energy.getMaxEnergyStored();
     }
+
+    public void distributePower(){
+        for (int i =0; i < ForgeDirection.VALID_DIRECTIONS.length; i++){
+            ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
+            TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+            if(te instanceof IEnergyHandler){
+                int sending = 10;
+                int received = ((IEnergyHandler)te).receiveEnergy(direction, sending, true);
+                if (received <= sending && received > 0 && energy.getEnergyStored() >= sending &&  energy.getEnergyStored() - ((IEnergyHandler)te).getEnergyStored(direction) >= sending) {
+                    energy.extractEnergy(received, false);
+                    ((IEnergyHandler)te).receiveEnergy(direction, received, false);
+                }
+            }
+        }
+    }
+
 
 
     public void signEdit(){

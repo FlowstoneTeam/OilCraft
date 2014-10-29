@@ -23,6 +23,8 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     public static int RfForOil;
     public int progress;
 
+
+
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -124,7 +126,6 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
         for (int i =0; i < ForgeDirection.VALID_DIRECTIONS.length; i++){
             ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
             TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-
             if(te instanceof IEnergyHandler){
                 int sending = 11;
                 int received = ((IEnergyHandler)te).receiveEnergy(direction, sending, true);
@@ -135,6 +136,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
            }
         }
     }
+
 
     public void signEdit(){
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);

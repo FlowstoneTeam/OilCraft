@@ -6,22 +6,20 @@ import net.minecraft.block.Block;
 public class ModBlocks {
     public static Block OilCompressor;
     public static Block CrudeOilOre;
-    public static Block OilInfuser;
-    public static Block BlockMachineFrame;
+    public static Block MachineFrame;
     public static Block OilGenerator;
     public static Block OilFurnace;
     public static Block ShaleOilOre;
     public static Block OilLayer;
+    public static Block SlipperyRemover;
 
     public static void init() {
         OilCompressor = new OilCompressor();
             GameRegistry.registerBlock(OilCompressor, "OilCompressor");
         CrudeOilOre = new CrudeOilOre();
             GameRegistry.registerBlock(CrudeOilOre, "CrudeOilOre");
-        OilInfuser = new OilInfuser();
-            GameRegistry.registerBlock(OilInfuser, "OilInfuser");
-        BlockMachineFrame = new BlockMachineFrame();
-            GameRegistry.registerBlock(BlockMachineFrame, "MachineFrame");
+        MachineFrame = new BlockMachineFrame();
+            GameRegistry.registerBlock(MachineFrame, "MachineFrame");
         OilGenerator = new OilGenerator();
             GameRegistry.registerBlock(OilGenerator, "OilGenerator");
         OilFurnace = new BlockOilFurnace();
@@ -30,5 +28,7 @@ public class ModBlocks {
             GameRegistry.registerBlock(ShaleOilOre, "ShaleOilOre");
         OilLayer = new BlockOilLayer();
             GameRegistry.registerBlock(OilLayer, "OilLayer");
+        SlipperyRemover = new BlockSlipperyRemover();
+            GameRegistry.registerBlock(SlipperyRemover, "SlipperyRemover");
     }
 }

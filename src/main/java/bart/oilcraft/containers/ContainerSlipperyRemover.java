@@ -1,30 +1,24 @@
 package bart.oilcraft.containers;
 
-import bart.oilcraft.blocks.ModBlocks;
-import bart.oilcraft.blocks.OilInfuser;
-import bart.oilcraft.tileentities.OilCompressorEntity;
-import bart.oilcraft.tileentities.OilInfuserEntity;
-import bart.oilcraft.util.OilCompressorRegistry;
-import bart.oilcraft.util.OilInfuserRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
+
+import bart.oilcraft.tileentities.TileEntitySlipperyRemover;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
 /**
- * Created by Bart on 11-9-2014.
+ * Created by Bart on 29-10-2014.
  */
-public class ContainerOilInfuser extends Container {
-
-    public ContainerOilInfuser(EntityPlayer player, OilInfuserEntity entity) {
+public class ContainerSlipperyRemover extends Container {
+    public ContainerSlipperyRemover(EntityPlayer player, TileEntitySlipperyRemover entity) {
         createSlots(entity, player);
         bindPlayerInventory(player.inventory);
     }
+    public static final ItemStack[] slot1 = new ItemStack[] {new ItemStack(Items.paper)};
 
 
     private void bindPlayerInventory(InventoryPlayer inv) {
@@ -43,13 +37,14 @@ public class ContainerOilInfuser extends Container {
         return true;
     }
 
-    private void createSlots(OilInfuserEntity tile, EntityPlayer player) {
-        addSlotToContainer(new Slot(tile, 0, 57, 36));
-        addSlotToContainer(new SlotFurnace(player, tile, 1, 100, 36));
+    private void createSlots(TileEntitySlipperyRemover tile, EntityPlayer player) {
+        addSlotToContainer(new Slot(tile, 0, 57, 24));
+        addSlotToContainer(new SlotWhitelist(tile, 1, 57, 46, slot1));
+        addSlotToContainer(new SlotFurnace(player, tile, 2, 100, 36));
     }
 
 
-        @Override
+    @Override
     public boolean canInteractWith(EntityPlayer player) {
         return this.isUseableByPlayer(player);
     }

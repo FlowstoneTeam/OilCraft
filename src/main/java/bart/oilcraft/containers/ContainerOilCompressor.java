@@ -1,22 +1,14 @@
 package bart.oilcraft.containers;
 
-import bart.oilcraft.blocks.ModBlocks;
-import bart.oilcraft.blocks.OilCompressor;
-import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.tileentities.OilCompressorEntity;
-import bart.oilcraft.tileentities.OilInfuserEntity;
 import bart.oilcraft.util.OilCompressorRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
-import javax.security.auth.login.Configuration;
 
 /**
  * Created by Bart on 20-7-2014.

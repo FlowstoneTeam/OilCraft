@@ -1,51 +1,40 @@
 package bart.oilcraft.client.gui;
 
-import bart.oilcraft.blocks.OilInfuser;
-import bart.oilcraft.containers.ContainerOilCompressor;
-import bart.oilcraft.containers.ContainerOilInfuser;
-import bart.oilcraft.fluids.ModFluids;
+import bart.oilcraft.containers.ContainerSlipperyRemover;
 import bart.oilcraft.lib.References;
-import bart.oilcraft.tileentities.OilCompressorEntity;
-import bart.oilcraft.tileentities.OilInfuserEntity;
+import bart.oilcraft.tileentities.TileEntitySlipperyRemover;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.Fluid;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by Bart on 11-9-2014.
+ * Created by Bart on 29-10-2014.
  */
-public class OilInfuserGUI extends GuiContainer {
-    public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/gui/oilinfuser.png");
+public class SlipperyRemoverGUI extends GuiContainer {
+    public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/gui/slipperyremover.png");
     @SuppressWarnings("unused")
-    private ContainerOilInfuser container;
-    private OilInfuserEntity te;
+    private ContainerSlipperyRemover container;
+    private TileEntitySlipperyRemover te;
 
 
-    public OilInfuserGUI(EntityPlayer player, OilInfuserEntity tile) {
-        super(new ContainerOilInfuser(player, tile));
-        this.container = (ContainerOilInfuser) this.inventorySlots;
+
+    public SlipperyRemoverGUI(EntityPlayer player, TileEntitySlipperyRemover tile) {
+        super(new ContainerSlipperyRemover(player, tile));
+        this.container = (ContainerSlipperyRemover) this.inventorySlots;
         this.te = tile;
     }
-    public int getScaled(){
-        if(te.getTank().getCapacity() <= 0)
-            return 58;
-        return te.getTank().getFluidAmount()*58/te.getTank().getCapacity();
-    }
+
 
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        fontRendererObj.drawString(StatCollector.translateToLocal("gui.oil.infuser"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.oil.infuser")) / 2, 2, 0xffffff);
+        fontRendererObj.drawString(StatCollector.translateToLocal("gui.slippery.remover"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.slippery.remover")) / 2, 2, 0xffffff);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 4, 0xffffff);
-        int amount = getScaled();
-        drawFluid(143, 14 + 58 - amount, ModFluids.Oil, 16, amount);
     }
 
     @Override
@@ -66,14 +55,6 @@ public class OilInfuserGUI extends GuiContainer {
         this.drawTexturedModalRect(xStart+10, yStart+7+w-p, 16, w-p, 16, p, 256, 256);
     }
 
-    public void drawFluid(int x, int y, Fluid fluid, int width, int height){
-        if(fluid == null)
-            return;
-        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
-        int color = fluid.getColor();
-        GL11.glColor3ub((byte) (color >> 16 & 0xFF), (byte) (color >> 8 & 0xFF), (byte) (color & 0xFF));
-        drawTiledTexture(x, y, fluid.getIcon(), width, height);
-    }
 
     public void drawTiledTexture(int x, int y, IIcon icon, int width, int height){
         for (int I = 0; I < width; I += 16){
