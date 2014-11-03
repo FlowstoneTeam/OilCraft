@@ -54,7 +54,7 @@ public class BlockOilFurnace extends OilCraftBlock implements ITileEntityProvide
             if (i == 1) {
                 icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_top");
             }
-            else if(i == TileEntityOilFurnace.facing){
+            else if(i == 2){
                 icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + getName() + "_front");
             }
             else{
