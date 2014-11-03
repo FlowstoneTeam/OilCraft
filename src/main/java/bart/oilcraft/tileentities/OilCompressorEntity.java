@@ -38,6 +38,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public ItemStack[] items = new ItemStack[4];
     public FluidTank tank = new FluidTank(10000);
     public int progress;
+    public int facing;
 
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
 
@@ -197,12 +198,10 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-
         tank.readFromNBT(nbt);
-
         Util.loadInventory(nbt, this);
         energy.readFromNBT(nbt);
-
+        facing = nbt.getInteger("facing");
     }
 
     @Override
@@ -211,20 +210,20 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         tank.writeToNBT(nbt);
         Util.saveInventory(nbt, this);
         energy.writeToNBT(nbt);
+        nbt.setInteger("facing", facing);
     }
 
     @Override
     public Packet getDescriptionPacket() {
-        NBTTagCompound Tag = new NBTTagCompound();
-        tank.writeToNBT(Tag);
-        energy.writeToNBT(Tag);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
+        NBTTagCompound tag = new NBTTagCompound();
+        writeToNBT(tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager Net, S35PacketUpdateTileEntity Packet) {
-        tank.readFromNBT(Packet.func_148857_g());
-        energy.readFromNBT(Packet.func_148857_g());
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        NBTTagCompound nbt = packet.func_148857_g();
+        readFromNBT(nbt);
     }
 
     public FluidTank getTank() {

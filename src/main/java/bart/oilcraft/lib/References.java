@@ -6,6 +6,6 @@ public class References {
     public static final String CLIENTPROXYLOCATION = "bart.oilcraft.core.proxy.ClientProxy";
     public static final String COMMONPROXYLOCATION = "bart.oilcraft.core.proxy.CommonProxy";
     public static final String MODNAME = "Oil Craft";
-    public static final String VERSION = "alpha 11b";
+    public static final String VERSION = "alpha 13";
     public static final String GUI_FACTORY_CLASS = "bart.oilcraft.client.gui.GuiHandler";
 }

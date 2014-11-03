@@ -5,16 +5,20 @@ import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
 import bart.oilcraft.items.OilBucket;
 import bart.oilcraft.lib.References;
+import bart.oilcraft.tileentities.OilCompressorEntity;
 import bart.oilcraft.tileentities.OilGeneratorEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,43 +29,17 @@ import net.minecraftforge.fluids.IFluidHandler;
  */
 public class OilGenerator extends OilCraftBlock implements ITileEntityProvider {
 
-    public IIcon[] icons;
+    public IIcon top;
+    public IIcon bottom;
+    public IIcon front;
+    public IIcon side;
+
     public OilGenerator() {
         this.setBlockName(getName());
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.setStepSound(Block.soundTypeMetal);
-        this.setHardness(4f);
-        icons = new IIcon[6];
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        if (side <= 5)
-            return icons[side];
-        else
-            return icons[0];
-    }
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        for(int i = 0; i < icons.length; i++){
-
-            if(i == 0 ){
-                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "general_machine");
-            }
-
-            if (i == 1) {
-                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_top");
-            }
-            else if(i == 2){
-                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + getName() + "_front");
-            }
-            else{
-                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_side");
-            }
-        }
-    }
 
     @Override
     public String getName() {
@@ -103,4 +81,53 @@ public class OilGenerator extends OilCraftBlock implements ITileEntityProvider {
         }
     }
     */
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        this.front = iconRegister.registerIcon(References.RESOURCESPREFIX + "oilgenerator_front");
+        this.top = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_top");
+        this.bottom = iconRegister.registerIcon(References.RESOURCESPREFIX + "general_machine");
+        this.side = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_side");
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
+        int facing = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        OilGeneratorEntity tile = (OilGeneratorEntity) world.getTileEntity(x, y, z);
+
+        if (facing == 0)
+            tile.facing = 2;
+        else if (facing == 1)
+            tile.facing = 5;
+        else if (facing == 2)
+            tile.facing = 3;
+        else if (facing == 3)
+            tile.facing = 4;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side){
+        OilGeneratorEntity tile = (OilGeneratorEntity) access.getTileEntity(x, y, z);
+        if(side == 0 ){
+            return this.bottom;
+        } else if (side == 1) {
+            return this.top;
+        }
+        else if(side != tile.facing){
+            return this.side;
+        }
+        else{
+            return this.front;
+        }
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        if(side == 0)return this.bottom;
+        else if(side == 1)return this.top;
+        else if(side == 3)return this.front;
+        else return this.side;
+    }
 }

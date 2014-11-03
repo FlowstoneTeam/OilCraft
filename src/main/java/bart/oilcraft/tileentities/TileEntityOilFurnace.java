@@ -37,7 +37,6 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public static int ProcessTime;
     public static int cyclesAmount;
     public static int OilUsage;
-
     public int facing;
 
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
@@ -229,17 +228,15 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
 
     @Override
     public Packet getDescriptionPacket() {
-        NBTTagCompound Tag = new NBTTagCompound();
-        tank.writeToNBT(Tag);
-        energy.writeToNBT(Tag);
-
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
+        NBTTagCompound tag = new NBTTagCompound();
+        writeToNBT(tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager Net, S35PacketUpdateTileEntity Packet) {
-        tank.readFromNBT(Packet.func_148857_g());
-        energy.readFromNBT(Packet.func_148857_g());
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        NBTTagCompound nbt = packet.func_148857_g();
+        readFromNBT(nbt);
     }
 
     @Override

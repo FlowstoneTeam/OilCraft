@@ -6,6 +6,7 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import net.minecraft.block.BlockSign;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +23,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
     public static int RfForOil;
     public static int OilUsage;
-
+    public int facing;
 
 
     @Override
@@ -106,6 +107,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
         super.readFromNBT(nbt);
         tank.readFromNBT(nbt);
         energy.readFromNBT(nbt);
+        facing = nbt.getInteger("facing");
     }
 
     @Override
@@ -113,14 +115,20 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
         super.writeToNBT(nbt);
         tank.writeToNBT(nbt);
         energy.writeToNBT(nbt);
+        nbt.setInteger("facing", facing);
     }
 
     @Override
     public Packet getDescriptionPacket() {
-        NBTTagCompound Tag = new NBTTagCompound();
-        tank.writeToNBT(Tag);
-        energy.writeToNBT(Tag);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
+        NBTTagCompound tag = new NBTTagCompound();
+        writeToNBT(tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        NBTTagCompound nbt = packet.func_148857_g();
+        readFromNBT(nbt);
     }
 
     public void distributePower(){

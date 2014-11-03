@@ -32,7 +32,7 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
     public int Process;
     public static int RfForOil;
     public static int ProcessTime;
-
+    public int facing;
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
 
 
@@ -167,6 +167,7 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
         super.readFromNBT(nbt);
         Util.loadInventory(nbt, this);
         energy.readFromNBT(nbt);
+        facing = nbt.getInteger("facing");
     }
 
     @Override
@@ -174,17 +175,20 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
         super.writeToNBT(nbt);
         Util.saveInventory(nbt, this);
         energy.writeToNBT(nbt);
+        nbt.setInteger("facing", facing);
     }
 
     @Override
     public Packet getDescriptionPacket() {
-        NBTTagCompound Tag = new NBTTagCompound();
-        energy.writeToNBT(Tag);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
+        NBTTagCompound tag = new NBTTagCompound();
+        writeToNBT(tag);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
     }
+
     @Override
-    public void onDataPacket(NetworkManager Net, S35PacketUpdateTileEntity Packet) {
-        energy.readFromNBT(Packet.func_148857_g());
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        NBTTagCompound nbt = packet.func_148857_g();
+        readFromNBT(nbt);
     }
 
 

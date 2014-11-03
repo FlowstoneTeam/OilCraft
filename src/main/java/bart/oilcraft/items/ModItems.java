@@ -12,7 +12,6 @@ import net.minecraft.item.Item;
 public class ModItems {
     public static Item EnergyAcceptor;
     public static Item OilBucket;
-    public static Item OilyDiamond;
     public static Item OilBall;
     public static Item EnergyDistributeUpgrade;
 
@@ -21,8 +20,6 @@ public class ModItems {
         GameRegistry.registerItem(EnergyAcceptor, "EnergyAcceptor");
         OilBucket = new OilBucket(ModFluids.OilBlock);
         GameRegistry.registerItem(OilBucket, "OilBucket");
-        OilyDiamond = new OilyDiamond();
-        GameRegistry.registerItem(OilyDiamond, "OilyDiamond");
         OilBall = new OilBall();
         GameRegistry.registerItem(OilBall, "OilBall");
         EnergyDistributeUpgrade = new EnergyDistributeUpgrade();

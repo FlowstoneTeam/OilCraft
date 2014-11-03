@@ -22,50 +22,17 @@ import net.minecraft.world.World;
  */
 public class BlockOilFurnace extends OilCraftBlock implements ITileEntityProvider {
 
-    public IIcon[] icons;
+    public IIcon top;
+    public IIcon bottom;
+    public IIcon front;
+    public IIcon side;
 
     public BlockOilFurnace() {
         this.setBlockName(getName());
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.setStepSound(Block.soundTypeMetal);
         this.setHardness(4f);
-        icons = new IIcon[6];
     }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        if (side <= 5)
-            return icons[side];
-        else
-            return icons[0];
-    }
-
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        for(int i = 0; i < icons.length; i++){
-
-            if(i == 0 ){
-                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "general_machine");
-            }
-
-            if (i == 1) {
-                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_top");
-            }
-            else if(i == 2){
-                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + getName() + "_front");
-            }
-            else{
-                icons[i] = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_side");
-            }
-        }
-    }
-
-
-
-
 
     @Override
     public String getName() {
@@ -96,6 +63,14 @@ public class BlockOilFurnace extends OilCraftBlock implements ITileEntityProvide
         return true;
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        this.front = iconRegister.registerIcon(References.RESOURCESPREFIX + "oilfurnace_front");
+        this.top = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_top");
+        this.bottom = iconRegister.registerIcon(References.RESOURCESPREFIX + "general_machine");
+        this.side = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_side");
+    }
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
@@ -112,5 +87,29 @@ public class BlockOilFurnace extends OilCraftBlock implements ITileEntityProvide
             tile.facing = 4;
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side){
+        TileEntityOilFurnace tile = (TileEntityOilFurnace) access.getTileEntity(x, y, z);
+        if(side == 0 ){
+            return this.bottom;
+        } else if (side == 1) {
+            return this.top;
+        }
+        else if(side != tile.facing){
+            return this.side;
+        }
+        else{
+            return this.front;
+        }
+    }
+
+    @Override
+    public IIcon getIcon(int side, int meta) {
+        if(side == 0)return this.bottom;
+        else if(side == 1)return this.top;
+        else if(side == 3)return this.front;
+        else return this.side;
+    }
 
 }
