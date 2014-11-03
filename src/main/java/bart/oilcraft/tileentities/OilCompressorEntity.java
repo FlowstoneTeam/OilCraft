@@ -13,6 +13,7 @@ import net.minecraft.block.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -34,7 +35,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public static final int[] slotsInsert = new int[]{0, 1};
     public static final int[] slotsExtract = new int[]{2};
 
-    public ItemStack[] items = new ItemStack[3];
+    public ItemStack[] items = new ItemStack[4];
     public FluidTank tank = new FluidTank(10000);
     public int progress;
 
@@ -52,13 +53,13 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         //System.out.println("Item 1: " + stack.getItem() + "  Item 2: " + Item.getItemFromBlock(Blocks.cobblestone));
         //add block to list to make it be accepted
         return (slot == 0 && SlotWhitelist.arrayContains(OilCompressorRegistry.allowedItems, stack)) ||
-                (slot == 1 && stack.getItem() == Items.bucket);
+                (slot == 1 && stack.getItem() == Items.bucket) || (slot == 3 && stack.getItem() == ModItems.EnergyDistributeUpgrade);
     }
 
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        return slot == 2;
+        return (slot == 2);
     }
 
     @Override
@@ -115,6 +116,8 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         }
     }
 
+
+
     @Override
     public String getInventoryName() {
         return "containers.ContainerOilCompressor";
@@ -149,7 +152,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return (slot == 0 && (slot == 0 && SlotWhitelist.arrayContains(OilCompressorRegistry.allowedItems, stack))) ||
-                (slot == 1 && stack.getItem() == Items.bucket);
+                (slot == 1 && stack.getItem() == Items.bucket) || (slot == 3 && stack.getItem() == ModItems.EnergyDistributeUpgrade);
     }
 
     @Override
@@ -320,15 +323,17 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     }
 
     public void distributePower(){
-        for (int i =0; i < ForgeDirection.VALID_DIRECTIONS.length; i++){
-            ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
-            TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-            if(te instanceof IEnergyHandler){
-                int sending = 10;
-                int received = ((IEnergyHandler)te).receiveEnergy(direction, sending, true);
-                if (received <= sending && received > 0 && energy.getEnergyStored() >= sending &&  energy.getEnergyStored() - ((IEnergyHandler)te).getEnergyStored(direction) >= sending) {
-                    energy.extractEnergy(received, false);
-                    ((IEnergyHandler)te).receiveEnergy(direction, received, false);
+        if (items[3] != null && items[3].getItem() == ModItems.EnergyDistributeUpgrade) {
+            for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+                ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
+                TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+                if (te instanceof IEnergyHandler) {
+                    int sending = 10;
+                    int received = ((IEnergyHandler) te).receiveEnergy(direction, sending, true);
+                    if (received <= sending && received > 0 && energy.getEnergyStored() >= sending && energy.getEnergyStored() - ((IEnergyHandler) te).getEnergyStored(direction) >= sending) {
+                        energy.extractEnergy(received, false);
+                        ((IEnergyHandler) te).receiveEnergy(direction, received, false);
+                    }
                 }
             }
         }

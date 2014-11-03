@@ -37,6 +37,9 @@ public class EntityGooBall extends EntitySlime {
     public float squishFactor;
     public float prevSquishFactor;
     private int slimeJumpDelay;
+    public static boolean leaveTrail;
+    public static boolean regenOil;
+    public static boolean slipperyGive;
 
     public EntityGooBall(World par1World)
     {
@@ -178,24 +181,25 @@ public class EntityGooBall extends EntitySlime {
             i = this.getSlimeSize();
             this.setSize(0.6F * (float)i, 0.6F * (float)i);
         }
-        for (int h =0; h < ForgeDirection.VALID_DIRECTIONS.length; h++) {
-            ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[h];
-            Block block = worldObj.getBlock(this.chunkCoordX + direction.offsetX, this.chunkCoordY + direction.offsetY, this.chunkCoordZ + direction.offsetZ);
-
-            if (this.getMaxHealth() < this.getMaxHealth() && block instanceof BlockOil) {
-                this.heal(.5F);
+        if(regenOil) {
+            for (int h = 0; h < ForgeDirection.VALID_DIRECTIONS.length; h++) {
+                ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[h];
+                Block block = worldObj.getBlock(this.chunkCoordX + direction.offsetX, this.chunkCoordY + direction.offsetY, this.chunkCoordZ + direction.offsetZ);
+                Block block2 = worldObj.getBlock(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ);
+                if (this.getMaxHealth() < this.getMaxHealth() && (block instanceof BlockOil || block2 instanceof BlockOil)) {
+                    this.heal(.5F);
+                }
             }
         }
+        if(leaveTrail) {
+            for (int l = 0; l < 4; ++l) {
+                int h = MathHelper.floor_double(this.posX + (double) ((float) (l % 2 * 2 - 1) * 0.25F));
+                int j = MathHelper.floor_double(this.posY);
+                int k = MathHelper.floor_double(this.posZ + (double) ((float) (l / 2 % 2 * 2 - 1) * 0.25F));
 
-        for (int l = 0; l < 4; ++l)
-        {
-            int h = MathHelper.floor_double(this.posX + (double)((float)(l % 2 * 2 - 1) * 0.25F));
-            int j = MathHelper.floor_double(this.posY);
-            int k = MathHelper.floor_double(this.posZ + (double)((float)(l / 2 % 2 * 2 - 1) * 0.25F));
-
-            if (this.worldObj.getBlock(h, j, k).getMaterial() == Material.air && this.worldObj.getBlock(h, j-1, k).getMaterial() != Material.air && !(this.worldObj.getBlock(h, j, k) instanceof BlockOil) && this.worldObj.getBlock(h, j, k).isReplaceable(this.worldObj, h, j, k) && this.worldObj.getBlock(h, j-1, k).renderAsNormalBlock())
-            {
-                this.worldObj.setBlock(h, j, k, ModBlocks.OilLayer);
+                if (this.worldObj.getBlock(h, j, k).getMaterial() == Material.air && this.worldObj.getBlock(h, j - 1, k).getMaterial() != Material.air && !(this.worldObj.getBlock(h, j, k) instanceof BlockOil) && this.worldObj.getBlock(h, j, k).isReplaceable(this.worldObj, h, j, k) && this.worldObj.getBlock(h, j - 1, k).renderAsNormalBlock()) {
+                    this.worldObj.setBlock(h, j, k, ModBlocks.OilLayer);
+                }
             }
         }
     }
@@ -294,7 +298,7 @@ public class EntityGooBall extends EntitySlime {
     @Override
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
-        if(par1EntityPlayer.getHeldItem() != null && !(EnchantmentHelper.getEnchantments(par1EntityPlayer.getHeldItem()).containsKey(EnchantRegistry.SlipperyEnchant.effectId))){
+        if(slipperyGive && par1EntityPlayer.getHeldItem() != null && !(EnchantmentHelper.getEnchantments(par1EntityPlayer.getHeldItem()).containsKey(EnchantRegistry.SlipperyEnchant.effectId))){
             par1EntityPlayer.getHeldItem().addEnchantment(EnchantRegistry.SlipperyEnchant, 1);
         }
         if (this.canDamagePlayer())

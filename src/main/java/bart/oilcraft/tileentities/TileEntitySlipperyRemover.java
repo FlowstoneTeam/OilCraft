@@ -1,6 +1,8 @@
 package bart.oilcraft.tileentities;
 
 import bart.oilcraft.enchants.EnchantRegistry;
+import bart.oilcraft.items.EnergyDistributeUpgrade;
+import bart.oilcraft.items.ModItems;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
@@ -10,11 +12,13 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
@@ -23,9 +27,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntitySlipperyRemover extends TileEntity implements ISidedInventory, IEnergyHandler {
     public static final int[] slotsInsert = new int[]{0, 1};
     public static final int[] slotsExtract = new int[]{2};
-    public ItemStack[] items = new ItemStack[3];
+    public ItemStack[] items = new ItemStack[4];
 
     public int Process;
+    public static int RfForOil;
+    public static int ProcessTime;
 
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
 
@@ -58,12 +64,12 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return side == 0 ? slotsExtract : slotsInsert;
+        return (side == 0 ? slotsExtract : slotsInsert);
     }
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return (slot == 0);
+        return ((slot == 3 && stack.getItem() == ModItems.EnergyDistributeUpgrade)|| (slot == 1 && stack.getItem() == Items.paper) ||slot == 0);
     }
 
     @Override
@@ -73,7 +79,7 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
 
     @Override
     public int getSizeInventory() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -153,7 +159,7 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return (slot == 0 || (slot == 1 && stack.getItem() == Items.paper));
+        return ((slot == 1 && stack.getItem() == Items.paper) || slot == 0);
     }
 
     @Override
@@ -161,7 +167,6 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
         super.readFromNBT(nbt);
         Util.loadInventory(nbt, this);
         energy.readFromNBT(nbt);
-
     }
 
     @Override
@@ -182,18 +187,33 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
         energy.readFromNBT(Packet.func_148857_g());
     }
 
+
+
+
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
         distributePower();
         signEdit();
-        if((EnchantmentHelper.getEnchantments(items[0]).containsKey(EnchantRegistry.SlipperyEnchant.effectId)) && energy.getEnergyStored() >= 500 && items[2].getItem() == null){
-            if(Process == 400) {
+
+        if(items[0] != null && items[1] != null && items[2] == null && (EnchantmentHelper.getEnchantments(items[0]).containsKey(EnchantRegistry.SlipperyEnchant.effectId)) && energy.getEnergyStored() >= RfForOil){
+            if(Process == ProcessTime) {
+                System.out.println(items[0].getTagCompound());
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                ItemStack output = items[0];
-                int amount = items[0].stackSize;
+                energy.extractEnergy(RfForOil, false);
+                ItemStack output = items[0].copy();
+                NBTTagList encahntments = output.getEnchantmentTagList();
+                if(encahntments.tagCount() > 0){
+                    for (int i = 0; i < encahntments.tagCount(); i++){
+                        NBTTagCompound enchant = encahntments.getCompoundTagAt(i);
+                        if(enchant.getInteger("id") == EnchantRegistry.slipperyEnchantId){
+                            encahntments.removeTag(i);
+                            break;
+                        }
+                    }
+                }
                 setInventorySlotContents(2, output);
-                setInventorySlotContents(1, items[1].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
+                setInventorySlotContents(1, items[1].stackSize == 1 ? null : new ItemStack(items[1].getItem(), items[1].stackSize - 1));
                 setInventorySlotContents(0, null);
                 Process = 0;
             } else Process++;
@@ -201,15 +221,17 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
     }
 
     public void distributePower(){
-        for (int i =0; i < ForgeDirection.VALID_DIRECTIONS.length; i++){
-            ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
-            TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-            if(te instanceof IEnergyHandler){
-                int sending = 10;
-                int received = ((IEnergyHandler)te).receiveEnergy(direction, sending, true);
-                if (received <= sending && received > 0 && energy.getEnergyStored() >= sending &&  energy.getEnergyStored() - ((IEnergyHandler)te).getEnergyStored(direction) >= sending) {
-                    energy.extractEnergy(received, false);
-                    ((IEnergyHandler)te).receiveEnergy(direction, received, false);
+        if (items[3] != null && items[3].getItem() == ModItems.EnergyDistributeUpgrade) {
+            for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+                ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
+                TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+                if (te instanceof IEnergyHandler) {
+                    int sending = 10;
+                    int received = ((IEnergyHandler) te).receiveEnergy(direction, sending, true);
+                    if (received <= sending && received > 0 && energy.getEnergyStored() >= sending && energy.getEnergyStored() - ((IEnergyHandler) te).getEnergyStored(direction) >= sending) {
+                        energy.extractEnergy(received, false);
+                        ((IEnergyHandler) te).receiveEnergy(direction, received, false);
+                    }
                 }
             }
         }
@@ -217,14 +239,16 @@ public class TileEntitySlipperyRemover extends TileEntity implements ISidedInven
 
 
 
-    public void signEdit(){
-        TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
-        if (te instanceof TileEntitySign){
-            worldObj.markBlockForUpdate(xCoord, yCoord+1, zCoord);
-            ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
-            ((TileEntitySign) te).signText[1]="Fluid this block has no fluid";
-            ((TileEntitySign) te).signText[2]="Process " + Process + "/" + "400";
-            ((TileEntitySign) te).signText[3]="Block: Slippery Remover";
+    public void signEdit() {
+
+        TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
+        if (te instanceof TileEntitySign) {
+            worldObj.markBlockForUpdate(xCoord, yCoord + 1, zCoord);
+            ((TileEntitySign) te).signText[0] = "Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
+            ((TileEntitySign) te).signText[1] = "Fluid this block has no fluid";
+            ((TileEntitySign) te).signText[2] = "Process " + Process + "/" + ProcessTime;
+            ((TileEntitySign) te).signText[3] = "Block: Slippery Remover";
         }
     }
+
 }

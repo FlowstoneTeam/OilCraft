@@ -21,7 +21,7 @@ import org.lwjgl.opengl.GL11;
  * Created by bart on 18-10-2014.
  */
 public class OilFurnaceGUI extends GuiContainer {
-    public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/gui/oilinfuser.png");
+    public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/gui/oilfurnace.png");
     @SuppressWarnings("unused")
     private ContainerOilFurnace container;
     private TileEntityOilFurnace te;
@@ -53,7 +53,7 @@ public class OilFurnaceGUI extends GuiContainer {
         GL11.glColor4f(1F, 1F, 1F, 1F);
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(gui);
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize + 19, ySize);
 
         int xStart = (width - xSize) / 2;
         int yStart = (height - ySize) / 2;

@@ -21,7 +21,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     public FluidTank tank = new FluidTank(10000);
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
     public static int RfForOil;
-    public int progress;
+    public static int OilUsage;
 
 
 
@@ -114,6 +114,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
         tank.writeToNBT(nbt);
         energy.writeToNBT(nbt);
     }
+
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound Tag = new NBTTagCompound();

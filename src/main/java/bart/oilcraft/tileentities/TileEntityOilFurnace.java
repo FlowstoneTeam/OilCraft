@@ -2,6 +2,7 @@ package bart.oilcraft.tileentities;
 
 
 import bart.oilcraft.fluids.ModFluids;
+import bart.oilcraft.items.ModItems;
 import bart.oilcraft.util.OilFurnaceRegistry;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
@@ -19,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
+import org.lwjgl.Sys;
 
 /**
  * Created by bart on 18-10-2014.
@@ -27,10 +29,16 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public static final int[] slotsInsert = new int[]{0};
     public static final int[] slotsExtract = new int[]{1};
 
-    public ItemStack[] items = new ItemStack[3];
+    public ItemStack[] items = new ItemStack[4];
     public FluidTank tank = new FluidTank(10000);
     public int Process;
     public int cycles;
+    public static int RfForOil;
+    public static int ProcessTime;
+    public static int cyclesAmount;
+    public static int OilUsage;
+
+    public int facing;
 
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
 
@@ -108,7 +116,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return (slot == 0);
+        return ((slot == 3 && stack.getItem() == ModItems.EnergyDistributeUpgrade) ||slot == 0);
     }
 
     @Override
@@ -199,7 +207,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return (slot == 0);
+        return ((slot == 3 && stack.getItem() == ModItems.EnergyDistributeUpgrade) || slot == 0);
     }
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
@@ -207,7 +215,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
         tank.readFromNBT(nbt);
         Util.loadInventory(nbt, this);
         energy.readFromNBT(nbt);
-
+        facing = nbt.getInteger("facing");
     }
 
     @Override
@@ -216,6 +224,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
         tank.writeToNBT(nbt);
         Util.saveInventory(nbt, this);
         energy.writeToNBT(nbt);
+        nbt.setInteger("facing", facing);
     }
 
     @Override
@@ -223,6 +232,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
         NBTTagCompound Tag = new NBTTagCompound();
         tank.writeToNBT(Tag);
         energy.writeToNBT(Tag);
+
         return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, Tag);
     }
 
@@ -302,23 +312,23 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public void furnaceSmelt(){
         if (canSmelt()) {
             if (items[0] != null && this.canSmelt() && energy.getEnergyStored() >= 100) {
-                if (tank.getFluidAmount() > 100 || cycles > 0) {
-                    if (Process >= 150/100*75) {
+                if (tank.getFluidAmount() > OilUsage || cycles > 0) {
+                    if (Process >= ProcessTime/100*75) {
                         Process = 0;
-                        energy.extractEnergy(500, false);
+                        energy.extractEnergy(RfForOil, false);
                         smelt();
                         cycles++;
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                        if(cycles == 10) {
-                            tank.drain(100, true);
+                        if(cycles == cyclesAmount) {
+                            tank.drain(OilUsage, true);
                             cycles = 0;
                             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                         }
                     } else Process++;
                 }else
-                if (Process >= 150) {
+                if (Process >= Process) {
                     Process = 0;
-                    energy.extractEnergy(500, false);
+                    energy.extractEnergy(RfForOil, false);
                     smelt();
                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                 } else Process++;
@@ -329,10 +339,14 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public void customSmelting(){
         int whitelistID = OilFurnaceRegistry.getItemIndex(items[0]);
         if(worldObj.getBlock(xCoord, yCoord -1, zCoord) instanceof BlockFire) {
+            if (!(whitelistID < 0)) return;
             if ( whitelistID < 0 || whitelistID >= OilFurnaceRegistry.allowedItemsOut.length) return;
             if ((OilFurnaceRegistry.allowedItemsOut[whitelistID] != null)) {
+                System.out.println("3");
                 if (energy.getEnergyStored() >= getItemRF(items[0]) && tank.getFluidAmount() >= getOilUsage(items[0])) {
+                    System.out.println("4");
                     if (Process >= getItemProcess(items[0])) {
+                        System.out.println("5");
                         ItemStack output = OilFurnaceRegistry.allowedItemsOut[whitelistID];
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                         setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()));
@@ -347,15 +361,17 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     }
 
     public void distributePower(){
-        for (int i =0; i < ForgeDirection.VALID_DIRECTIONS.length; i++){
-            ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
-            TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-            if(te instanceof IEnergyHandler){
-                int sending = 10;
-                int received = ((IEnergyHandler)te).receiveEnergy(direction, sending, true);
-                if (received <= sending && received > 0 && energy.getEnergyStored() >= sending &&  energy.getEnergyStored() - ((IEnergyHandler)te).getEnergyStored(direction) >= sending) {
-                    energy.extractEnergy(received, false);
-                    ((IEnergyHandler)te).receiveEnergy(direction, received, false);
+        if (items[3] != null && items[3].getItem() == ModItems.EnergyDistributeUpgrade) {
+            for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
+                ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
+                TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
+                if (te instanceof IEnergyHandler) {
+                    int sending = 10;
+                    int received = ((IEnergyHandler) te).receiveEnergy(direction, sending, true);
+                    if (received <= sending && received > 0 && energy.getEnergyStored() >= sending && energy.getEnergyStored() - ((IEnergyHandler) te).getEnergyStored(direction) >= sending) {
+                        energy.extractEnergy(received, false);
+                        ((IEnergyHandler) te).receiveEnergy(direction, received, false);
+                    }
                 }
             }
         }

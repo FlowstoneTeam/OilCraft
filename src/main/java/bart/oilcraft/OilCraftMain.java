@@ -30,6 +30,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.Sys;
 
 
 @Mod(modid = References.MODID, name = References.MODNAME, version = References.VERSION, guiFactory = References.GUI_FACTORY_CLASS)
@@ -41,6 +42,8 @@ public class OilCraftMain {
     @SidedProxy(clientSide = References.CLIENTPROXYLOCATION, serverSide = References.COMMONPROXYLOCATION)
     public static CommonProxy proxy;
 
+    public static boolean slimeSpawn;
+
     private static CreativeTabs oilCraftTab = new OilCraftTab(CreativeTabs.getNextID(), References.MODID);
     public static CreativeTabs getCreativeTab() {
         return oilCraftTab;
@@ -48,6 +51,7 @@ public class OilCraftMain {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        System.out.println("Oilcraft PreInitialization");
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
         ModBlocks.init();
         ModFluids.init();
@@ -65,19 +69,22 @@ public class OilCraftMain {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        System.out.println("Oilcraft Initialization");
         CraftingHandler.init();
         proxy.registerTileEntities();
         EnchantRegistry.registerEnchants();
 
         proxy.registerRenderInformation();
         EntityRegistry.registerModEntity(EntityGooBall.class, "GooBall", 2, this, 20, 3, true);
-        EntityRegistry.addSpawn(EntityGooBall.class, 5, 2, 3, EnumCreatureType.monster, BiomeGenBase.plains);
+        if(slimeSpawn) {
+            EntityRegistry.addSpawn(EntityGooBall.class, 5, 2, 3, EnumCreatureType.monster, BiomeGenBase.plains);
+        }
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         OilCompressorRegistry.processBuffer();
-        OilFurnaceRegistry.processBuffer();
+        //OilFurnaceRegistry.processBuffer();
     }
 
 }

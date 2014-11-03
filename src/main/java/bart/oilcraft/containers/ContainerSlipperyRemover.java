@@ -41,11 +41,17 @@ public class ContainerSlipperyRemover extends Container {
         addSlotToContainer(new Slot(tile, 0, 57, 24));
         addSlotToContainer(new SlotWhitelist(tile, 1, 57, 46, slot1));
         addSlotToContainer(new SlotFurnace(player, tile, 2, 100, 36));
+        addSlotToContainer(new Slot(tile, 3, 175, 8));
     }
 
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
         return this.isUseableByPlayer(player);
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+        return null;
     }
 }

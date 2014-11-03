@@ -13,7 +13,7 @@ public class EnchantRegistry {
 
 
     public static void registerEnchants() {
-        SlipperyEnchant = new EnchantSlippery(8, 0);
+        SlipperyEnchant = new EnchantSlippery(slipperyEnchantId, 0);
         FMLCommonHandler.instance().bus().register(new EnchantSlipperyHandler());
     }
 

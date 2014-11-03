@@ -13,17 +13,45 @@ public class CraftingHandler {
     public static void init() {
         registerRecipes();
     }
+    //machines
+    public static boolean oilCompressor;
+    public static boolean oilGenerator;
+    public static boolean oilFurnace;
+    public static boolean slipperyRemover;
+
+    //blocks
+    public static boolean oilLayer;
+
+    //items
+    public static boolean energyAcceptor;
+    public static boolean energyDistributeUpgrade;
+
+    //misc
+    public static boolean thermalExpansionItems;
+
 
     public static void registerRecipes() {
-        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', ModItems.EnergyAcceptor);
-        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', ModItems.EnergyAcceptor);
-        CraftingManager.getInstance().addRecipe(new ItemStack(ModItems.EnergyAcceptor), "RRR", "RGR", "RRR", 'R', Items.redstone, 'G', Items.gold_nugget);
-        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.ShaleOilOre), "C  ","   ", "   ", 'C', ModBlocks.CrudeOilOre);
+        //machines
+        if(oilCompressor)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', ModItems.EnergyAcceptor);
+        if(oilGenerator)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', ModItems.EnergyAcceptor);
+        if(oilFurnace)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilFurnace), "III", "IFI", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', ModItems.EnergyAcceptor, 'F', Blocks.furnace);
+        if(slipperyRemover)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.SlipperyRemover), "III", "GPG", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', ModItems.EnergyAcceptor, 'P', Items.paper);
 
-        if(GameRegistry.findItem("thermalexpansion", "powerCoilGold") != null){
-            CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', GameRegistry.findItem("thermalexpansion", "powerCoilGold"));
-            CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("thermalexpansion", "powerCoilGold"));
+        //blocks
+        if(oilLayer)CraftingManager.getInstance().addShapelessRecipe(new ItemStack(ModBlocks.OilLayer, 2),  new Object[] {ModItems.OilBall, ModItems.OilBall, ModItems.OilBall});
+
+        //items
+        if(energyAcceptor)CraftingManager.getInstance().addRecipe(new ItemStack(ModItems.EnergyAcceptor), "RRR", "RGR", "RRR", 'R', Items.redstone, 'G', Items.gold_nugget);
+        if(energyDistributeUpgrade)CraftingManager.getInstance().addRecipe(new ItemStack(ModItems.EnergyAcceptor), " G ", "GAG", " G ", 'a', ModItems.EnergyDistributeUpgrade, 'G', Items.gold_nugget);
+
+        //misc
+        if(thermalExpansionItems && GameRegistry.findItem("thermalexpansion", "powerCoilGold") != null){
+            if(oilCompressor)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', GameRegistry.findItem("thermalexpansion", "powerCoilGold"));
+            if(oilGenerator)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("thermalexpansion", "powerCoilGold"));
+            if(oilFurnace)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilFurnace), "III", "IFI", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("thermalexpansion", "powerCoilGold"), 'F', Blocks.furnace);
+            if(slipperyRemover)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.SlipperyRemover), "III", "GPG", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("thermalexpansion", "powerCoilGold"), 'P', Items.paper);
         }
+        CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.ShaleOilOre), "C  ","   ", "   ", 'C', ModBlocks.CrudeOilOre);
     }
 
 }

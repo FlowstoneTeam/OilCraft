@@ -28,7 +28,7 @@ public class OilFurnaceRegistry {
         for (int i = 0; i < buffer.length; i++)
         {
             String[] split = buffer[i].split(":");
-            if (split.length > 7 && split.length < 10)
+            if (split.length > 6 && split.length < 10)
             {
                 int oilV, energyV, timeV, metaOut, metaIn;
                 String modid1, input, modid2, output;
@@ -66,12 +66,40 @@ public class OilFurnaceRegistry {
             }
         }
     }
-    public static int getItemIndex(ItemStack item)
+    public static int getItemIndex(ItemStack itemStack)
     {
+        if( itemStack == null || allowedItemsIn == null )
+        {
+            return -1;
+        }
+
+        Item item = itemStack.getItem();
+
+        if( item == null )
+        {
+            return -1;
+        }
+
         for (int i = 0; i < allowedItemsIn.length; i++)
-            if(allowedItemsIn[i] != null && allowedItemsIn[i].getItem() == item.getItem() && allowedItemsIn[i].getItemDamage() == item.getItemDamage()){
+        {
+            ItemStack allowedItemStack = allowedItemsIn[i];
+            Item allowedItem = allowedItemStack.getItem();
+
+            if( allowedItemStack != null )
+            {
+                continue;
+            }
+
+            if( allowedItem != null )
+            {
+                continue;
+            }
+
+            if( allowedItem == item && allowedItemStack.getItemDamage() == itemStack.getItemDamage())
+            {
                 return i;
             }
+        }
         return -1;
     }
 

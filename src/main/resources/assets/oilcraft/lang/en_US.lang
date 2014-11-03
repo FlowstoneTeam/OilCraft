@@ -5,17 +5,21 @@ tile.OilCompressor.name=Oil Compressor
 tile.Oil.name=Oil
 tile.ShaleOilOre.name=Shale Oil Ore
 tile.BlockMachineFrame.name=Machine Frame
-tile.OilInfuser.name=Oil Infuser
+tile.BlockSlipperyRemover.name=Slippery Remover
 tile.OilGenerator.name=Oil Generator
 tile.OilLayer.name=Oil Layer
 tile.BlockOilFurnace.name=Oil Furnace
+
 
 item.oilcraft.OilBucket.name=Oil Bucket
 item.oilcraft.EnergyAcceptor.name=Energy Acceptor
 item.oilcraft.OilyDiamond.name=Oily Diamond
 item.oilcraft.OilBall.name=Oil Ball
+item.oilcraft.EnergyDistributeUpgrade.name=Energy Distribute Upgrade
 
 gui.oil.compressor=Oil Compressor
+gui.slippery.remover=Slippery Remover
+gui.oil.furnace=Oil Furnace
 
 enchantment.oilcraft.Slippery=Slippery
 
