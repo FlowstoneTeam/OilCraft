@@ -12,11 +12,11 @@ public class OilBucket extends ItemBucket {
     public OilBucket(Block block) {
         super(block);
         this.setTextureName(References.RESOURCESPREFIX + getName());
-        this.setUnlocalizedName(References.MODID + ".OilBucket");
+        this.setUnlocalizedName(References.MODID + ".oilbucket");
         this.setCreativeTab(OilCraftMain.getCreativeTab());
     }
 
     public String getName() {
-     return "OilBucket";
+     return "oilbucket";
     }
 }

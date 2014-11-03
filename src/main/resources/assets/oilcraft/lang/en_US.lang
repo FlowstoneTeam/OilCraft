@@ -1,21 +1,21 @@
 itemGroup.oilcraft=OilCraft
 
 
-tile.OilCompressor.name=Oil Compressor
-tile.Oil.name=Oil
-tile.ShaleOilOre.name=Shale Oil Ore
-tile.BlockMachineFrame.name=Machine Frame
-tile.BlockSlipperyRemover.name=Slippery Remover
-tile.OilGenerator.name=Oil Generator
-tile.OilLayer.name=Oil Layer
-tile.BlockOilFurnace.name=Oil Furnace
+tile.oilcompressor.name=Oil Compressor
+tile.oil.name=Oil
+tile.shaleoilore.name=Shale Oil Ore
+tile.blockmachineframe.name=Machine Frame
+tile.blockslipperyremover.name=Slippery Remover
+tile.oilgenerator.name=Oil Generator
+tile.oillayer.name=Oil Layer
+tile.blockoilfurnace.name=Oil Furnace
 
 
-item.oilcraft.OilBucket.name=Oil Bucket
-item.oilcraft.EnergyAcceptor.name=Energy Acceptor
-item.oilcraft.OilyDiamond.name=Oily Diamond
-item.oilcraft.OilBall.name=Oil Ball
-item.oilcraft.EnergyDistributeUpgrade.name=Energy Distribute Upgrade
+item.oilcraft.oilbucket.name=Oil Bucket
+item.oilcraft.energyacceptor.name=Energy Acceptor
+item.oilcraft.oilydiamond.name=Oily Diamond
+item.oilcraft.oilball.name=Oil Ball
+item.oilcraft.energydistributeupgrade.name=Energy Distribute Upgrade
 
 gui.oil.compressor=Oil Compressor
 gui.slippery.remover=Slippery Remover

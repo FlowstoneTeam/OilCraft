@@ -25,7 +25,7 @@ public class ShaleOilOre extends OilCraftBlock {
 
     @Override
     public String getName() {
-        return "ShaleOilOre";
+        return "shaleoilore";
     }
 
 

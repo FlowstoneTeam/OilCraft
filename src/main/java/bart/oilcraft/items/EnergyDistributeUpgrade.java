@@ -10,11 +10,11 @@ import net.minecraft.item.Item;
 public class EnergyDistributeUpgrade extends Item {
     public EnergyDistributeUpgrade(){
         this.setTextureName(References.RESOURCESPREFIX + getName());
-        this.setUnlocalizedName(References.MODID + ".EnergyDistributeUpgrade");
+        this.setUnlocalizedName(References.MODID + ".energydistributeupgrade");
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.maxStackSize = 1;
     }
     public String getName() {
-        return "EnergyDistributeUpgrade";
+        return "energydistributeupgrade";
     }
 }

@@ -10,10 +10,10 @@ import net.minecraft.item.Item;
 public class OilBall extends Item {
     public OilBall(){
         this.setTextureName(References.RESOURCESPREFIX + getName());
-        this.setUnlocalizedName(References.MODID + ".OilBall");
+        this.setUnlocalizedName(References.MODID + ".oilball");
         this.setCreativeTab(OilCraftMain.getCreativeTab());
     }
     public String getName() {
-        return "OilBall";
+        return "oilball";
     }
 }

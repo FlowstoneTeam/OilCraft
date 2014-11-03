@@ -35,7 +35,7 @@ public class OilCompressor extends OilCraftBlock implements ITileEntityProvider{
 
     @Override
     public String getName() {
-        return "OilCompressor";
+        return "oilcompressor";
     }
 
 

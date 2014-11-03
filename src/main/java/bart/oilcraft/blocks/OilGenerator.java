@@ -43,7 +43,7 @@ public class OilGenerator extends OilCraftBlock implements ITileEntityProvider {
 
     @Override
     public String getName() {
-        return "OilGenerator";
+        return "oilgenerator";
     }
 
 

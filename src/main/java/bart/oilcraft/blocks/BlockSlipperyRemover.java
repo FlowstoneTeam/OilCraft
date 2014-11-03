@@ -36,7 +36,7 @@ public class BlockSlipperyRemover extends OilCraftBlock implements ITileEntityPr
 
     @Override
     public String getName() {
-        return ("BlockSlipperyRemover");
+        return ("blockslipperyremover");
     }
 
     @Override

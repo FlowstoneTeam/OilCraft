@@ -10,10 +10,10 @@ import net.minecraft.item.Item;
 public class EnergyAcceptor extends Item {
     public EnergyAcceptor(){
         this.setTextureName(References.RESOURCESPREFIX + getName());
-        this.setUnlocalizedName(References.MODID + ".EnergyAcceptor");
+        this.setUnlocalizedName(References.MODID + ".energyacceptor");
         this.setCreativeTab(OilCraftMain.getCreativeTab());
     }
     public String getName() {
-        return "EnergyAcceptor";
+        return "energyacceptor";
     }
 }

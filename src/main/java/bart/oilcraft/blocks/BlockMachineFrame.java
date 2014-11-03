@@ -30,7 +30,7 @@ public class BlockMachineFrame extends OilCraftBlock {
 
     @Override
     public String getName() {
-        return "BlockMachineFrame";
+        return "blockmachineframe";
     }
 
 

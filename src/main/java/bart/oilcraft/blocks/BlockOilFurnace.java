@@ -36,7 +36,7 @@ public class BlockOilFurnace extends OilCraftBlock implements ITileEntityProvide
 
     @Override
     public String getName() {
-        return ("BlockOilFurnace");
+        return ("blockoilfurnace");
     }
 
     @Override
