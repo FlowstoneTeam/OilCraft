@@ -3,7 +3,6 @@ package bart.oilcraft.lib.handler;
 import java.util.HashMap; 
 import java.util.Map;
 
-import bart.oilcraft.enchants.EnchantRegistry;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent; 
 import net.minecraft.block.Block; 

@@ -1,4 +1,4 @@
-package bart.oilcraft.entities.GooBall;
+package bart.oilcraft.entities.gooball;
 
 import bart.oilcraft.entities.EntityGooBall;
 import bart.oilcraft.lib.References;

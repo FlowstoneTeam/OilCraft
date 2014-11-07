@@ -1,13 +1,10 @@
 package bart.oilcraft.blocks;
 
 import bart.oilcraft.OilCraftMain;
-import bart.oilcraft.enchants.EnchantRegistry;
 import bart.oilcraft.items.ModItems;
 import bart.oilcraft.lib.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;

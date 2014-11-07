@@ -28,7 +28,5 @@ public class ModBlocks {
             GameRegistry.registerBlock(ShaleOilOre, "ShaleOilOre");
         OilLayer = new BlockOilLayer();
             GameRegistry.registerBlock(OilLayer, "OilLayer");
-        SlipperyRemover = new BlockSlipperyRemover();
-            GameRegistry.registerBlock(SlipperyRemover, "SlipperyRemover");
     }
 }

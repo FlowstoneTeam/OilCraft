@@ -1,29 +1,23 @@
 package bart.oilcraft.entities;
 
 import bart.oilcraft.blocks.ModBlocks;
-import bart.oilcraft.enchants.EnchantRegistry;
 import bart.oilcraft.fluids.BlockOil;
-import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
+import bart.oilcraft.items.OilBall;
+import bart.oilcraft.potions.ModPotions;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.passive.EntityWaterMob;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
@@ -298,8 +292,8 @@ public class EntityGooBall extends EntitySlime {
     @Override
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
-        if(slipperyGive && par1EntityPlayer.getHeldItem() != null && !(EnchantmentHelper.getEnchantments(par1EntityPlayer.getHeldItem()).containsKey(EnchantRegistry.SlipperyEnchant.effectId))){
-            par1EntityPlayer.getHeldItem().addEnchantment(EnchantRegistry.SlipperyEnchant, 1);
+        if(slipperyGive && !par1EntityPlayer.isPotionActive(ModPotions.slippery)){
+            par1EntityPlayer.addPotionEffect(new PotionEffect(ModPotions.slippery.id, 1200, 0, false));
         }
         if (this.canDamagePlayer())
         {
@@ -348,13 +342,12 @@ public class EntityGooBall extends EntitySlime {
         return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
     }
 
-    protected Item getDropItem()
+    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
     {
         Random rand = new Random();
-        int random = rand.nextInt(3);
-        if(random == 1)return ModItems.OilBall;
-        else return null;
-
+        int random = rand.nextInt(2);
+        if(random == 1)this.dropItem(ModItems.OilBall, 2);
+        else this.dropItem(ModItems.OilBall, 1);
     }
 
     @Override

@@ -159,7 +159,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
-        signEdit();
+        //signEdit();
         distributePower();
         if (getOilLevel(items[0]) > 0) {
             if (energy.getEnergyStored() >= getRFAmount(items[0])) {
@@ -340,7 +340,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
 
 
-    public void signEdit(){
+    /*public void signEdit(){
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
 
         if (te instanceof TileEntitySign){
@@ -350,7 +350,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
             ((TileEntitySign) te).signText[2]="Process " + progress + "/" + getProcessTime(items[0]);
             ((TileEntitySign) te).signText[3]="Block: Oil Compressor";
         }
-    }
+    }*/
 
 }
 

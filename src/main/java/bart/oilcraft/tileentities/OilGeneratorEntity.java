@@ -93,7 +93,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     @Override
     public void updateEntity() {
     if(worldObj.isRemote) return;
-        signEdit();
+        //signEdit();
         distributePower();
         if(tank.getFluidAmount() >= 30 && energy.getEnergyStored() + RfForOil <= energy.getMaxEnergyStored()){
                 this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -147,7 +147,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     }
 
 
-    public void signEdit(){
+   /* public void signEdit(){
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
 
         if (te instanceof TileEntitySign){
@@ -157,5 +157,5 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
             ((TileEntitySign) te).signText[2]="Process " + "This block does not have a process";
             ((TileEntitySign) te).signText[3]="Block: Oil Generator";
         }
-    }
+    }*/
 }

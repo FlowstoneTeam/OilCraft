@@ -10,6 +10,7 @@ tile.oilgenerator.name=Oil Generator
 tile.oillayer.name=Oil Layer
 tile.blockoilfurnace.name=Oil Furnace
 
+oilcraft.potion.Slippery=Slippery
 
 item.oilcraft.oilbucket.name=Oil Bucket
 item.oilcraft.energyacceptor.name=Energy Acceptor
@@ -23,4 +24,4 @@ gui.oil.furnace=Oil Furnace
 
 enchantment.oilcraft.Slippery=Slippery
 
-entity.GooBall0.name=GooBall
+entity.GooBall.name=GooBall

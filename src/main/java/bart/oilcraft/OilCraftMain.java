@@ -2,8 +2,8 @@ package bart.oilcraft;
 
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.client.gui.GuiHandler;
-import bart.oilcraft.enchants.EnchantRegistry;
 import bart.oilcraft.entities.EntityGooBall;
+import bart.oilcraft.entities.entitytrowable.EntityOilBall;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.lib.handler.CraftingHandler;
 import bart.oilcraft.core.proxy.CommonProxy;
@@ -14,8 +14,10 @@ import bart.oilcraft.items.ModItems;
 import bart.oilcraft.lib.References;
 import bart.oilcraft.lib.handler.BucketHandler;
 import bart.oilcraft.lib.handler.WorldGenerationHandler;
+import bart.oilcraft.potions.ModPotions;
+import bart.oilcraft.potions.PotionSlippery;
+import bart.oilcraft.potions.PotionSlipperyHandler;
 import bart.oilcraft.util.OilCompressorRegistry;
-import bart.oilcraft.util.OilFurnaceRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.*;
@@ -30,7 +32,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
-import org.lwjgl.Sys;
 
 
 @Mod(modid = References.MODID, name = References.MODNAME, version = References.VERSION, guiFactory = References.GUI_FACTORY_CLASS)
@@ -56,12 +57,13 @@ public class OilCraftMain {
         ModBlocks.init();
         ModFluids.init();
         ModItems.init();
+        ModPotions.init();
         BucketRegistry.registerBucket();
 
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         NetworkRegistry.INSTANCE.registerGuiHandler(OilCraftMain.instance, new GuiHandler());
 
-        GameRegistry.registerWorldGenerator(new WorldGenerationHandler(), 2);
+        GameRegistry.registerWorldGenerator(new WorldGenerationHandler(), 3);
 
         FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
 
@@ -72,13 +74,14 @@ public class OilCraftMain {
         System.out.println("Oilcraft Initialization");
         CraftingHandler.init();
         proxy.registerTileEntities();
-        EnchantRegistry.registerEnchants();
+        FMLCommonHandler.instance().bus().register(new PotionSlipperyHandler());
 
         proxy.registerRenderInformation();
-        EntityRegistry.registerModEntity(EntityGooBall.class, "GooBall", 2, this, 20, 3, true);
+        EntityRegistry.registerModEntity(EntityGooBall.class, "gooball", 1, this, 20, 3, true);
         if(slimeSpawn) {
-            EntityRegistry.addSpawn(EntityGooBall.class, 5, 2, 3, EnumCreatureType.monster, BiomeGenBase.plains);
+            EntityRegistry.addSpawn(EntityGooBall.class, 5, 1, 3, EnumCreatureType.monster, BiomeGenBase.plains);
         }
+        EntityRegistry.registerModEntity(EntityOilBall.class, "oilball", 2, this, 20, 3, true);
     }
 
     @EventHandler

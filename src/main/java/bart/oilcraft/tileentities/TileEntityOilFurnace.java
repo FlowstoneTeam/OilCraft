@@ -243,7 +243,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public void updateEntity() {
         if (worldObj.isRemote) return;
         distributePower();
-        signEdit();
+        //signEdit();
         customSmelting();
         furnaceSmelt();
     }
@@ -376,7 +376,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
 
 
 
-    public void signEdit(){
+    /*public void signEdit(){
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
         if (te instanceof TileEntitySign){
             worldObj.markBlockForUpdate(xCoord, yCoord+1, zCoord);
@@ -385,5 +385,5 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
             ((TileEntitySign) te).signText[2]="Process " + Process + "/" + getItemProcess(items[0]);
             ((TileEntitySign) te).signText[3]="Block: Oil Furnace";
         }
-    }
+    }*/
 }
