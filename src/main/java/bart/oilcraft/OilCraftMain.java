@@ -85,7 +85,8 @@ public class OilCraftMain {
         }
         EntityRegistry.registerModEntity(EntityOilBall.class, "oilball", 2, this, 20, 3, true);
 
-        if(ConfigurationHandler.thaumAspects) ThaumcraftHandler.ThaumcraftAspectHandler();
+        if(ConfigurationHandler.thaumAspects && thaumcraftLoaded) ThaumcraftHandler.ThaumcraftAspectHandler();
+        System.out.println("absbsbsbsbbsbs:" + (ConfigurationHandler.thaumAspects && thaumcraftLoaded));
     }
 
     @EventHandler

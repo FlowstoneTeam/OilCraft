@@ -36,7 +36,7 @@ public class ContainerOilCompressor extends Container {
     }
 
     private void createSlots(OilCompressorEntity tile, EntityPlayer player) {
-        addSlotToContainer(new SlotWhitelist(tile, 0, 57, 36, OilCompressorRegistry.allowedItems));
+        addSlotToContainer(new Slot(tile, 0, 57, 36));
         addSlotToContainer(new SlotWhitelist(tile, 1, 107, 36, slot1));
         addSlotToContainer(new SlotFurnace(player, tile, 2, 152, 36));
         addSlotToContainer(new Slot(tile, 3, 175, 8));

@@ -126,9 +126,9 @@ public class ConfigurationHandler {
         energyDistributeUpgrade = craftingDistributeUpgrade.getBoolean();
 
         configuration.addCustomCategoryComment("ModIntegration", "You can enable/disable the mod intergration in this mod");
-        Property craftingThermalE = configuration.get("ModIntegration", "Thermal Expansion items in recipes", OilCraftMain.thermalExpansionLoaded);
+        Property craftingThermalE = configuration.get("ModIntegration", "Thermal Expansion items in recipes", true);
         thermalExpansionItems = craftingThermalE.getBoolean();
-        Property aspectsThaumcraft = configuration.get("ModIntergration", "Thaumcraftcraft recipes for items", OilCraftMain.thaumcraftLoaded);
+        Property aspectsThaumcraft = configuration.get("ModIntergration", "Thaumcraftcraft recipes for items", true);
         thaumAspects = aspectsThaumcraft.getBoolean();
 
         configuration.save();

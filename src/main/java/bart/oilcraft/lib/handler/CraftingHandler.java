@@ -1,5 +1,6 @@
 package bart.oilcraft.lib.handler;
 
+import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.items.ModItems;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,10 +31,10 @@ public class CraftingHandler {
         if(ConfigurationHandler.energyDistributeUpgrade)CraftingManager.getInstance().addRecipe(new ItemStack(ModItems.EnergyDistributeUpgrade), " G ", "GAG", " G ", 'A', ModItems.EnergyAcceptor, 'G', Items.gold_nugget);
 
         //misc
-        if(ConfigurationHandler.thermalExpansionItems && GameRegistry.findItem("ThermalExpansion", "powerCoilGold") != null){
-            if(ConfigurationHandler.oilCompressor)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', GameRegistry.findItem("thermalexpansion", "powerCoilGold"));
-            if(ConfigurationHandler.oilGenerator)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("thermalexpansion", "powerCoilGold"));
-            if(ConfigurationHandler.oilFurnace)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilFurnace), "III", "IFI", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("thermalexpansion", "powerCoilGold"), 'F', Blocks.furnace);
+        if(ConfigurationHandler.thermalExpansionItems && OilCraftMain.thermalExpansionLoaded && GameRegistry.findItem("ThermalExpansion", "powerCoilGold") != null ){
+            if(ConfigurationHandler.oilCompressor)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', GameRegistry.findItem("ThermalExpansion", "powerCoilGold"));
+            if(ConfigurationHandler.oilGenerator)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("ThermalExpansion", "powerCoilGold"));
+            if(ConfigurationHandler.oilFurnace)CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.OilFurnace), "III", "IFI", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("ThermalExpansion", "powerCoilGold"), 'F', Blocks.furnace);
         }
         CraftingManager.getInstance().addRecipe(new ItemStack(ModBlocks.ShaleOilOre), "C  ","   ", "   ", 'C', ModBlocks.CrudeOilOre);
     }
