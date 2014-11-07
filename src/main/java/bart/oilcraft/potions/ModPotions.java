@@ -6,7 +6,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -15,13 +14,13 @@ import java.lang.reflect.Modifier;
  * Created by Bart on 6-11-2014.
  */
 public class ModPotions extends Potion {
-    private static final ResourceLocation resource = new ResourceLocation(References.RESOURCESPREFIX + "/textures/gui/potions.png");
+    private static final ResourceLocation resource = new ResourceLocation(References.RESOURCESPREFIX + "textures/gui/potions.png");
 
-    public ModPotions(String name, boolean badEffect, int color, int iconIndex, int liquidColour) {
+    public ModPotions(String name, boolean badEffect, int color, int iconIndex) {
         super(findFreeID(), badEffect, color);
         setPotionName("oilcraft.potion." + name);
         setIconIndex(iconIndex % 8, iconIndex / 8);
-        getLiquidColor(liquidColour);
+        getLiquidColor(color);
     }
     public int getLiquidColor(int liquidColour){
         return liquidColour;

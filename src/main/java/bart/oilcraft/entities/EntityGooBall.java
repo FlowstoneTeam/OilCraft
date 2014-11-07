@@ -4,6 +4,7 @@ import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.fluids.BlockOil;
 import bart.oilcraft.items.ModItems;
 import bart.oilcraft.items.OilBall;
+import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.potions.ModPotions;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -31,9 +32,7 @@ public class EntityGooBall extends EntitySlime {
     public float squishFactor;
     public float prevSquishFactor;
     private int slimeJumpDelay;
-    public static boolean leaveTrail;
-    public static boolean regenOil;
-    public static boolean slipperyGive;
+
 
     public EntityGooBall(World par1World)
     {
@@ -175,7 +174,7 @@ public class EntityGooBall extends EntitySlime {
             i = this.getSlimeSize();
             this.setSize(0.6F * (float)i, 0.6F * (float)i);
         }
-        if(regenOil) {
+        if(ConfigurationHandler.regenOil) {
             for (int h = 0; h < ForgeDirection.VALID_DIRECTIONS.length; h++) {
                 ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[h];
                 Block block = worldObj.getBlock(this.chunkCoordX + direction.offsetX, this.chunkCoordY + direction.offsetY, this.chunkCoordZ + direction.offsetZ);
@@ -185,7 +184,7 @@ public class EntityGooBall extends EntitySlime {
                 }
             }
         }
-        if(leaveTrail) {
+        if(ConfigurationHandler.leaveTrail) {
             for (int l = 0; l < 4; ++l) {
                 int h = MathHelper.floor_double(this.posX + (double) ((float) (l % 2 * 2 - 1) * 0.25F));
                 int j = MathHelper.floor_double(this.posY);
@@ -292,7 +291,7 @@ public class EntityGooBall extends EntitySlime {
     @Override
     public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
     {
-        if(slipperyGive && !par1EntityPlayer.isPotionActive(ModPotions.slippery)){
+        if(ConfigurationHandler.slipperyGive && !par1EntityPlayer.isPotionActive(ModPotions.slippery)){
             par1EntityPlayer.addPotionEffect(new PotionEffect(ModPotions.slippery.id, 1200, 0, false));
         }
         if (this.canDamagePlayer())

@@ -4,21 +4,18 @@ import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.client.gui.GuiHandler;
 import bart.oilcraft.entities.EntityGooBall;
 import bart.oilcraft.entities.entitytrowable.EntityOilBall;
-import bart.oilcraft.lib.handler.ConfigurationHandler;
-import bart.oilcraft.lib.handler.CraftingHandler;
+import bart.oilcraft.lib.handler.*;
 import bart.oilcraft.core.proxy.CommonProxy;
 import bart.oilcraft.creativetab.OilCraftTab;
 import bart.oilcraft.fluids.BucketRegistry;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
 import bart.oilcraft.lib.References;
-import bart.oilcraft.lib.handler.BucketHandler;
-import bart.oilcraft.lib.handler.WorldGenerationHandler;
 import bart.oilcraft.potions.ModPotions;
-import bart.oilcraft.potions.PotionSlippery;
 import bart.oilcraft.potions.PotionSlipperyHandler;
 import bart.oilcraft.util.OilCompressorRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.*;
 import cpw.mods.fml.common.SidedProxy;
@@ -34,7 +31,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
 
 
-@Mod(modid = References.MODID, name = References.MODNAME, version = References.VERSION, guiFactory = References.GUI_FACTORY_CLASS)
+@Mod(modid = References.MODID, name = References.MODNAME, version = References.VERSION, guiFactory = References.GUI_FACTORY_CLASS, dependencies = References.DEPENDENCIES)
 public class OilCraftMain {
 
     @Instance
@@ -42,8 +39,8 @@ public class OilCraftMain {
 
     @SidedProxy(clientSide = References.CLIENTPROXYLOCATION, serverSide = References.COMMONPROXYLOCATION)
     public static CommonProxy proxy;
-
-    public static boolean slimeSpawn;
+    public static boolean thaumcraftLoaded = false;
+    public static boolean thermalExpansionLoaded = false;
 
     private static CreativeTabs oilCraftTab = new OilCraftTab(CreativeTabs.getNextID(), References.MODID);
     public static CreativeTabs getCreativeTab() {
@@ -53,6 +50,12 @@ public class OilCraftMain {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         System.out.println("Oilcraft PreInitialization");
+
+        thaumcraftLoaded = Loader.isModLoaded("Thaumcraft");
+        thermalExpansionLoaded = Loader.isModLoaded("ThermalExpansion");
+        System.out.println("Is Thaumcraft loaded: " + thaumcraftLoaded);
+        System.out.println("Is Thermal Expansion loaded: " + thermalExpansionLoaded);
+
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
         ModBlocks.init();
         ModFluids.init();
@@ -66,7 +69,6 @@ public class OilCraftMain {
         GameRegistry.registerWorldGenerator(new WorldGenerationHandler(), 3);
 
         FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
-
     }
 
     @EventHandler
@@ -78,10 +80,12 @@ public class OilCraftMain {
 
         proxy.registerRenderInformation();
         EntityRegistry.registerModEntity(EntityGooBall.class, "gooball", 1, this, 20, 3, true);
-        if(slimeSpawn) {
+        if(ConfigurationHandler.slimeSpawn) {
             EntityRegistry.addSpawn(EntityGooBall.class, 5, 1, 3, EnumCreatureType.monster, BiomeGenBase.plains);
         }
         EntityRegistry.registerModEntity(EntityOilBall.class, "oilball", 2, this, 20, 3, true);
+
+        if(ConfigurationHandler.thaumAspects) ThaumcraftHandler.ThaumcraftAspectHandler();
     }
 
     @EventHandler

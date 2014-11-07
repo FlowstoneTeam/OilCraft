@@ -19,7 +19,7 @@ public class RendererOilBall extends RenderSnowball {
     private static final ResourceLocation ballTextures = new ResourceLocation(References.MODID, "textures/items/oilball.png");
 
     public RendererOilBall(Item par1) {
-        super(par1, 1);
+        super(par1, 0);
     }
 
     @Override

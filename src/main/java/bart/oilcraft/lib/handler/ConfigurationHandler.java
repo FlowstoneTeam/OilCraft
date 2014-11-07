@@ -21,6 +21,34 @@ public class ConfigurationHandler {
 
     public static Configuration configuration;
 
+    //oil generator
+    public static int RfForOilGen;
+    public static int OilUsageGen;
+
+    //oil furnace
+    public static int RfForOilFur;
+    public static int ProcessTimeFur;
+    public static int cyclesAmountFur;
+    public static int OilUsageFur;
+
+    //entity
+    public static boolean slimeSpawn;
+    public static boolean leaveTrail;
+    public static boolean regenOil;
+    public static boolean slipperyGive;
+
+    //mod integration
+    public static boolean thaumAspects;
+
+    //crafting
+    public static boolean oilCompressor;
+    public static boolean oilGenerator;
+    public static boolean oilFurnace;
+    public static boolean slipperyRemover;
+    public static boolean oilLayer;
+    public static boolean energyAcceptor;
+    public static boolean energyDistributeUpgrade;
+    public static boolean thermalExpansionItems;
 
 
     public static void Init(File configFile){
@@ -54,51 +82,54 @@ public class ConfigurationHandler {
 
         configuration.addCustomCategoryComment("CustomizationGenerator", "Custom oil generator");
         Property oilGeneratorRF = configuration.get("CustomizationGenerator", "RF/tick", 80);
-        OilGeneratorEntity.RfForOil = oilGeneratorRF.getInt();
+        RfForOilGen = oilGeneratorRF.getInt();
         Property oilGeneratorOil = configuration.get("CustomizationGenerator", "Oil/tick", 30);
-        OilGeneratorEntity.OilUsage = oilGeneratorOil.getInt();
+        OilUsageGen = oilGeneratorOil.getInt();
 
         configuration.addCustomCategoryComment("CustomizationFurnace", "Custom Oil Furnace");
         Property oilFurnaceRF = configuration.get("CustomizationFurnace", "RF/run", 500);
         oilFurnaceRF.comment = "Custom Oil Furnace";
-        TileEntityOilFurnace.RfForOil = oilFurnaceRF.getInt();
+        RfForOilFur = oilFurnaceRF.getInt();
         Property oilFurnaceTime = configuration.get("CustomizationFurnace", "Time/run", 150);
-        TileEntityOilFurnace.ProcessTime = oilFurnaceTime.getInt();
+        ProcessTimeFur = oilFurnaceTime.getInt();
         Property oilFurnaceCycle = configuration.get("CustomizationFurnace", "Cycles for oilConsumption", 10);
-        TileEntityOilFurnace.cyclesAmount = oilFurnaceCycle.getInt();
+        cyclesAmountFur = oilFurnaceCycle.getInt();
         Property oilFurnaceOil = configuration.get("CustomizationFurnace", "Oil/cycleConsumption", 30);
-        TileEntityOilFurnace.OilUsage = oilFurnaceOil.getInt();
+        OilUsageFur = oilFurnaceOil.getInt();
 
         configuration.addCustomCategoryComment("gooball", "Here you can set what the gooball mob does");
         Property gooBallSpawn = configuration.get("gooball", "Can spawn", true);
-        OilCraftMain.slimeSpawn = gooBallSpawn.getBoolean();
+        slimeSpawn = gooBallSpawn.getBoolean();
         Property slimeLeaveTrail = configuration.get("gooball", "Leave trail", false);
-        EntityGooBall.leaveTrail = slimeLeaveTrail.getBoolean();
+        leaveTrail = slimeLeaveTrail.getBoolean();
         Property regenInOil = configuration.get("gooball", "Regen in oil", true);
-        EntityGooBall.regenOil = regenInOil.getBoolean();
-        Property slipperyGive = configuration.get("gooball", "Enchants your items", true);
-        EntityGooBall.slipperyGive = slipperyGive.getBoolean();
+        regenOil = regenInOil.getBoolean();
+        Property slipperyGiveOnTouch = configuration.get("gooball", "Enchants your items", true);
+        slipperyGive = slipperyGiveOnTouch.getBoolean();
 
         configuration.addCustomCategoryComment("Crafting", "You can enable/disable the crafting recipes in this mod");
         Property craftingCompressor = configuration.get("Crafting", "OilCompressor", true);
-        CraftingHandler.oilCompressor = craftingCompressor.getBoolean();
+        oilCompressor = craftingCompressor.getBoolean();
         Property craftingGenerator = configuration.get("Crafting", "OilGenerator", true);
-        CraftingHandler.oilGenerator = craftingGenerator.getBoolean();
+        oilGenerator = craftingGenerator.getBoolean();
         Property craftingFurnace = configuration.get("Crafting", "OilFurnace", true);
-        CraftingHandler.oilFurnace = craftingFurnace.getBoolean();
+        oilFurnace = craftingFurnace.getBoolean();
         Property craftingRemover = configuration.get("Crafting", "SlipperyRemover", true);
-        CraftingHandler.slipperyRemover = craftingRemover.getBoolean();
+        slipperyRemover = craftingRemover.getBoolean();
 
         Property craftingOilLayer = configuration.get("Crafting", "OilLayer", true);
-        CraftingHandler.oilLayer = craftingOilLayer.getBoolean();
+        oilLayer = craftingOilLayer.getBoolean();
 
         Property craftingAcceptor = configuration.get("Crafting", "EnergyAcceptor", true);
-        CraftingHandler.energyAcceptor = craftingAcceptor.getBoolean();
+        energyAcceptor = craftingAcceptor.getBoolean();
         Property craftingDistributeUpgrade = configuration.get("Crafting", "EnergyDistributeUpgrade", true);
-        CraftingHandler.energyDistributeUpgrade = craftingDistributeUpgrade.getBoolean();
+        energyDistributeUpgrade = craftingDistributeUpgrade.getBoolean();
 
-        Property craftingThermalE = configuration.get("Crafting", "Thermal Expansion items in recipes", true);
-        CraftingHandler.thermalExpansionItems = craftingThermalE.getBoolean();
+        configuration.addCustomCategoryComment("ModIntegration", "You can enable/disable the mod intergration in this mod");
+        Property craftingThermalE = configuration.get("ModIntegration", "Thermal Expansion items in recipes", OilCraftMain.thermalExpansionLoaded);
+        thermalExpansionItems = craftingThermalE.getBoolean();
+        Property aspectsThaumcraft = configuration.get("ModIntergration", "Thaumcraftcraft recipes for items", OilCraftMain.thaumcraftLoaded);
+        thaumAspects = aspectsThaumcraft.getBoolean();
 
         configuration.save();
     }

@@ -3,6 +3,7 @@ package bart.oilcraft.tileentities;
 
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.ModItems;
+import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.util.OilFurnaceRegistry;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
@@ -33,10 +34,6 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public FluidTank tank = new FluidTank(10000);
     public int Process;
     public int cycles;
-    public static int RfForOil;
-    public static int ProcessTime;
-    public static int cyclesAmount;
-    public static int OilUsage;
     public int facing;
 
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
@@ -309,15 +306,15 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public void furnaceSmelt(){
         if (canSmelt()) {
             if (items[0] != null && this.canSmelt() && energy.getEnergyStored() >= 100) {
-                if (tank.getFluidAmount() > OilUsage || cycles > 0) {
-                    if (Process >= ProcessTime/100*75) {
+                if (tank.getFluidAmount() > ConfigurationHandler.OilUsageFur || cycles > 0) {
+                    if (Process >= ConfigurationHandler.ProcessTimeFur/100*75) {
                         Process = 0;
-                        energy.extractEnergy(RfForOil, false);
+                        energy.extractEnergy(ConfigurationHandler.RfForOilFur, false);
                         smelt();
                         cycles++;
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                        if(cycles == cyclesAmount) {
-                            tank.drain(OilUsage, true);
+                        if(cycles == ConfigurationHandler.cyclesAmountFur) {
+                            tank.drain(ConfigurationHandler.OilUsageFur, true);
                             cycles = 0;
                             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                         }
@@ -325,7 +322,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
                 }else
                 if (Process >= Process) {
                     Process = 0;
-                    energy.extractEnergy(RfForOil, false);
+                    energy.extractEnergy(ConfigurationHandler.RfForOilFur, false);
                     smelt();
                     this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                 } else Process++;

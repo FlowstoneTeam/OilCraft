@@ -1,6 +1,7 @@
 package bart.oilcraft.tileentities;
 
 import bart.oilcraft.fluids.ModFluids;
+import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
@@ -21,8 +22,6 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
 
     public FluidTank tank = new FluidTank(10000);
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
-    public static int RfForOil;
-    public static int OilUsage;
     public int facing;
 
 
@@ -95,10 +94,10 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     if(worldObj.isRemote) return;
         //signEdit();
         distributePower();
-        if(tank.getFluidAmount() >= 30 && energy.getEnergyStored() + RfForOil <= energy.getMaxEnergyStored()){
+        if(tank.getFluidAmount() >= 30 && energy.getEnergyStored() + ConfigurationHandler.RfForOilGen <= energy.getMaxEnergyStored()){
                 this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                 tank.drain(30, true);
-                energy.receiveEnergy(RfForOil, false);
+                energy.receiveEnergy(ConfigurationHandler.RfForOilGen, false);
         }
     }
 

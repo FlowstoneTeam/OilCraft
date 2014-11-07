@@ -8,4 +8,5 @@ public class References {
     public static final String MODNAME = "Oil Craft";
     public static final String VERSION = "alpha 13";
     public static final String GUI_FACTORY_CLASS = "bart.oilcraft.client.gui.GuiHandler";
+    public static final String DEPENDENCIES = "after:Thaumcraft;after:ThermalExpansion";
 }

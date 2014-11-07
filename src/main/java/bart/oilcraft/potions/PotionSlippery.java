@@ -11,7 +11,7 @@ import java.lang.reflect.Modifier;
  */
 public class PotionSlippery extends ModPotions {
     public PotionSlippery() {
-        super("Slippery", false, 0xFFFFFF, 0, 0xFFFFFF);
+        super("Slippery", false, 0xFFFFFF, 0);
     }
 
 }
