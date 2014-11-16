@@ -2,6 +2,7 @@ package bart.oilcraft.blocks;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import scala.collection.parallel.ParIterableLike;
 
 public class ModBlocks {
     public static Block OilCompressor;
@@ -11,7 +12,8 @@ public class ModBlocks {
     public static Block OilFurnace;
     public static Block ShaleOilOre;
     public static Block OilLayer;
-    public static Block SlipperyRemover;
+    public static Block SummonTable;
+    public static Block OilyStoneBrick;
 
     public static void init() {
         OilCompressor = new OilCompressor();
@@ -28,5 +30,9 @@ public class ModBlocks {
             GameRegistry.registerBlock(ShaleOilOre, "ShaleOilOre");
         OilLayer = new BlockOilLayer();
             GameRegistry.registerBlock(OilLayer, "OilLayer");
+        SummonTable = new BlockSummonTable();
+            GameRegistry.registerBlock(SummonTable, "SummonTable");
+        OilyStoneBrick = new BlockOilyStoneBrick();
+            GameRegistry.registerBlock(OilyStoneBrick, "OilyStoneBrick");
     }
 }

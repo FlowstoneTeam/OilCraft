@@ -320,7 +320,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
                         }
                     } else Process++;
                 }else
-                if (Process >= Process) {
+                if (Process >= ConfigurationHandler.ProcessTimeFur) {
                     Process = 0;
                     energy.extractEnergy(ConfigurationHandler.RfForOilFur, false);
                     smelt();

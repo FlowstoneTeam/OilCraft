@@ -24,7 +24,7 @@ public class BlockMachineFrame extends OilCraftBlock {
     public BlockMachineFrame() {
         this.setBlockName(getName());
         this.setCreativeTab(OilCraftMain.getCreativeTab());
-        this.setStepSound(Block.soundTypeStone);
+        this.setStepSound(Block.soundTypeMetal);
         this.setHardness(4f);
     }
 

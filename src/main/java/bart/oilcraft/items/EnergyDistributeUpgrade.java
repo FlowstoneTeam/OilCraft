@@ -2,7 +2,10 @@ package bart.oilcraft.items;
 
 import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.lib.References;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 /**
  * Created by Bart on 30-10-2014.
@@ -17,4 +20,6 @@ public class EnergyDistributeUpgrade extends Item {
     public String getName() {
         return "energydistributeupgrade";
     }
+
+
 }

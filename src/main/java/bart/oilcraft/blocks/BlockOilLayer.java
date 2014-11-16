@@ -5,6 +5,7 @@ import bart.oilcraft.items.ModItems;
 import bart.oilcraft.lib.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
@@ -15,6 +16,8 @@ import java.util.Random;
  * Created by Bart on 28-10-2014.
  */
 public class BlockOilLayer extends OilCraftBlock {
+    public float slippery;
+
     public BlockOilLayer() {
         super(Material.sand);
         this.setBlockName(getName());
@@ -23,6 +26,7 @@ public class BlockOilLayer extends OilCraftBlock {
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.func_150154_b(0);
         this.setBlockTextureName(References.RESOURCESPREFIX + getName());
+        this.slipperiness = slippery;
     }
 
     public String getName() {
@@ -64,6 +68,13 @@ public class BlockOilLayer extends OilCraftBlock {
         int j = p_150154_1_ & 7;
         float f = (float)(2 * (1 + j)) / 16.0F;
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f, 1.0F);
+    }
+
+    @Override
+    public void updateTick(World p_149674_1_, int p_149674_2_, int p_149674_3_, int p_149674_4_, Random p_149674_5_)
+    {
+        Random rand = new Random();
+        slippery = rand.nextInt((2 - -2) + 1) + -2;
     }
 
 }

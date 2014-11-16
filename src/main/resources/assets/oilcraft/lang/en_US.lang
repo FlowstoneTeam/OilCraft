@@ -9,6 +9,8 @@ tile.blockslipperyremover.name=Slippery Remover
 tile.oilgenerator.name=Oil Generator
 tile.oillayer.name=Oil Layer
 tile.blockoilfurnace.name=Oil Furnace
+tile.summontable.name=Summon Table
+tile.oilystonebrick.name=Oily Stone Brick
 
 oilcraft.potion.Slippery=Slippery
 
