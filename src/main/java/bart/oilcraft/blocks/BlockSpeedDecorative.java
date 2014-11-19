@@ -17,11 +17,11 @@ import java.util.Random;
 /**
  * Created by Bart on 14-11-2014.
  */
-public class BlockDecorative extends OilCraftBlock {
+public class BlockSpeedDecorative extends OilCraftBlock {
 
     public IIcon[] icon = new IIcon[16];
 
-    public BlockDecorative(){
+    public BlockSpeedDecorative(){
         this.setBlockName(getName());
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.setStepSound(Block.soundTypeStone);
@@ -59,8 +59,8 @@ public class BlockDecorative extends OilCraftBlock {
     @Override
     public Item getItemDropped(int quantity, Random rand, int meta) {
         switch (meta) {
-            case 0: return new ItemStack(ModBlocks.normalDecro, 1, 0).getItem();
-            case 1: return new ItemStack(ModBlocks.normalDecro, 1, 1).getItem();
+            case 0: return new ItemStack(ModBlocks.speedDecro, 1, 0).getItem();
+            case 1: return new ItemStack(ModBlocks.speedDecro, 1, 1).getItem();
         }
         return null;
     }

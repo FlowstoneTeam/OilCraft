@@ -11,15 +11,16 @@ public class OilCraftStairs extends BlockStairs {
 
     public OilCraftStairs(Block materialBlock, int meta) {
         super(materialBlock, meta);
-        this.setBlockName(materialBlock.getUnlocalizedName() + "stair");
+        this.setBlockName(materialBlock.getUnlocalizedName() + "stair" + meta);
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.setStepSound(Block.soundTypeStone);
         this.setHardness(4f);
         this.slipperiness = Slippery(materialBlock);
+        this.getUseNeighborBrightness();
     }
 
     public float Slippery(Block block){
-        if (block instanceof BlockDecorative){
+        if (block instanceof BlockSpeedDecorative){
             return 0.80F;
         }else return 0.6F;
     }

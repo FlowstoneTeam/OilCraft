@@ -9,6 +9,7 @@ import bart.oilcraft.potions.ModPotions;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
@@ -26,7 +27,7 @@ import java.util.Random;
 /**
  * Created by Bart on 27-10-2014.
  */
-public class EntityGooBall extends EntitySlime {
+public class EntityGooBall extends EntitySlime  {
 
     public float squishAmount;
     public float squishFactor;

@@ -12,7 +12,7 @@ public class ModBlocks {
     public static Block ShaleOilOre;
     public static Block OilLayer;
     public static Block SummonTable;
-    public static Block normalDecro;
+    public static Block speedDecro;
     public static Block OilyStairs;
 
     public static void init() {
@@ -32,9 +32,9 @@ public class ModBlocks {
             GameRegistry.registerBlock(OilLayer, "OilLayer");
         SummonTable = new BlockSummonTable();
             GameRegistry.registerBlock(SummonTable, "SummonTable");
-        OilyStairs = new OilCraftStairs(normalDecro, 0);
+        speedDecro = new BlockSpeedDecorative().setBlockName("speeddecro");
+            GameRegistry.registerBlock(speedDecro, BlockOilyBrickMeta.class, speedDecro.getUnlocalizedName());
+        OilyStairs = new OilCraftStairs(speedDecro, 0);
             GameRegistry.registerBlock(OilyStairs, "OilyStairs");
-        normalDecro = new BlockDecorative().setBlockName("oilystonebrick");
-            GameRegistry.registerBlock(normalDecro, BlockOilyBrickMeta.class, normalDecro.getUnlocalizedName());
     }
 }

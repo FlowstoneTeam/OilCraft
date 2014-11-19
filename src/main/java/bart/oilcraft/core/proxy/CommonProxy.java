@@ -1,6 +1,7 @@
 package bart.oilcraft.core.proxy;
 
 import bart.oilcraft.entities.EntityGooBall;
+import bart.oilcraft.entities.EntityOilBoss;
 import bart.oilcraft.entities.entitytrowable.EntityOilBall;
 import bart.oilcraft.tileentities.OilCompressorEntity;
 import bart.oilcraft.tileentities.OilGeneratorEntity;
@@ -22,5 +23,6 @@ public class CommonProxy {
     public void registerRenderInformation(){
         EntityRegistry.registerGlobalEntityID(EntityGooBall.class, "GooBall", EntityRegistry.findGlobalUniqueEntityId(), 0x000000, 0x000050);
         EntityRegistry.registerGlobalEntityID(EntityOilBall.class, "OilBall", EntityRegistry.findGlobalUniqueEntityId());
+        EntityRegistry.registerGlobalEntityID(EntityOilBoss.class, "OilBoss", EntityRegistry.findGlobalUniqueEntityId());
     }
 }
