@@ -66,7 +66,7 @@ public class EntityOilBoss extends EntityCreature implements IBossDisplayData {
     }
 
     public void setMobSpawnTicks(int ticks) {
-        dataWatcher.updateObject(26, ticks);
+        dataWatcher.updateObject(20, ticks);
     }
 
     public void setSource(int x, int y, int z) {

@@ -3,6 +3,7 @@ package bart.oilcraft;
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.client.gui.GuiHandler;
 import bart.oilcraft.entities.EntityGooBall;
+import bart.oilcraft.entities.EntityOilBoss;
 import bart.oilcraft.entities.entitytrowable.EntityOilBall;
 import bart.oilcraft.lib.handler.*;
 import bart.oilcraft.core.proxy.CommonProxy;
@@ -26,6 +27,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.MinecraftForge;
@@ -84,6 +86,7 @@ public class OilCraftMain {
             EntityRegistry.addSpawn(EntityGooBall.class, 5, 1, 3, EnumCreatureType.monster, BiomeGenBase.plains);
         }
         EntityRegistry.registerModEntity(EntityOilBall.class, "oilball", 2, this, 20, 3, true);
+        EntityRegistry.registerModEntity(EntityOilBoss.class, "oilboss", 3, this, 50, 3, true);
 
         if(ConfigurationHandler.thaumAspects && thaumcraftLoaded) ThaumcraftHandler.ThaumcraftAspectHandler();
         System.out.println("absbsbsbsbbsbs:" + (ConfigurationHandler.thaumAspects && thaumcraftLoaded));
