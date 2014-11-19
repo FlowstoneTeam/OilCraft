@@ -11,6 +11,7 @@ tile.oillayer.name=Oil Layer
 tile.blockoilfurnace.name=Oil Furnace
 tile.summontable.name=Summon Table
 tile.oilystonebrick.name=Oily Stone Brick
+tile.tile.oilystonebrickstair.name=Oily Stone Brick Stair
 
 oilcraft.potion.Slippery=Slippery
 

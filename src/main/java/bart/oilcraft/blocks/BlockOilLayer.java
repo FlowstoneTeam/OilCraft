@@ -70,11 +70,6 @@ public class BlockOilLayer extends OilCraftBlock {
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f, 1.0F);
     }
 
-    @Override
-    public void updateTick(World p_149674_1_, int p_149674_2_, int p_149674_3_, int p_149674_4_, Random p_149674_5_)
-    {
-        Random rand = new Random();
-        slippery = rand.nextInt((2 - -2) + 1) + -2;
-    }
+
 
 }
