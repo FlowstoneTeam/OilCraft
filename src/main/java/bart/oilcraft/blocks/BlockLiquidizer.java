@@ -107,9 +107,8 @@ public class BlockLiquidizer extends OilCraftBlock implements ITileEntityProvide
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_){
         TileEntity te = world.getTileEntity(x, y, z);
         ItemStack par1ItemStack = player.getHeldItem();
-        if(te instanceof TileEntityLiquidizer && player.getHeldItem().getItem() == null){
+        if(te instanceof TileEntityLiquidizer && player.getHeldItem() == null){
             ((TileEntityLiquidizer)te).Teleport(player);
-            System.out.println("I tried");
             return true;
         } else if (te instanceof TileEntityLiquidizer && player.getHeldItem().getItem() instanceof ItemNote && par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound.hasKey("xCoord") && par1ItemStack.stackTagCompound.hasKey("yCoord") && par1ItemStack.stackTagCompound.hasKey("zCoord")){
             world.markBlockForUpdate(x, y, z);

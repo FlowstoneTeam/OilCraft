@@ -6,6 +6,7 @@ import bart.oilcraft.items.ModItems;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import ibxm.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ISidedInventory;
@@ -13,6 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
@@ -107,15 +111,16 @@ public class TileEntityLiquidizer extends TileEntity implements IEnergyHandler {
     public void Teleport(EntityPlayer player){
         if(worldObj.isRemote) return;
         if(worldObj.getTileEntity(xCoordTel, yCoordTel, zCoordTel) instanceof TileEntityOilFurnace && worldObj.getBlock(xCoordTel, yCoordTel-1, zCoordTel).equals(Blocks.air) && worldObj.getBlock(xCoordTel, yCoordTel-2, zCoordTel).equals(Blocks.air)){
-            System.out.println("the space is clear");
             if (worldObj.getBlock(xCoordTel, yCoordTel-3, zCoordTel).isOpaqueCube()){
-                System.out.println("we got land");
                 if(player != null){
-                    System.out.println("Player is ready");
                     player.setPositionAndUpdate(xCoordTel, yCoordTel-2, zCoordTel);
                     player.fallDistance = 0.0F;
                 }
+            } else {
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "The block 3 blocks under needs to be an opaque cube"));
             }
+        } else {
+            player.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "The teleport was unsuccessful make sure the output block" + EnumChatFormatting.RED + " is the Body Reconstruct and that it has 2 empty spaces below it"));
         }
     }
 
