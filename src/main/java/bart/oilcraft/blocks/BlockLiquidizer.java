@@ -5,6 +5,7 @@ import bart.oilcraft.items.ItemNote;
 import bart.oilcraft.lib.References;
 import bart.oilcraft.tileentities.TileEntityLiquidizer;
 import bart.oilcraft.tileentities.TileEntityOilFurnace;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -110,7 +111,7 @@ public class BlockLiquidizer extends OilCraftBlock implements ITileEntityProvide
             ((TileEntityLiquidizer)te).Teleport(player);
             System.out.println("I tried");
             return true;
-        } else if (te instanceof TileEntityLiquidizer && par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound.hasKey("xCoord") && par1ItemStack.stackTagCompound.hasKey("yCoord") && par1ItemStack.stackTagCompound.hasKey("zCoord")){
+        } else if (te instanceof TileEntityLiquidizer && player.getHeldItem().getItem() instanceof ItemNote && par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound.hasKey("xCoord") && par1ItemStack.stackTagCompound.hasKey("yCoord") && par1ItemStack.stackTagCompound.hasKey("zCoord")){
             world.markBlockForUpdate(x, y, z);
             ((TileEntityLiquidizer)te).xCoordTel = par1ItemStack.stackTagCompound.getInteger("xCoord");
             ((TileEntityLiquidizer)te).yCoordTel = par1ItemStack.stackTagCompound.getInteger("yCoord");
