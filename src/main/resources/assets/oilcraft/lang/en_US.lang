@@ -13,6 +13,7 @@ tile.summontable.name=Summon Table
 tile.speeddecro.oilystonebrick.name=Oily Stone Brick
 tile.speeddecro.crackedoilystonebrick.name=Cracked Oily Stone Brick
 tile.tile.speeddecrostair0.name=Oily Stone Brick Stair
+tile.Decorative.sturdystonebrick.name=Sturdy Oily Stone Brick
 
 oilcraft.potion.Slippery=Slippery
 
@@ -21,6 +22,7 @@ item.oilcraft.energyacceptor.name=Energy Acceptor
 item.oilcraft.oilydiamond.name=Oily Diamond
 item.oilcraft.oilball.name=Oil Ball
 item.oilcraft.energydistributeupgrade.name=Energy Distribute Upgrade
+item.oilcraft.notes.name=Notes
 
 gui.oil.compressor=Oil Compressor
 gui.slippery.remover=Slippery Remover

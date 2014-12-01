@@ -13,7 +13,9 @@ public class ModBlocks {
     public static Block OilLayer;
     public static Block SummonTable;
     public static Block speedDecro;
+    public static Block Decorative;
     public static Block OilyStairs;
+    public static Block liquidizer;
 
     public static void init() {
         OilCompressor = new OilCompressor();
@@ -33,8 +35,12 @@ public class ModBlocks {
         SummonTable = new BlockSummonTable();
             GameRegistry.registerBlock(SummonTable, "SummonTable");
         speedDecro = new BlockSpeedDecorative().setBlockName("speeddecro");
-            GameRegistry.registerBlock(speedDecro, BlockOilyBrickMeta.class, speedDecro.getUnlocalizedName());
+            GameRegistry.registerBlock(speedDecro, BlockSpeedDecorativeMeta.class, speedDecro.getUnlocalizedName());
+        Decorative = new BlockDecorative().setBlockName("Decorative");
+            GameRegistry.registerBlock(Decorative, BlockDecorativeMeta.class, Decorative.getUnlocalizedName());
         OilyStairs = new OilCraftStairs(speedDecro, 0);
             GameRegistry.registerBlock(OilyStairs, "OilyStairs");
+        liquidizer = new BlockLiquidizer();
+            GameRegistry.registerBlock(liquidizer, "liquidizer");
     }
 }

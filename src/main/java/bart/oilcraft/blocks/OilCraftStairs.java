@@ -21,7 +21,7 @@ public class OilCraftStairs extends BlockStairs {
 
     public float Slippery(Block block){
         if (block instanceof BlockSpeedDecorative){
-            return 0.80F;
+            return 0.9F;
         }else return 0.6F;
     }
 }

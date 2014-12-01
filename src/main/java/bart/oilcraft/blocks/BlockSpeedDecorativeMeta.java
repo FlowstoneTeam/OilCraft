@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by Bart on 17-11-2014.
  */
-public class BlockOilyBrickMeta extends ItemBlock {
-    public BlockOilyBrickMeta(Block block) {
+public class BlockSpeedDecorativeMeta extends ItemBlock {
+    public BlockSpeedDecorativeMeta(Block block) {
         super(block);
         setHasSubtypes(true);
     }

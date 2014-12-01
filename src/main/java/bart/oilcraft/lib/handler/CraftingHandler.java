@@ -29,6 +29,7 @@ public class CraftingHandler {
         //items
         if(ConfigurationHandler.energyAcceptor)CraftingManager.getInstance().addRecipe(new ItemStack(ModItems.EnergyAcceptor), "RRR", "RGR", "RRR", 'R', Items.redstone, 'G', Items.gold_nugget);
         if(ConfigurationHandler.energyDistributeUpgrade)CraftingManager.getInstance().addRecipe(new ItemStack(ModItems.EnergyDistributeUpgrade), " G ", "GAG", " G ", 'A', ModItems.EnergyAcceptor, 'G', Items.gold_nugget);
+        CraftingManager.getInstance().addRecipe(new ItemStack(ModItems.Note), "C  ","   ", "   ", 'C', Blocks.cobblestone);
 
         //misc
         if(ConfigurationHandler.thermalExpansionItems && OilCraftMain.thermalExpansionLoaded && GameRegistry.findItem("ThermalExpansion", "powerCoilGold") != null ){

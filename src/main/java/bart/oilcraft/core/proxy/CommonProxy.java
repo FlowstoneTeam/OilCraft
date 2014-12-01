@@ -3,10 +3,7 @@ package bart.oilcraft.core.proxy;
 import bart.oilcraft.entities.EntityGooBall;
 import bart.oilcraft.entities.EntityOilBoss;
 import bart.oilcraft.entities.entitytrowable.EntityOilBall;
-import bart.oilcraft.tileentities.OilCompressorEntity;
-import bart.oilcraft.tileentities.OilGeneratorEntity;
-import bart.oilcraft.tileentities.TileEntityOilFurnace;
-import bart.oilcraft.tileentities.TileEntitySummonTable;
+import bart.oilcraft.tileentities.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -19,6 +16,7 @@ public class CommonProxy {
         GameRegistry.registerTileEntity(OilGeneratorEntity.class, "OilGeneratorEntity");
         GameRegistry.registerTileEntity(TileEntityOilFurnace.class, "TileEntityOilFurnace");
         GameRegistry.registerTileEntity(TileEntitySummonTable.class, "TileEntitySummonTable");
+        GameRegistry.registerTileEntity(TileEntityLiquidizer.class, "TileEntityLiquidizer");
     }
     public void registerRenderInformation(){
         EntityRegistry.registerGlobalEntityID(EntityGooBall.class, "GooBall", EntityRegistry.findGlobalUniqueEntityId(), 0x000000, 0x000050);
