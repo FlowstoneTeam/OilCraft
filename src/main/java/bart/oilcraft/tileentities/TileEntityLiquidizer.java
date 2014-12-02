@@ -1,5 +1,6 @@
 package bart.oilcraft.tileentities;
 
+import bart.oilcraft.blocks.BlockBodyReconstructor;
 import bart.oilcraft.blocks.CrudeOilOre;
 import bart.oilcraft.blocks.ModBlocks;
 import bart.oilcraft.items.ModItems;
@@ -99,18 +100,18 @@ public class TileEntityLiquidizer extends TileEntity implements IEnergyHandler {
         nbt.setInteger("zcoordtel", zCoordTel);
     }
 
-    @Override
+    /*@Override
     public void updateEntity() {
         if (worldObj.isRemote)return;
         //distributePower();
         //Teleport();
         signEdit();
-    }
+    }*/
 
 
     public void Teleport(EntityPlayer player){
         if(worldObj.isRemote) return;
-        if(worldObj.getTileEntity(xCoordTel, yCoordTel, zCoordTel) instanceof TileEntityOilFurnace && worldObj.getBlock(xCoordTel, yCoordTel-1, zCoordTel).equals(Blocks.air) && worldObj.getBlock(xCoordTel, yCoordTel-2, zCoordTel).equals(Blocks.air)){
+        if(worldObj.getBlock(xCoordTel, yCoordTel, zCoordTel) instanceof BlockBodyReconstructor && worldObj.getBlock(xCoordTel, yCoordTel-1, zCoordTel).equals(Blocks.air) && worldObj.getBlock(xCoordTel, yCoordTel-2, zCoordTel).equals(Blocks.air)){
             if (worldObj.getBlock(xCoordTel, yCoordTel-3, zCoordTel).isOpaqueCube()){
                 if(player != null){
                     player.setPositionAndUpdate(xCoordTel, yCoordTel-2, zCoordTel);
@@ -124,7 +125,7 @@ public class TileEntityLiquidizer extends TileEntity implements IEnergyHandler {
         }
     }
 
-    public void signEdit(){
+    /*public void signEdit(){
         TileEntity te = worldObj.getTileEntity(xCoord, yCoord+1, zCoord);
 
         if (te instanceof TileEntitySign){
@@ -134,6 +135,6 @@ public class TileEntityLiquidizer extends TileEntity implements IEnergyHandler {
             ((TileEntitySign) te).signText[2]="z " + zCoordTel;
 
         }
-    }
+    }*/
 
 }

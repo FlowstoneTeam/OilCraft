@@ -16,6 +16,7 @@ public class ModBlocks {
     public static Block Decorative;
     public static Block OilyStairs;
     public static Block liquidizer;
+    public static Block bodyReconstructer;
 
     public static void init() {
         OilCompressor = new OilCompressor();
@@ -42,5 +43,7 @@ public class ModBlocks {
             GameRegistry.registerBlock(OilyStairs, "OilyStairs");
         liquidizer = new BlockLiquidizer();
             GameRegistry.registerBlock(liquidizer, "liquidizer");
+        bodyReconstructer = new BlockBodyReconstructor();
+            GameRegistry.registerBlock(bodyReconstructer, "bodyReconstructer");
     }
 }
