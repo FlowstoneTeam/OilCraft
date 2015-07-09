@@ -7,21 +7,16 @@ import net.minecraft.block.BlockStairs;
 /**
  * Created by Bart on 16-11-2014.
  */
-public class OilCraftStairs extends BlockStairs {
+public class BlockOilCraftStairs extends BlockStairs {
 
-    public OilCraftStairs(Block materialBlock, int meta) {
+    public BlockOilCraftStairs(Block materialBlock, String name, int meta) {
         super(materialBlock, meta);
-        this.setBlockName(materialBlock.getUnlocalizedName() + "stair" + meta);
+        this.setBlockName("oilcraft" + name + "stair_" + meta);
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.setStepSound(Block.soundTypeStone);
         this.setHardness(4f);
-        this.slipperiness = Slippery(materialBlock);
+        if (materialBlock instanceof BlockSpeedDecorative)
+            this.slipperiness = 0.9f;
         this.getUseNeighborBrightness();
-    }
-
-    public float Slippery(Block block){
-        if (block instanceof BlockSpeedDecorative){
-            return 0.9F;
-        }else return 0.6F;
     }
 }

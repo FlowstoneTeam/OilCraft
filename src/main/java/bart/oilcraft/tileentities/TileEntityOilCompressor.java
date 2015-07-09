@@ -1,36 +1,29 @@
 package bart.oilcraft.tileentities;
 
-import bart.oilcraft.blocks.CrudeOilOre;
 import bart.oilcraft.containers.SlotWhitelist;
 import bart.oilcraft.fluids.ModFluids;
-import bart.oilcraft.items.ModItems;
-import bart.oilcraft.lib.handler.ConfigurationHandler;
+import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.util.OilCompressorRegistry;
 import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import net.minecraft.block.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.common.util.ForgeDirection;
-
 import net.minecraftforge.fluids.*;
-
 
 
 /**
  * Created by Bart on 4-6-2014.
  */
-public class OilCompressorEntity extends TileEntity implements ISidedInventory, IFluidHandler, IEnergyHandler {
+public class TileEntityOilCompressor extends TileEntity implements ISidedInventory, IFluidHandler, IEnergyHandler {
 
     public static final int[] slotsInsert = new int[]{0, 1};
     public static final int[] slotsExtract = new int[]{2};
@@ -42,6 +35,32 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
 
+    //add block and amount of oil it gives
+    public static int getOilLevel(ItemStack stack) {
+        if (stack == null || OilCompressorRegistry.getItemIndex(stack) < 0) {
+            return 0;
+        } else {
+            return OilCompressorRegistry.output[OilCompressorRegistry.getItemIndex(stack)];
+        }
+    }
+
+    //add block and amount of energy it uses
+    public static int getRFAmount(ItemStack stack) {
+        if (stack == null || OilCompressorRegistry.getItemIndex(stack) < 0) {
+            return 0;
+        } else {
+            return OilCompressorRegistry.energy[OilCompressorRegistry.getItemIndex(stack)];
+        }
+    }
+
+    //Add block and amount of time it takes to proses
+    public static int getProcessTime(ItemStack stack) {
+        if (stack == null || OilCompressorRegistry.getItemIndex(stack) < 0) {
+            return 0;
+        } else {
+            return OilCompressorRegistry.time[OilCompressorRegistry.getItemIndex(stack)];
+        }
+    }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
@@ -54,9 +73,8 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         //System.out.println("Item 1: " + stack.getItem() + "  Item 2: " + Item.getItemFromBlock(Blocks.cobblestone));
         //add block to list to make it be accepted
         return (slot == 0 && SlotWhitelist.arrayContains(OilCompressorRegistry.allowedItems, stack)) ||
-                (slot == 1 && stack.getItem() == Items.bucket) || (slot == 3 && stack.getItem() == ModItems.EnergyDistributeUpgrade);
+                (slot == 1 && stack.getItem() == Items.bucket) || (slot == 3 && stack.getItem() == OilCraftItemRegistry.energyDistributeUpgrade);
     }
-
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
@@ -117,8 +135,6 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
         }
     }
 
-
-
     @Override
     public String getInventoryName() {
         return "containers.ContainerOilCompressor";
@@ -153,7 +169,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return (slot == 0 && (slot == 0 && SlotWhitelist.arrayContains(OilCompressorRegistry.allowedItems, stack))) ||
-                (slot == 1 && stack.getItem() == Items.bucket) || (slot == 3 && stack.getItem() == ModItems.EnergyDistributeUpgrade);
+                (slot == 1 && stack.getItem() == Items.bucket) || (slot == 3 && stack.getItem() == OilCraftItemRegistry.energyDistributeUpgrade);
     }
 
     @Override
@@ -177,8 +193,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
                     progress++;
                 }
             }
-        }
-        else {
+        } else {
             progress = 0;
         }
 
@@ -186,14 +201,10 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
             tank.drain(1000, true);
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             setInventorySlotContents(1, items[1].stackSize == 1 ? null : new ItemStack(items[1].getItem(), items[1].stackSize - 1));
-            setInventorySlotContents(2, new ItemStack(ModItems.OilBucket));
+            setInventorySlotContents(2, new ItemStack(OilCraftItemRegistry.oilBucket));
 
         }
     }
-
-
-
-
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
@@ -229,33 +240,6 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     public FluidTank getTank() {
         return tank;
     }
-
-    //add block and amount of oil it gives
-    public static int getOilLevel(ItemStack stack) {
-        if (stack == null || OilCompressorRegistry.getItemIndex(stack) < 0) {
-            return 0;
-        } else {
-            return OilCompressorRegistry.output[OilCompressorRegistry.getItemIndex(stack)];
-        }
-    }
-    //add block and amount of energy it uses
-    public static int getRFAmount(ItemStack stack){
-        if (stack == null || OilCompressorRegistry.getItemIndex(stack) < 0) {
-            return 0;
-        } else {
-            return OilCompressorRegistry.energy[OilCompressorRegistry.getItemIndex(stack)];
-        }
-    }
-    //Add block and amount of time it takes to proses
-    public static int getProcessTime(ItemStack stack){
-        if (stack == null || OilCompressorRegistry.getItemIndex(stack) < 0) {
-            return 0;
-        } else {
-            return OilCompressorRegistry.time[OilCompressorRegistry.getItemIndex(stack)];
-        }
-    }
-
-
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -293,8 +277,6 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
     }
 
 
-
-
     @Override
     public boolean canConnectEnergy(ForgeDirection from) {
         return true;
@@ -318,11 +300,11 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
 
     @Override
     public int getMaxEnergyStored(ForgeDirection from) {
-            return energy.getMaxEnergyStored();
+        return energy.getMaxEnergyStored();
     }
 
-    public void distributePower(){
-        if (items[3] != null && items[3].getItem() == ModItems.EnergyDistributeUpgrade) {
+    public void distributePower() {
+        if (items[3] != null && items[3].getItem() == OilCraftItemRegistry.energyDistributeUpgrade) {
             for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                 ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
                 TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
@@ -348,7 +330,7 @@ public class OilCompressorEntity extends TileEntity implements ISidedInventory, 
             ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
             ((TileEntitySign) te).signText[1]="Fluid " + tank.getFluidAmount() + "/" + tank.getCapacity();
             ((TileEntitySign) te).signText[2]="Process " + progress + "/" + getProcessTime(items[0]);
-            ((TileEntitySign) te).signText[3]="Block: Oil Compressor";
+            ((TileEntitySign) te).signText[3]="block: Oil Compressor";
         }
     }*/
 

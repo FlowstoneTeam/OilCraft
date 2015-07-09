@@ -26,9 +26,8 @@ public class RendererGooBall extends RenderLiving {
         return slimeTextures;
     }
 
-    protected void scaleSlime(EntityGooBall par1EntitySlime, float par2)
-    {
-        float f1 = (float)par1EntitySlime.getSlimeSize();
+    protected void scaleSlime(EntityGooBall par1EntitySlime, float par2) {
+        float f1 = (float) par1EntitySlime.getSlimeSize();
         float f2 = (par1EntitySlime.prevSquishFactor + (par1EntitySlime.squishFactor - par1EntitySlime.prevSquishFactor) * par2) / (f1 * 0.5F + 1.0F);
         float f3 = 1.0F / (f2 + 1.0F);
         GL11.glScalef(f3 * f1, 1.0F / f3 * f1, f3 * f1);

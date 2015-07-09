@@ -1,8 +1,7 @@
 package bart.oilcraft.entities;
 
-import bart.oilcraft.blocks.ModBlocks;
-import bart.oilcraft.items.ModItems;
-import bart.oilcraft.lib.handler.ConfigurationHandler;
+import bart.oilcraft.blocks.OilCraftBlockRegistry;
+import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.potions.ModPotions;
 import bart.oilcraft.util.EntityFinder;
 import net.minecraft.entity.EntityCreature;
@@ -10,8 +9,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChunkCoordinates;
@@ -35,8 +32,8 @@ public class EntityOilBoss extends EntityCreature implements IBossDisplayData {
         this.setHealth(this.getMaxHealth());
     }
 
-    public static boolean spawn(EntityPlayer player, World world){
-            return (!(world.difficultySetting == EnumDifficulty.PEACEFUL));
+    public static boolean spawn(EntityPlayer player, World world) {
+        return (!(world.difficultySetting == EnumDifficulty.PEACEFUL));
     }
 
     @Override
@@ -76,7 +73,7 @@ public class EntityOilBoss extends EntityCreature implements IBossDisplayData {
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound nbt){
+    public void writeEntityToNBT(NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
 
         nbt.setInteger("mobSpawnTicks", getMobSpawnTicks());
@@ -88,7 +85,7 @@ public class EntityOilBoss extends EntityCreature implements IBossDisplayData {
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound nbt){
+    public void readEntityFromNBT(NBTTagCompound nbt) {
         super.readEntityFromNBT(nbt);
 
         setMobSpawnTicks(nbt.getInteger("mobSpawnTicks"));
@@ -114,23 +111,23 @@ public class EntityOilBoss extends EntityCreature implements IBossDisplayData {
 
 
     protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
-        this.dropItem(ModItems.AdvancedKnowledge, 1);
+        this.dropItem(OilCraftItemRegistry.advancedKnowledge, 1);
     }
 
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if(!worldObj.isRemote && worldObj.difficultySetting == EnumDifficulty.PEACEFUL) setDead();
+        if (!worldObj.isRemote && worldObj.difficultySetting == EnumDifficulty.PEACEFUL) setDead();
         ChunkCoordinates source = getSource();
 
         List<EntityPlayer> players = EntityFinder.getPlayersInRange(this.worldObj, source.posX, source.posY, source.posZ, 30, 30);
 
-        if(players.isEmpty() && !worldObj.playerEntities.isEmpty()){
-            worldObj.setBlock(source.posX, source.posY, source.posZ, ModBlocks.SummonTable);
+        if (players.isEmpty() && !worldObj.playerEntities.isEmpty()) {
+            worldObj.setBlock(source.posX, source.posY, source.posZ, OilCraftBlockRegistry.summonTable);
             this.setDead();
         }
-        if(getAttack() != 0){
-            if(getAttack() == 3){
+        if (getAttack() != 0) {
+            if (getAttack() == 3) {
                 worldObj.spawnEntityInWorld(new EntityGooBall(this.worldObj));
                 worldObj.spawnEntityInWorld(new EntityGooBall(this.worldObj));
                 worldObj.spawnEntityInWorld(new EntityGooBall(this.worldObj));
@@ -140,17 +137,18 @@ public class EntityOilBoss extends EntityCreature implements IBossDisplayData {
 
     }
 
-    public int getAttack(){
+    public int getAttack() {
         Random rand = new Random();
         int number = rand.nextInt(1000);
-        if(number == 1 || number == 2 || number == 3 || number == 4 || number == 5) return 1; //spout oil
-        else if(number == 6 || number == 7 || number == 8) return 2; //shoot shock
-        else if(number == 9) return 3; //spawn gooball
+        if (number == 1 || number == 2 || number == 3 || number == 4 || number == 5) return 1; //spout oil
+        else if (number == 6 || number == 7 || number == 8) return 2; //shoot shock
+        else if (number == 9) return 3; //spawn gooball
         return 0;
     }
+
     @Override
-    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer){
-        if(!par1EntityPlayer.isPotionActive(ModPotions.slippery)){
+    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
+        if (!par1EntityPlayer.isPotionActive(ModPotions.slippery)) {
             par1EntityPlayer.addPotionEffect(new PotionEffect(ModPotions.slippery.id, 200, 0, false));
         }
         par1EntityPlayer.attackEntityFrom(DamageSource.cactus, 1.5F);

@@ -2,7 +2,7 @@ package bart.oilcraft.tileentities;
 
 
 import bart.oilcraft.fluids.ModFluids;
-import bart.oilcraft.items.ModItems;
+import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.util.OilFurnaceRegistry;
 import bart.oilcraft.util.Util;
@@ -18,10 +18,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
-import org.lwjgl.Sys;
 
 /**
  * Created by bart on 18-10-2014.
@@ -85,8 +83,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     public boolean canFill(ForgeDirection from, Fluid fluid) {
         if (fluid == ModFluids.Oil) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -112,7 +109,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return ((slot == 3 && stack.getItem() == ModItems.EnergyDistributeUpgrade) ||slot == 0);
+        return ((slot == 3 && stack.getItem() == OilCraftItemRegistry.energyDistributeUpgrade) || slot == 0);
     }
 
     @Override
@@ -195,16 +192,19 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     }
 
     @Override
-    public void openInventory() {}
+    public void openInventory() {
+    }
 
     @Override
-    public void closeInventory() {}
+    public void closeInventory() {
+    }
 
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return ((slot == 3 && stack.getItem() == ModItems.EnergyDistributeUpgrade) || slot == 0);
+        return ((slot == 3 && stack.getItem() == OilCraftItemRegistry.energyDistributeUpgrade) || slot == 0);
     }
+
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
@@ -244,41 +244,37 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
         customSmelting();
         furnaceSmelt();
     }
-    public int getOilUsage(ItemStack stack){
-        if (stack == null || OilFurnaceRegistry.getItemIndex(stack) < 0){
+
+    public int getOilUsage(ItemStack stack) {
+        if (stack == null || OilFurnaceRegistry.getItemIndex(stack) < 0) {
             return 0;
-        }
-        else {
+        } else {
             return OilFurnaceRegistry.oil[OilFurnaceRegistry.getItemIndex(stack)];
         }
     }
-    public int getItemProcess(ItemStack stack){
-        if (stack == null || OilFurnaceRegistry.getItemIndex(stack) < 0 || !canSmelt()){
+
+    public int getItemProcess(ItemStack stack) {
+        if (stack == null || OilFurnaceRegistry.getItemIndex(stack) < 0 || !canSmelt()) {
             return 0;
-        }
-        else {
+        } else {
             return OilFurnaceRegistry.time[OilFurnaceRegistry.getItemIndex(stack)];
         }
     }
-    public int getItemRF(ItemStack stack){
-        if (stack == null || OilFurnaceRegistry.getItemIndex(stack) < 0){
+
+    public int getItemRF(ItemStack stack) {
+        if (stack == null || OilFurnaceRegistry.getItemIndex(stack) < 0) {
             return 0;
-        } else if(canSmelt()){
+        } else if (canSmelt()) {
             return 100;
-        }
-        else {
+        } else {
             return OilFurnaceRegistry.energy[OilFurnaceRegistry.getItemIndex(stack)];
         }
     }
 
-    private boolean canSmelt()
-    {
-        if (this.items[0] == null)
-        {
+    private boolean canSmelt() {
+        if (this.items[0] == null) {
             return false;
-        }
-        else
-        {
+        } else {
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.items[0]);
             if (itemstack == null) return false;
             if (this.items[1] == null) return true;
@@ -287,6 +283,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
             return result <= getInventoryStackLimit() && result <= this.items[1].getMaxStackSize();
         }
     }
+
     public void smelt() {
         if (this.canSmelt()) {
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.items[0]);
@@ -303,24 +300,24 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
             }
         }
     }
-    public void furnaceSmelt(){
+
+    public void furnaceSmelt() {
         if (canSmelt()) {
             if (items[0] != null && this.canSmelt() && energy.getEnergyStored() >= 100) {
                 if (tank.getFluidAmount() > ConfigurationHandler.OilUsageFur || cycles > 0) {
-                    if (Process >= ConfigurationHandler.ProcessTimeFur/100*75) {
+                    if (Process >= ConfigurationHandler.ProcessTimeFur / 100 * 75) {
                         Process = 0;
                         energy.extractEnergy(ConfigurationHandler.RfForOilFur, false);
                         smelt();
                         cycles++;
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                        if(cycles == ConfigurationHandler.cyclesAmountFur) {
+                        if (cycles == ConfigurationHandler.cyclesAmountFur) {
                             tank.drain(ConfigurationHandler.OilUsageFur, true);
                             cycles = 0;
                             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                         }
                     } else Process++;
-                }else
-                if (Process >= ConfigurationHandler.ProcessTimeFur) {
+                } else if (Process >= ConfigurationHandler.ProcessTimeFur) {
                     Process = 0;
                     energy.extractEnergy(ConfigurationHandler.RfForOilFur, false);
                     smelt();
@@ -330,11 +327,11 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
         }
     }
 
-    public void customSmelting(){
+    public void customSmelting() {
         int whitelistID = OilFurnaceRegistry.getItemIndex(items[0]);
-        if(worldObj.getBlock(xCoord, yCoord -1, zCoord) instanceof BlockFire) {
+        if (worldObj.getBlock(xCoord, yCoord - 1, zCoord) instanceof BlockFire) {
             if (!(whitelistID < 0)) return;
-            if ( whitelistID < 0 || whitelistID >= OilFurnaceRegistry.allowedItemsOut.length) return;
+            if (whitelistID < 0 || whitelistID >= OilFurnaceRegistry.allowedItemsOut.length) return;
             if ((OilFurnaceRegistry.allowedItemsOut[whitelistID] != null)) {
                 System.out.println("3");
                 if (energy.getEnergyStored() >= getItemRF(items[0]) && tank.getFluidAmount() >= getOilUsage(items[0])) {
@@ -354,8 +351,8 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
         }
     }
 
-    public void distributePower(){
-        if (items[3] != null && items[3].getItem() == ModItems.EnergyDistributeUpgrade) {
+    public void distributePower() {
+        if (items[3] != null && items[3].getItem() == OilCraftItemRegistry.energyDistributeUpgrade) {
             for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                 ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
                 TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
@@ -380,7 +377,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
             ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
             ((TileEntitySign) te).signText[1]="Fluid " + tank.getFluidAmount() + "/" + tank.getCapacity();
             ((TileEntitySign) te).signText[2]="Process " + Process + "/" + getItemProcess(items[0]);
-            ((TileEntitySign) te).signText[3]="Block: Oil Furnace";
+            ((TileEntitySign) te).signText[3]="block: Oil Furnace";
         }
     }*/
 }

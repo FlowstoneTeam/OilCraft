@@ -5,15 +5,19 @@ import bart.oilcraft.lib.References;
 import net.minecraft.item.Item;
 
 /**
- * Created by Bart on 12-10-2014.
+ * Created by Bart on 30-10-2014.
  */
-public class EnergyAcceptor extends Item {
-    public EnergyAcceptor(){
+public class ItemEnergyDistributeUpgrade extends Item {
+    public ItemEnergyDistributeUpgrade() {
         this.setTextureName(References.RESOURCESPREFIX + getName());
-        this.setUnlocalizedName(References.MODID + ".energyacceptor");
+        this.setUnlocalizedName(References.MODID + ".energydistributeupgrade");
         this.setCreativeTab(OilCraftMain.getCreativeTab());
+        this.maxStackSize = 1;
     }
+
     public String getName() {
-        return "energyacceptor";
+        return "energydistributeupgrade";
     }
+
+
 }

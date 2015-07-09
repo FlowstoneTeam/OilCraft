@@ -2,8 +2,6 @@ package bart.oilcraft.fluids;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class ModFluids {
     public static Fluid Oil;

@@ -1,22 +1,15 @@
 package bart.oilcraft.tileentities;
 
 import bart.oilcraft.blocks.BlockBodyReconstructor;
-import bart.oilcraft.blocks.CrudeOilOre;
-import bart.oilcraft.blocks.ModBlocks;
-import bart.oilcraft.items.ModItems;
-import bart.oilcraft.util.Util;
+import bart.oilcraft.items.OilCraftItemRegistry;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import ibxm.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -61,8 +54,8 @@ public class TileEntityLiquidizer extends TileEntity implements IEnergyHandler {
         return true;
     }
 
-    public void distributePower(){
-        if (items[3] != null && items[3].getItem() == ModItems.EnergyDistributeUpgrade) {
+    public void distributePower() {
+        if (items[3] != null && items[3].getItem() == OilCraftItemRegistry.energyDistributeUpgrade) {
             for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                 ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
                 TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
@@ -77,7 +70,6 @@ public class TileEntityLiquidizer extends TileEntity implements IEnergyHandler {
             }
         }
     }
-
 
 
     @Override
@@ -109,12 +101,12 @@ public class TileEntityLiquidizer extends TileEntity implements IEnergyHandler {
     }*/
 
 
-    public void Teleport(EntityPlayer player){
-        if(worldObj.isRemote) return;
-        if(worldObj.getBlock(xCoordTel, yCoordTel, zCoordTel) instanceof BlockBodyReconstructor && worldObj.getBlock(xCoordTel, yCoordTel-1, zCoordTel).equals(Blocks.air) && worldObj.getBlock(xCoordTel, yCoordTel-2, zCoordTel).equals(Blocks.air)){
-            if (worldObj.getBlock(xCoordTel, yCoordTel-3, zCoordTel).isOpaqueCube()){
-                if(player != null){
-                    player.setPositionAndUpdate(xCoordTel, yCoordTel-2, zCoordTel);
+    public void Teleport(EntityPlayer player) {
+        if (worldObj.isRemote) return;
+        if (worldObj.getBlock(xCoordTel, yCoordTel, zCoordTel) instanceof BlockBodyReconstructor && worldObj.getBlock(xCoordTel, yCoordTel - 1, zCoordTel).equals(Blocks.air) && worldObj.getBlock(xCoordTel, yCoordTel - 2, zCoordTel).equals(Blocks.air)) {
+            if (worldObj.getBlock(xCoordTel, yCoordTel - 3, zCoordTel).isOpaqueCube()) {
+                if (player != null) {
+                    player.setPositionAndUpdate(xCoordTel, yCoordTel - 2, zCoordTel);
                     player.fallDistance = 0.0F;
                 }
             } else {

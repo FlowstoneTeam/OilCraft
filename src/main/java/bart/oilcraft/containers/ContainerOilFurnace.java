@@ -1,6 +1,6 @@
 package bart.oilcraft.containers;
 
-import bart.oilcraft.items.ModItems;
+import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.tileentities.TileEntityOilFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -64,9 +64,9 @@ public class ContainerOilFurnace extends Container {
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
-            } else if(par2 == 3 && itemstack1.getItem() == ModItems.EnergyDistributeUpgrade){
+            } else if (par2 == 3 && itemstack1.getItem() == OilCraftItemRegistry.energyDistributeUpgrade) {
                 return null;
-            }else if (par2 != 0) {
+            } else if (par2 != 0) {
                 if (FurnaceRecipes.smelting().getSmeltingResult(itemstack1) != null) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return null;
@@ -78,7 +78,7 @@ public class ContainerOilFurnace extends Container {
                 } else if (par2 >= 29 && par2 < 38 && !this.mergeItemStack(itemstack1, 2, 29, false)) {
                     return null;
                 }
-            }else if (!this.mergeItemStack(itemstack1, 2, 38, false)) {
+            } else if (!this.mergeItemStack(itemstack1, 2, 38, false)) {
                 return null;
             }
 

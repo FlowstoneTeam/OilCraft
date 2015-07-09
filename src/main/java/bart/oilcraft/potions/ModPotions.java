@@ -15,6 +15,7 @@ import java.lang.reflect.Modifier;
  */
 public class ModPotions extends Potion {
     private static final ResourceLocation resource = new ResourceLocation(References.RESOURCESPREFIX + "textures/gui/potions.png");
+    public static Potion slippery;
 
     public ModPotions(String name, boolean badEffect, int color, int iconIndex) {
         super(findFreeID(), badEffect, color);
@@ -22,42 +23,28 @@ public class ModPotions extends Potion {
         setIconIndex(iconIndex % 8, iconIndex / 8);
         getLiquidColor(color);
     }
-    public int getLiquidColor(int liquidColour){
-        return liquidColour;
-    }
 
     static int findFreeID() {
-        for(int i = 0; i < potionTypes.length; i++)
-            if(potionTypes[i] == null)
+        for (int i = 0; i < potionTypes.length; i++)
+            if (potionTypes[i] == null)
                 return i;
 
         return -1;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getStatusIconIndex() {
-        Minecraft.getMinecraft().renderEngine.bindTexture(resource);
-
-        return super.getStatusIconIndex();
-    }
-
-
-    public static Potion slippery;
-
     public static void init() {
-        if(Potion.potionTypes.length < 256)
+        if (Potion.potionTypes.length < 256)
             extendPotionArray();
         slippery = new PotionSlippery();
     }
 
-    public static void extendPotionArray(){
+    public static void extendPotionArray() {
         Potion[] potionTypes = null;
 
-        for(Field f : Potion.class.getDeclaredFields()) {
+        for (Field f : Potion.class.getDeclaredFields()) {
             f.setAccessible(true);
             try {
-                if(f.getName().equals("potionTypes") || f.getName().equals("field_76425_a")) {
+                if (f.getName().equals("potionTypes") || f.getName().equals("field_76425_a")) {
                     Field modfield = Field.class.getDeclaredField("modifiers");
                     modfield.setAccessible(true);
                     modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
@@ -72,6 +59,18 @@ public class ModPotions extends Potion {
                 System.err.println(e);
             }
         }
+    }
+
+    public int getLiquidColor(int liquidColour) {
+        return liquidColour;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getStatusIconIndex() {
+        Minecraft.getMinecraft().renderEngine.bindTexture(resource);
+
+        return super.getStatusIconIndex();
     }
 
 }

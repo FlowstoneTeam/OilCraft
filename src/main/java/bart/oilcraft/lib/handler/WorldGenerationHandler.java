@@ -1,6 +1,6 @@
 package bart.oilcraft.lib.handler;
 
-import bart.oilcraft.blocks.ModBlocks;
+import bart.oilcraft.blocks.OilCraftBlockRegistry;
 import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
@@ -15,7 +15,7 @@ import java.util.Random;
 public class WorldGenerationHandler implements IWorldGenerator {
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        switch (world.provider.dimensionId ) {
+        switch (world.provider.dimensionId) {
             case -1: {
                 break;
             }
@@ -35,7 +35,7 @@ public class WorldGenerationHandler implements IWorldGenerator {
             int firstBlockZCoord = (16 * chunkZ) + rand.nextInt(16);
             int firstBlockYCoord = rand.nextInt(60);
 
-            (new WorldGenMinable(ModBlocks.ShaleOilOre, 0, 4, Blocks.stone)).generate(world, rand, firstBlockXCoord, firstBlockYCoord, firstBlockZCoord);
+            (new WorldGenMinable(OilCraftBlockRegistry.shaleOilOre, 0, 4, Blocks.stone)).generate(world, rand, firstBlockXCoord, firstBlockYCoord, firstBlockZCoord);
         }
     }
 }

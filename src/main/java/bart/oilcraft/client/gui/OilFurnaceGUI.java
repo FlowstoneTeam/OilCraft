@@ -1,13 +1,10 @@
 package bart.oilcraft.client.gui;
 
-import bart.oilcraft.containers.ContainerOilCompressor;
 import bart.oilcraft.containers.ContainerOilFurnace;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.lib.References;
-import bart.oilcraft.tileentities.OilCompressorEntity;
 import bart.oilcraft.tileentities.TileEntityOilFurnace;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,16 +24,16 @@ public class OilFurnaceGUI extends GuiContainer {
     private TileEntityOilFurnace te;
 
 
-
     public OilFurnaceGUI(EntityPlayer player, TileEntityOilFurnace tile) {
-         super(new ContainerOilFurnace(player, tile));
+        super(new ContainerOilFurnace(player, tile));
         this.container = (ContainerOilFurnace) this.inventorySlots;
         this.te = tile;
     }
-    public int getScaled(){
-        if(te.getTank().getCapacity() <= 0)
+
+    public int getScaled() {
+        if (te.getTank().getCapacity() <= 0)
             return 58;
-        return te.getTank().getFluidAmount()*58/te.getTank().getCapacity();
+        return te.getTank().getFluidAmount() * 58 / te.getTank().getCapacity();
     }
 
 
@@ -61,13 +58,13 @@ public class OilFurnaceGUI extends GuiContainer {
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(References.MODID, "textures/gui/energybar.png"));
         int w = 71;
-        int p = (int)((double) te.energy.getEnergyStored()*(double)w/te.energy.getMaxEnergyStored());
+        int p = (int) ((double) te.energy.getEnergyStored() * (double) w / te.energy.getMaxEnergyStored());
 
-        this.drawTexturedModalRect(xStart+10, yStart+7+w-p, 16, w-p, 16, p, 256, 256);
+        this.drawTexturedModalRect(xStart + 10, yStart + 7 + w - p, 16, w - p, 16, p, 256, 256);
     }
 
-    public void drawFluid(int x, int y, Fluid fluid, int width, int height){
-        if(fluid == null)
+    public void drawFluid(int x, int y, Fluid fluid, int width, int height) {
+        if (fluid == null)
             return;
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
         int color = fluid.getColor();
@@ -75,8 +72,8 @@ public class OilFurnaceGUI extends GuiContainer {
         drawTiledTexture(x, y, fluid.getIcon(), width, height);
     }
 
-    public void drawTiledTexture(int x, int y, IIcon icon, int width, int height){
-        for (int I = 0; I < width; I += 16){
+    public void drawTiledTexture(int x, int y, IIcon icon, int width, int height) {
+        for (int I = 0; I < width; I += 16) {
             for (int V = 0; V < height; V += 16) {
                 int W = Math.min(width - I, 16);
                 int H = Math.min(height - V, 16);
@@ -86,8 +83,8 @@ public class OilFurnaceGUI extends GuiContainer {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    public void drawScaledTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height){
-        if (icon == null )
+    public void drawScaledTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height) {
+        if (icon == null)
             return;
         double minU = icon.getMinU();
         double maxU = icon.getMaxU();
@@ -103,8 +100,7 @@ public class OilFurnaceGUI extends GuiContainer {
         Tes.draw();
     }
 
-    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, float texW, float texH)
-    {
+    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, float texW, float texH) {
         float texU = 1 / texW;
         float texV = 1 / texH;
         Tessellator tessellator = Tessellator.instance;

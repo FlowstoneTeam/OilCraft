@@ -12,15 +12,16 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class CommonProxy {
     public void registerTileEntities() {
-        GameRegistry.registerTileEntity(OilCompressorEntity.class, "OilCompressorEntity");
-        GameRegistry.registerTileEntity(OilGeneratorEntity.class, "OilGeneratorEntity");
+        GameRegistry.registerTileEntity(TileEntityOilCompressor.class, "TileEntityOilCompressor");
+        GameRegistry.registerTileEntity(TileEntityOilGenerator.class, "TileEntityOilGenerator");
         GameRegistry.registerTileEntity(TileEntityOilFurnace.class, "TileEntityOilFurnace");
         GameRegistry.registerTileEntity(TileEntitySummonTable.class, "TileEntitySummonTable");
         GameRegistry.registerTileEntity(TileEntityLiquidizer.class, "TileEntityLiquidizer");
     }
-    public void registerRenderInformation(){
+
+    public void registerRenderInformation() {
         EntityRegistry.registerGlobalEntityID(EntityGooBall.class, "GooBall", EntityRegistry.findGlobalUniqueEntityId(), 0x000000, 0x000050);
-        EntityRegistry.registerGlobalEntityID(EntityOilBall.class, "OilBall", EntityRegistry.findGlobalUniqueEntityId());
+        EntityRegistry.registerGlobalEntityID(EntityOilBall.class, "ItemOilBall", EntityRegistry.findGlobalUniqueEntityId());
         EntityRegistry.registerGlobalEntityID(EntityOilBoss.class, "OilBoss", EntityRegistry.findGlobalUniqueEntityId());
     }
 }

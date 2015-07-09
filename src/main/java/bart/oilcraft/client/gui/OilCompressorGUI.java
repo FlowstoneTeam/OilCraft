@@ -3,9 +3,8 @@ package bart.oilcraft.client.gui;
 import bart.oilcraft.containers.ContainerOilCompressor;
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.lib.References;
-import bart.oilcraft.tileentities.OilCompressorEntity;
+import bart.oilcraft.tileentities.TileEntityOilCompressor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +14,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.stream.events.EntityDeclaration;
-
 /**
  * Created by Bart on 7-6-2014.
  */
@@ -24,9 +21,9 @@ public class OilCompressorGUI extends GuiContainer {
     public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/gui/oilcompressor.png");
     @SuppressWarnings("unused")
     private ContainerOilCompressor container;
-    private OilCompressorEntity te;
+    private TileEntityOilCompressor te;
 
-    public OilCompressorGUI(EntityPlayer player, OilCompressorEntity tile) {
+    public OilCompressorGUI(EntityPlayer player, TileEntityOilCompressor tile) {
         super(new ContainerOilCompressor(player, tile));
         this.container = (ContainerOilCompressor) this.inventorySlots;
         this.te = tile;
@@ -40,10 +37,10 @@ public class OilCompressorGUI extends GuiContainer {
         drawFluid(82, 14 + 58 - amount, ModFluids.Oil, 16, amount);
     }
 
-    public int getScaled(){
-        if(te.getTank().getCapacity() <= 0)
+    public int getScaled() {
+        if (te.getTank().getCapacity() <= 0)
             return 58;
-        return te.getTank().getFluidAmount()*58/te.getTank().getCapacity();
+        return te.getTank().getFluidAmount() * 58 / te.getTank().getCapacity();
     }
 
     @Override
@@ -59,13 +56,13 @@ public class OilCompressorGUI extends GuiContainer {
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(References.MODID, "textures/gui/energybar.png"));
         int w = 71;
-        int p = (int)((double) te.energy.getEnergyStored()*(double)w/te.energy.getMaxEnergyStored());
-        this.drawTexturedModalRect(xStart+10, yStart+7+w-p, 16, w-p, 16, p, 256, 256);
+        int p = (int) ((double) te.energy.getEnergyStored() * (double) w / te.energy.getMaxEnergyStored());
+        this.drawTexturedModalRect(xStart + 10, yStart + 7 + w - p, 16, w - p, 16, p, 256, 256);
 
     }
 
-    public void drawFluid(int x, int y, Fluid fluid, int width, int height){
-        if(fluid == null)
+    public void drawFluid(int x, int y, Fluid fluid, int width, int height) {
+        if (fluid == null)
             return;
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("textures/atlas/blocks.png"));
         int color = fluid.getColor();
@@ -73,8 +70,8 @@ public class OilCompressorGUI extends GuiContainer {
         drawTiledTexture(x, y, fluid.getIcon(), width, height);
     }
 
-    public void drawTiledTexture(int x, int y, IIcon icon, int width, int height){
-        for (int I = 0; I < width; I += 16){
+    public void drawTiledTexture(int x, int y, IIcon icon, int width, int height) {
+        for (int I = 0; I < width; I += 16) {
             for (int V = 0; V < height; V += 16) {
                 int W = Math.min(width - I, 16);
                 int H = Math.min(height - V, 16);
@@ -84,8 +81,8 @@ public class OilCompressorGUI extends GuiContainer {
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    public void drawScaledTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height){
-        if (icon == null )
+    public void drawScaledTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height) {
+        if (icon == null)
             return;
         double minU = icon.getMinU();
         double maxU = icon.getMaxU();
@@ -100,8 +97,8 @@ public class OilCompressorGUI extends GuiContainer {
         Tes.addVertexWithUV(x + 0, y + 0, this.zLevel, minU, minV);
         Tes.draw();
     }
-    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, float texW, float texH)
-    {
+
+    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, float texW, float texH) {
         float texU = 1 / texW;
         float texV = 1 / texH;
         Tessellator tessellator = Tessellator.instance;

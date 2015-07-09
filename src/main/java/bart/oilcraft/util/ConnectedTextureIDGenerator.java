@@ -3,10 +3,11 @@ package bart.oilcraft.util;
 import java.util.TreeMap;
 
 public class ConnectedTextureIDGenerator {
-    
-private static TreeMap<String, Integer> textureMap = new TreeMap<String, Integer>();
-        private static TreeMap<String, Integer> textureIDMapping = new TreeMap<String, Integer>();
-        private static int[] textureIDs = new int[256];
+
+    private static TreeMap<String, Integer> textureMap = new TreeMap<String, Integer>();
+    private static TreeMap<String, Integer> textureIDMapping = new TreeMap<String, Integer>();
+    private static int[] textureIDs = new int[256];
+
     // MODIFY THE BELOW TEXTURE MAP CODE AND RUN THIS PROGRAM TO GENERATE
     // THE TEXTUREIDS ARRAY FOR USE IN CONNECTEDTEXTUREHELPER
     public static void main(String[] args) {
@@ -80,11 +81,10 @@ private static TreeMap<String, Integer> textureMap = new TreeMap<String, Integer
         textureMap.put("4", 45);
         textureMap.put("4675", 46);
 
-        for( int x = 0; x < textureIDs.length; x++ )
-        {
+        for (int x = 0; x < textureIDs.length; x++) {
             textureIDs[x] = -1;
         }
-        
+
         for (String s : textureMap.keySet()) {
             StringBuffer binary = new StringBuffer("00000000");
 
@@ -108,30 +108,27 @@ private static TreeMap<String, Integer> textureMap = new TreeMap<String, Integer
             for (int y = 0; y < 8; y++) {
                 digits[y] = (binary_string.charAt(y) == '1');
             }
-            
-            process( digits );
+
+            process(digits);
         }
-        
-        for( int id : textureIDs )
-        {
-            if( id < 0 )
-            {
-                System.out.println( "!!!ERROR!!! INVALID TEXTURE CONFIGURATIONS; CHECK FOR NULL TEXTURES" );
+
+        for (int id : textureIDs) {
+            if (id < 0) {
+                System.out.println("!!!ERROR!!! INVALID TEXTURE CONFIGURATIONS; CHECK FOR NULL TEXTURES");
                 break;
             }
         }
-        
+
         String output = "int[] array = {";
-        
-        for( int id : textureIDs )
-        {
+
+        for (int id : textureIDs) {
             output += id + ", ";
         }
-        
-        output = output.substring( 0, output.length() - 2 );
+
+        output = output.substring(0, output.length() - 2);
         output += "};";
-        
-        System.out.println( output );
+
+        System.out.println(output);
     }
 
     private static void process(boolean[] digits) {
@@ -269,8 +266,8 @@ private static TreeMap<String, Integer> textureMap = new TreeMap<String, Integer
 
         System.out.println(" = " + texture_id + " (" + texture_output + ")");
 
-        textureIDs[binaryDigitsArrayToDecimal( digits )] = texture_id;
-        
+        textureIDs[binaryDigitsArrayToDecimal(digits)] = texture_id;
+
         for (int x = 5; x <= 7; x++) {
             if (digits[x]) {
                 System.out.print("X");
@@ -282,18 +279,16 @@ private static TreeMap<String, Integer> textureMap = new TreeMap<String, Integer
         System.out.println("\n=====");
     }
 
-    public static int binaryDigitsArrayToDecimal( boolean[] digits )
-    {
+    public static int binaryDigitsArrayToDecimal(boolean[] digits) {
         int value = 0;
         String valueString = "";
-        
-        for( boolean b : digits )
-        {
-            valueString += (b)?("1"):("0");
+
+        for (boolean b : digits) {
+            valueString += (b) ? ("1") : ("0");
         }
-        
-        value = Integer.parseInt( valueString, 2 );
-        
+
+        value = Integer.parseInt(valueString, 2);
+
         return value;
     }
 }

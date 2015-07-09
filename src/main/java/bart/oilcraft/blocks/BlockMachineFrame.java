@@ -2,37 +2,31 @@ package bart.oilcraft.blocks;
 
 import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.lib.References;
-import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.util.ConnectedTextureHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 /**
  * Created by Bart on 26-9-2014.
  */
-public class BlockMachineFrame extends OilCraftBlock {
+public class BlockMachineFrame extends Block {
 
 
     protected IIcon[] icons = new IIcon[16];
 
 
     public BlockMachineFrame() {
-        this.setBlockName(getName());
+        super(Material.iron);
+        this.setBlockName("oilcraft.blockmachineframe");
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.setStepSound(Block.soundTypeMetal);
         this.setHardness(4f);
     }
-
-    @Override
-    public String getName() {
-        return "blockmachineframe";
-    }
-
 
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
@@ -50,10 +44,7 @@ public class BlockMachineFrame extends OilCraftBlock {
     @Override
     public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
         Block b1 = par1IBlockAccess.getBlock(par2, par3, par4);
-        if (b1 == this || b1 == ModBlocks.MachineFrame) {
-            return false;
-        }
-        return super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+        return !(b1 == this || b1 == OilCraftBlockRegistry.machineFrame) && super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
     }
 
     @Override
@@ -78,7 +69,7 @@ public class BlockMachineFrame extends OilCraftBlock {
         icons[10] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_10");
         icons[11] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_11");
         icons[12] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_12");
-        icons[13] = par1IconRegister.registerIcon(References.MODID+ ":machinesFrame/machine_Side_13");
+        icons[13] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_13");
         icons[14] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_14");
         icons[15] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_15");
     }

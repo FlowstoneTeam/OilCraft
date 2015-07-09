@@ -6,14 +6,14 @@ import bart.oilcraft.entities.entitytrowable.EntityOilBall;
 import bart.oilcraft.entities.entitytrowable.oilball.RendererOilBall;
 import bart.oilcraft.entities.gooball.ModelGooBall;
 import bart.oilcraft.entities.gooball.RendererGooBall;
-import bart.oilcraft.items.ModItems;
+import bart.oilcraft.items.OilCraftItemRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
-    public void registerRenderInformation(){
+    public void registerRenderInformation() {
         super.registerRenderInformation();
         RenderingRegistry.registerEntityRenderingHandler(EntityGooBall.class, new RendererGooBall(new ModelGooBall(), new ModelGooBall(), 0.5F));
-        RenderingRegistry.registerEntityRenderingHandler(EntityOilBall.class, new RendererOilBall(ModItems.OilBall));
+        RenderingRegistry.registerEntityRenderingHandler(EntityOilBall.class, new RendererOilBall(OilCraftItemRegistry.oilBall));
         RenderingRegistry.registerEntityRenderingHandler(EntityOilBoss.class, new RendererGooBall(new ModelGooBall(), new ModelGooBall(), 0.5F));
     }
 }

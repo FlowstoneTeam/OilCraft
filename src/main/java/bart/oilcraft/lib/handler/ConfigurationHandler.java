@@ -1,16 +1,14 @@
 package bart.oilcraft.lib.handler;
 
-import bart.oilcraft.OilCraftMain;
-import bart.oilcraft.entities.EntityGooBall;
-import bart.oilcraft.tileentities.OilGeneratorEntity;
-import bart.oilcraft.tileentities.TileEntityOilFurnace;
+import bart.oilcraft.lib.References;
 import bart.oilcraft.util.ConnectedTextureHelper;
 import bart.oilcraft.util.OilCompressorRegistry;
+import bart.oilcraft.util.OilFurnaceRegistry;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.config.Configuration;
-import bart.oilcraft.lib.References;
 import net.minecraftforge.common.config.Property;
+
 import java.io.File;
 
 /**
@@ -51,21 +49,15 @@ public class ConfigurationHandler {
     public static boolean thermalExpansionItems;
 
 
-    public static void Init(File configFile){
-        if(configuration == null ){
+    public static void Init(File configFile) {
+        if (configuration == null) {
             configuration = new Configuration(configFile);
             loadConfiguration();
         }
 
     }
-    @SubscribeEvent
-    public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event){
-        if (event.modID.equalsIgnoreCase(References.MODID)){
-            loadConfiguration();
-        }
 
-    }
-    private static void loadConfiguration(){
+    private static void loadConfiguration() {
 
 
         Property connectedTextures = configuration.get("Connected textures", "Connected textures", true);
@@ -73,12 +65,12 @@ public class ConfigurationHandler {
         ConnectedTextureHelper.EnableConnectedTextures = connectedTextures.getBoolean();
 
         configuration.addCustomCategoryComment("CustomizationCompressor", "Custom oil compressor 'recipes'. Syntax: output:energy:time:modid:name[:metadata]");
-        Property propValuesComp = configuration.get("CustomizationCompressor", "CustomOilValues", new String[]{"1000:1000:120:minecraft:diamond", "1:10:40:minecraft:cobblestone", "500:500:80:oilcraft:shaleoilore", "5:15:40:oilcraft:oilball" ,"4000:2000:140:oodmod:Kroostyl"});
+        Property propValuesComp = configuration.get("CustomizationCompressor", "CustomOilValues", new String[]{"1000:1000:120:minecraft:diamond", "1:10:40:minecraft:cobblestone", "500:500:80:oilcraft:shaleoilore", "5:15:40:oilcraft:oilball", "4000:2000:140:oodmod:Kroostyl"});
         OilCompressorRegistry.buffer = propValuesComp.getStringList();
 
-        /*configuration.addCustomCategoryComment("CustomizationHeated", "Custom extra heated 'recipes'. Syntax: modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]");
+        configuration.addCustomCategoryComment("CustomizationHeated", "Custom extra heated 'recipes'. Syntax: modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]");
         Property propValuesHeated = configuration.get("CustomizationHeated", "CustomOilValues", new String[]{"minecraft:dirt:1000:1000:120:minecraft:diamond"});
-        OilFurnaceRegistry.buffer = propValuesHeated.getStringList();*/
+        OilFurnaceRegistry.buffer = propValuesHeated.getStringList();
 
         configuration.addCustomCategoryComment("CustomizationGenerator", "Custom oil generator");
         Property oilGeneratorRF = configuration.get("CustomizationGenerator", "RF/tick", 80);
@@ -108,9 +100,9 @@ public class ConfigurationHandler {
         slipperyGive = slipperyGiveOnTouch.getBoolean();
 
         configuration.addCustomCategoryComment("Crafting", "You can enable/disable the crafting recipes in this mod");
-        Property craftingCompressor = configuration.get("Crafting", "OilCompressor", true);
+        Property craftingCompressor = configuration.get("Crafting", "BlockOilCompressor", true);
         oilCompressor = craftingCompressor.getBoolean();
-        Property craftingGenerator = configuration.get("Crafting", "OilGenerator", true);
+        Property craftingGenerator = configuration.get("Crafting", "BlockOilGenerator", true);
         oilGenerator = craftingGenerator.getBoolean();
         Property craftingFurnace = configuration.get("Crafting", "OilFurnace", true);
         oilFurnace = craftingFurnace.getBoolean();
@@ -120,9 +112,9 @@ public class ConfigurationHandler {
         Property craftingOilLayer = configuration.get("Crafting", "OilLayer", true);
         oilLayer = craftingOilLayer.getBoolean();
 
-        Property craftingAcceptor = configuration.get("Crafting", "EnergyAcceptor", true);
+        Property craftingAcceptor = configuration.get("Crafting", "ItemEnergyAcceptor", true);
         energyAcceptor = craftingAcceptor.getBoolean();
-        Property craftingDistributeUpgrade = configuration.get("Crafting", "EnergyDistributeUpgrade", true);
+        Property craftingDistributeUpgrade = configuration.get("Crafting", "ItemEnergyDistributeUpgrade", true);
         energyDistributeUpgrade = craftingDistributeUpgrade.getBoolean();
 
         configuration.addCustomCategoryComment("ModIntegration", "You can enable/disable the mod intergration in this mod");
@@ -132,5 +124,13 @@ public class ConfigurationHandler {
         thaumAspects = aspectsThaumcraft.getBoolean();
 
         configuration.save();
+    }
+
+    @SubscribeEvent
+    public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.modID.equalsIgnoreCase(References.MODID)) {
+            loadConfiguration();
+        }
+
     }
 }

@@ -2,23 +2,20 @@ package bart.oilcraft.tileentities;
 
 import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
-import bart.oilcraft.util.Util;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import net.minecraft.block.BlockSign;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntitySign;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 /**
  * Created by Bart on 11-10-2014.
  */
-public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEnergyHandler {
+public class TileEntityOilGenerator extends TileEntity implements IFluidHandler, IEnergyHandler {
 
     public FluidTank tank = new FluidTank(10000);
     public EnergyStorage energy = new EnergyStorage(8000, 1000);
@@ -43,12 +40,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        if (fluid == ModFluids.Oil) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return fluid == ModFluids.Oil;
     }
 
     @Override
@@ -66,9 +58,10 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     }
 
 
-
     @Override
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {return energy.receiveEnergy(maxReceive, simulate);}
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        return energy.receiveEnergy(maxReceive, simulate);
+    }
 
     @Override
     public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
@@ -89,15 +82,16 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
     public boolean canConnectEnergy(ForgeDirection from) {
         return true;
     }
+
     @Override
     public void updateEntity() {
-    if(worldObj.isRemote) return;
+        if (worldObj.isRemote) return;
         //signEdit();
         distributePower();
-        if(tank.getFluidAmount() >= 30 && energy.getEnergyStored() + ConfigurationHandler.RfForOilGen <= energy.getMaxEnergyStored()){
-                this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                tank.drain(30, true);
-                energy.receiveEnergy(ConfigurationHandler.RfForOilGen, false);
+        if (tank.getFluidAmount() >= 30 && energy.getEnergyStored() + ConfigurationHandler.RfForOilGen <= energy.getMaxEnergyStored()) {
+            this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            tank.drain(30, true);
+            energy.receiveEnergy(ConfigurationHandler.RfForOilGen, false);
         }
     }
 
@@ -130,18 +124,18 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
         readFromNBT(nbt);
     }
 
-    public void distributePower(){
-        for (int i =0; i < ForgeDirection.VALID_DIRECTIONS.length; i++){
+    public void distributePower() {
+        for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
             TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
-            if(te instanceof IEnergyHandler){
+            if (te instanceof IEnergyHandler) {
                 int sending = 11;
-                int received = ((IEnergyHandler)te).receiveEnergy(direction, sending, true);
+                int received = ((IEnergyHandler) te).receiveEnergy(direction, sending, true);
                 if (received <= sending && received > 0 && energy.getEnergyStored() >= sending) {
                     energy.extractEnergy(received, false);
-                    ((IEnergyHandler)te).receiveEnergy(direction, received, false);
+                    ((IEnergyHandler) te).receiveEnergy(direction, received, false);
                 }
-           }
+            }
         }
     }
 
@@ -154,7 +148,7 @@ public class OilGeneratorEntity extends TileEntity implements IFluidHandler, IEn
             ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
             ((TileEntitySign) te).signText[1]="Fluid " + tank.getFluidAmount() + "/" + tank.getCapacity();
             ((TileEntitySign) te).signText[2]="Process " + "This block does not have a process";
-            ((TileEntitySign) te).signText[3]="Block: Oil Generator";
+            ((TileEntitySign) te).signText[3]="block: Oil Generator";
         }
     }*/
 }

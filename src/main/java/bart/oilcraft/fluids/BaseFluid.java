@@ -22,7 +22,7 @@ public class BaseFluid extends BlockFluidClassic {
         this.setTickRandomly(true);
     }
 
-    public String getName(){
+    public String getName() {
         return "BaseFluid";
     }
 

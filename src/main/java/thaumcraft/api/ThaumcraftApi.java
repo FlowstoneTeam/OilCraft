@@ -57,7 +57,7 @@ public class ThaumcraftApi {
 	
 	//Miscellaneous
 	/**
-	 * Portable Hole Block-id Blacklist. 
+	 * Portable Hole block-id Blacklist.
 	 * Simply add the block-id's of blocks you don't want the portable hole to go through.
 	 */
 	public static ArrayList<Block> portableHoleBlackList = new ArrayList<Block>();
@@ -113,7 +113,7 @@ public class ThaumcraftApi {
 	
 	/**
 	 * This method is used to determine what bonus items are generated when the infernal furnace smelts items
-	 * @param in The input of the smelting operation. e.g. new ItemStack(Block.oreGold)
+	 * @param in The input of the smelting operation. e.g. new ItemStack(block.oreGold)
 	 * @param out The bonus item that can be produced from the smelting operation e.g. new ItemStack(nuggetGold,0,0).
 	 * Stacksize should be 0 unless you want to guarantee that at least 1 item is always produced.
 	 */
@@ -469,21 +469,21 @@ public class ThaumcraftApi {
 	 * the crop when fully grown. Sending a metadata of [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get 
 	 * checked.
 	 * Example for vanilla wheat: 
-	 * FMLInterModComms.sendMessage("Thaumcraft", "harvestStandardCrop", new ItemStack(Block.crops,1,7));
+	 * FMLInterModComms.sendMessage("Thaumcraft", "harvestStandardCrop", new ItemStack(block.crops,1,7));
 	 *  
 	 * Clickable crops are crops that you right click to gather their bounty instead of destroying them.
 	 * As for standard crops, you need to create and ItemStack that tells the golem what block id 
 	 * and metadata represents the crop when fully grown. The golem will trigger the blocks onBlockActivated method. 
 	 * Sending a metadata of [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
 	 * Example (this will technically do nothing since clicking wheat does nothing, but you get the idea): 
-	 * FMLInterModComms.sendMessage("Thaumcraft", "harvestClickableCrop", new ItemStack(Block.crops,1,7));
+	 * FMLInterModComms.sendMessage("Thaumcraft", "harvestClickableCrop", new ItemStack(block.crops,1,7));
 	 * 
 	 * Stacked crops (like reeds) are crops that you wish the bottom block should remain after harvesting.
 	 * As for standard crops, you need to create and ItemStack that tells the golem what block id 
 	 * and metadata represents the crop when fully grown. Sending a metadata of [OreDictionary.WILDCARD_VALUE] will mean the actualy md won't get 
 	 * checked. If it has the order upgrade it will only harvest if the crop is more than one block high.
 	 * Example: 
-	 * FMLInterModComms.sendMessage("Thaumcraft", "harvestStackedCrop", new ItemStack(Block.reed,1,7));
+	 * FMLInterModComms.sendMessage("Thaumcraft", "harvestStackedCrop", new ItemStack(block.reed,1,7));
 	 */
 	
 	//NATIVE CLUSTERS //////////////////////////////////////////////////////////////////////////////////
@@ -506,7 +506,7 @@ public class ThaumcraftApi {
 	 * in your @Mod.Init method using the "lampBlacklist" itemstack message.
 	 * Sending a metadata of [OreDictionary.WILDCARD_VALUE] will mean the metadata won't get checked.
 	 * Example for vanilla wheat: 
-	 * FMLInterModComms.sendMessage("Thaumcraft", "lampBlacklist", new ItemStack(Block.crops,1,OreDictionary.WILDCARD_VALUE));
+	 * FMLInterModComms.sendMessage("Thaumcraft", "lampBlacklist", new ItemStack(block.crops,1,OreDictionary.WILDCARD_VALUE));
 	 */
 	
 	//DIMENSION BLACKLIST ///////////////////////////////////////////////////////////////////////////

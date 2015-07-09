@@ -31,7 +31,7 @@ version = "1.7.10"
 
 minecraft {
 
-    version = "1.7.10-10.13.1.1225"
+    version = "1.7.10-10.13.4.1481-1.7.10"
     assetDir = "run/assets"
 }
 

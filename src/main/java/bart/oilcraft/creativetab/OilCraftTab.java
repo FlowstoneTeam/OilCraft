@@ -1,8 +1,7 @@
 package bart.oilcraft.creativetab;
 
-import bart.oilcraft.items.ModItems;
+import bart.oilcraft.items.OilCraftItemRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 
@@ -13,6 +12,6 @@ public class OilCraftTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return ModItems.OilBucket;
+        return OilCraftItemRegistry.oilBucket;
     }
 }

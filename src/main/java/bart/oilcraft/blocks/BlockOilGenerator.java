@@ -2,7 +2,7 @@ package bart.oilcraft.blocks;
 
 import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.lib.References;
-import bart.oilcraft.tileentities.TileEntityOilFurnace;
+import bart.oilcraft.tileentities.TileEntityOilGenerator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -18,29 +18,21 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
- * Created by bart on 18-10-2014.
+ * Created by Bart on 11-10-2014.
  */
-public class BlockOilFurnace extends IOilContainer implements ITileEntityProvider {
+public class BlockOilGenerator extends IOilContainer implements ITileEntityProvider {
 
     public IIcon top;
     public IIcon bottom;
     public IIcon front;
     public IIcon side;
 
-    public BlockOilFurnace() {
+    public BlockOilGenerator() {
         super(Material.iron);
-        this.setBlockName("oilcraft.blockoilfurnace");
+        this.setBlockName("oilcraft.oilgenerator");
         this.setCreativeTab(OilCraftMain.getCreativeTab());
         this.setStepSound(Block.soundTypeMetal);
-        this.setHardness(4f);
-        this.guiID = 2;
     }
-
-    @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
-        return new TileEntityOilFurnace();
-    }
-
 
     @Override
     public boolean hasTileEntity(int meta) {
@@ -48,9 +40,15 @@ public class BlockOilFurnace extends IOilContainer implements ITileEntityProvide
     }
 
     @Override
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return new TileEntityOilGenerator();
+    }
+
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.front = iconRegister.registerIcon(References.RESOURCESPREFIX + "oilfurnace_front");
+        this.front = iconRegister.registerIcon(References.RESOURCESPREFIX + "oilgenerator_front");
         this.top = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_top");
         this.bottom = iconRegister.registerIcon(References.RESOURCESPREFIX + "general_machine");
         this.side = iconRegister.registerIcon(References.RESOURCESPREFIX + "machine_side");
@@ -59,7 +57,7 @@ public class BlockOilFurnace extends IOilContainer implements ITileEntityProvide
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
         int facing = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        TileEntityOilFurnace tile = (TileEntityOilFurnace) world.getTileEntity(x, y, z);
+        TileEntityOilGenerator tile = (TileEntityOilGenerator) world.getTileEntity(x, y, z);
 
         if (facing == 0)
             tile.facing = 2;
@@ -74,7 +72,7 @@ public class BlockOilFurnace extends IOilContainer implements ITileEntityProvide
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side) {
-        TileEntityOilFurnace tile = (TileEntityOilFurnace) access.getTileEntity(x, y, z);
+        TileEntityOilGenerator tile = (TileEntityOilGenerator) access.getTileEntity(x, y, z);
         if (side == 0) {
             return this.bottom;
         } else if (side == 1) {
@@ -93,5 +91,4 @@ public class BlockOilFurnace extends IOilContainer implements ITileEntityProvide
         else if (side == 3) return this.front;
         else return this.side;
     }
-
 }

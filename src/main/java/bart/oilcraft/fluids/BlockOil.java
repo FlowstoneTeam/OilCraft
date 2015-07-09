@@ -15,14 +15,14 @@ public class BlockOil extends BaseFluid {
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister Register){
+    public void registerBlockIcons(IIconRegister Register) {
         super.registerBlockIcons(Register);
         ModFluids.Oil.setStillIcon(Register.registerIcon(References.MODID + ":BlockOilStillBlock"));
         ModFluids.Oil.setFlowingIcon(Register.registerIcon(References.MODID + ":BlockOilFlowingBlock"));
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return "BlockOil";
     }
 }

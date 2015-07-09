@@ -5,16 +5,16 @@ import bart.oilcraft.lib.References;
 import net.minecraft.item.Item;
 
 /**
- * Created by Bart on 19-11-2014.
+ * Created by Bart on 12-10-2014.
  */
-public class ItemAdvancedKnowledge extends Item {
-    public ItemAdvancedKnowledge() {
+public class ItemEnergyAcceptor extends Item {
+    public ItemEnergyAcceptor() {
         this.setTextureName(References.RESOURCESPREFIX + getName());
-        this.setUnlocalizedName(References.MODID + ".itemadvancedknowledge");
+        this.setUnlocalizedName(References.MODID + ".energyacceptor");
         this.setCreativeTab(OilCraftMain.getCreativeTab());
     }
 
     public String getName() {
-        return "itemadvancedknowledge";
+        return "energyacceptor";
     }
 }

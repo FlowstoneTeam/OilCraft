@@ -8,8 +8,8 @@ import net.minecraft.item.ItemBucket;
 /**
  * Created by Bart on 20-7-2014.
  */
-public class OilBucket extends ItemBucket {
-    public OilBucket(Block block) {
+public class ItemOilBucket extends ItemBucket {
+    public ItemOilBucket(Block block) {
         super(block);
         this.setTextureName(References.RESOURCESPREFIX + getName());
         this.setUnlocalizedName(References.MODID + ".oilbucket");
@@ -17,6 +17,6 @@ public class OilBucket extends ItemBucket {
     }
 
     public String getName() {
-     return "oilbucket";
+        return "oilbucket";
     }
 }

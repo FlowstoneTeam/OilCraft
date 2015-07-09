@@ -1,19 +1,19 @@
 itemGroup.oilcraft=OilCraft
 
 
-tile.oilcompressor.name=Oil Compressor
-tile.Oil.name=Oil
-tile.shaleoilore.name=Shale Oil Ore
-tile.blockmachineframe.name=Machine Frame
-tile.blockslipperyremover.name=Slippery Remover
-tile.oilgenerator.name=Oil Generator
-tile.oillayer.name=Oil Layer
-tile.blockoilfurnace.name=Oil Furnace
-tile.summontable.name=Summon Table
-tile.speeddecro.oilystonebrick.name=Oily Stone Brick
-tile.speeddecro.crackedoilystonebrick.name=Cracked Oily Stone Brick
-tile.tile.speeddecrostair0.name=Oily Stone Brick Stair
-tile.Decorative.sturdystonebrick.name=Sturdy Oily Stone Brick
+tile.oilcraft.oilcompressor.name=Oil Compressor
+tile.oilcraft.Oil.name=Oil
+tile.oilcraft.shaleoilore.name=Shale Oil Ore
+tile.oilcraft.blockmachineframe.name=Machine Frame
+tile.oilcraft.blockslipperyremover.name=Slippery Remover
+tile.oilcraft.oilgenerator.name=Oil Generator
+tile.oilcraft.oillayer.name=Oil Layer
+tile.oilcraft.blockoilfurnace.name=Oil Furnace
+tile.oilcraft.summontable.name=Summon Table
+tile.oilcraft.blockSpeedDecorative_0.name=Oily Stone Brick
+tile.oilcraft.blockSpeedDecorative_1.name=Cracked Oily Stone Brick
+tile.tile.oilcraft.oilcraftSpeedCecrostair0.name=Oily Stone Brick Stair
+tile.oilcraft.blockDecorative_0.name=Sturdy Oily Stone Brick
 
 oilcraft.potion.Slippery=Slippery
 

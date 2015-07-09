@@ -17,19 +17,16 @@ public class OilFurnaceRegistry {
     public static int[] time;
     public static int[] oil;
 
-    public static void processBuffer()
-    {
+    public static void processBuffer() {
         allowedItemsIn = new ItemStack[buffer.length];
         allowedItemsOut = new ItemStack[buffer.length];
         energy = new int[buffer.length];
         time = new int[buffer.length];
         oil = new int[buffer.length];
 
-        for (int i = 0; i < buffer.length; i++)
-        {
+        for (int i = 0; i < buffer.length; i++) {
             String[] split = buffer[i].split(":");
-            if (split.length > 6 && split.length < 10)
-            {
+            if (split.length > 6 && split.length < 10) {
                 int oilV, energyV, timeV, metaOut, metaIn;
                 String modid1, input, modid2, output;
                 // modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]
@@ -47,8 +44,7 @@ public class OilFurnaceRegistry {
                 metaIn = (split.length == 9 ? Integer.parseInt(split[8]) : 0);
                 metaOut = (split.length == 8 ? Integer.parseInt(split[7]) : 0);
 
-                if (oilV > 0 && energyV > 0 && timeV > 0 && GameRegistry.findItem(modid1, output) != null && GameRegistry.findItem(modid2, input) != null && metaOut >= 0 && metaIn >= 0)
-                {
+                if (oilV > 0 && energyV > 0 && timeV > 0 && GameRegistry.findItem(modid1, output) != null && GameRegistry.findItem(modid2, input) != null && metaOut >= 0 && metaIn >= 0) {
                     Item temp1 = GameRegistry.findItem(modid1, output);
                     ItemStack stack1 = new ItemStack(temp1, 1, metaOut);
 
@@ -66,38 +62,26 @@ public class OilFurnaceRegistry {
             }
         }
     }
-    public static int getItemIndex(ItemStack itemStack)
-    {
-        if( itemStack == null || allowedItemsIn == null )
-        {
+
+    public static int getItemIndex(ItemStack itemStack) {
+        if (itemStack == null || allowedItemsIn == null) {
             return -1;
         }
 
         Item item = itemStack.getItem();
 
-        if( item == null )
-        {
+        if (item == null) {
             return -1;
         }
 
-        for (int i = 0; i < allowedItemsIn.length; i++)
-        {
-            ItemStack allowedItemStack = allowedItemsIn[i];
-            Item allowedItem = allowedItemStack.getItem();
-
-            if( allowedItemStack != null )
-            {
-                continue;
-            }
-
-            if( allowedItem != null )
-            {
-                continue;
-            }
-
-            if( allowedItem == item && allowedItemStack.getItemDamage() == itemStack.getItemDamage())
-            {
-                return i;
+        for (int i = 0; i < allowedItemsIn.length; i++) {
+            ItemStack itemStack1 = allowedItemsIn[i];
+            if (itemStack1 != null) {
+                Item allowedItem = itemStack1.getItem();
+                if (allowedItem != null) {
+                    if (allowedItem == item && itemStack1.getItemDamage() == itemStack.getItemDamage())
+                        return i;
+                }
             }
         }
         return -1;
