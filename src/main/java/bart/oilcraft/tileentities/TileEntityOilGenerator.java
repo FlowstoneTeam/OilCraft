@@ -147,7 +147,7 @@ public class TileEntityOilGenerator extends TileEntity implements IFluidHandler,
             worldObj.markBlockForUpdate(xCoord, yCoord+1, zCoord);
             ((TileEntitySign) te).signText[0]="Energy " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
             ((TileEntitySign) te).signText[1]="Fluid " + tank.getFluidAmount() + "/" + tank.getCapacity();
-            ((TileEntitySign) te).signText[2]="Process " + "This block does not have a process";
+            ((TileEntitySign) te).signText[2]="process " + "This block does not have a process";
             ((TileEntitySign) te).signText[3]="block: Oil Generator";
         }
     }*/

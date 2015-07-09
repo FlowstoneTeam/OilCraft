@@ -1,5 +1,6 @@
 package bart.oilcraft.util;
 
+import bart.oilcraft.recipes.HeatedFurnaceRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,82 +10,36 @@ import net.minecraft.item.ItemStack;
  */
 public class OilFurnaceRegistry {
 
-
     public static String[] buffer;
-    public static ItemStack[] allowedItemsIn;
-    public static ItemStack[] allowedItemsOut;
-    public static int[] energy;
-    public static int[] time;
-    public static int[] oil;
 
     public static void processBuffer() {
-        allowedItemsIn = new ItemStack[buffer.length];
-        allowedItemsOut = new ItemStack[buffer.length];
-        energy = new int[buffer.length];
-        time = new int[buffer.length];
-        oil = new int[buffer.length];
-
-        for (int i = 0; i < buffer.length; i++) {
-            String[] split = buffer[i].split(":");
+        for (String aBuffer : buffer) {
+            String[] split = aBuffer.split(":");
             if (split.length > 6 && split.length < 10) {
                 int oilV, energyV, timeV, metaOut, metaIn;
                 String modid1, input, modid2, output;
-                // modid:output:oil:energy:time:modid:input[:metadata output][:metadata input]
+                // modid:input:oil:energy:time:modid:output[:metadata output][:metadata input]
 
                 oilV = Integer.parseInt(split[2]);
                 energyV = Integer.parseInt(split[3]);
                 timeV = Integer.parseInt(split[4]);
 
                 modid1 = split[0];
-                output = split[1];
+                input = split[1];
 
                 modid2 = split[5];
-                input = split[6];
+                output = split[6];
 
                 metaIn = (split.length == 9 ? Integer.parseInt(split[8]) : 0);
                 metaOut = (split.length == 8 ? Integer.parseInt(split[7]) : 0);
 
                 if (oilV > 0 && energyV > 0 && timeV > 0 && GameRegistry.findItem(modid1, output) != null && GameRegistry.findItem(modid2, input) != null && metaOut >= 0 && metaIn >= 0) {
-                    Item temp1 = GameRegistry.findItem(modid1, output);
-                    ItemStack stack1 = new ItemStack(temp1, 1, metaOut);
+                    Item item1 = GameRegistry.findItem(modid1, input);
+                    Item item2 = GameRegistry.findItem(modid2, output);
 
-                    Item temp2 = GameRegistry.findItem(modid2, input);
-                    ItemStack stack2 = new ItemStack(temp2, 1, metaIn);
-
-
-                    allowedItemsOut[i] = stack1;
-                    allowedItemsIn[i] = stack2;
-
-                    oil[i] = oilV;
-                    energy[i] = energyV;
-                    time[i] = timeV;
+                    new HeatedFurnaceRecipe(item1, item2, energyV, timeV, oilV, metaIn, metaOut);
                 }
             }
         }
     }
-
-    public static int getItemIndex(ItemStack itemStack) {
-        if (itemStack == null || allowedItemsIn == null) {
-            return -1;
-        }
-
-        Item item = itemStack.getItem();
-
-        if (item == null) {
-            return -1;
-        }
-
-        for (int i = 0; i < allowedItemsIn.length; i++) {
-            ItemStack itemStack1 = allowedItemsIn[i];
-            if (itemStack1 != null) {
-                Item allowedItem = itemStack1.getItem();
-                if (allowedItem != null) {
-                    if (allowedItem == item && itemStack1.getItemDamage() == itemStack.getItemDamage())
-                        return i;
-                }
-            }
-        }
-        return -1;
-    }
-
 }
