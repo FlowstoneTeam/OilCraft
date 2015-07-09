@@ -1,4 +1,4 @@
-package bart.oilcraft.entities.entitytrowable;
+package bart.oilcraft.entities;
 
 import bart.oilcraft.entities.EntityGooBall;
 import bart.oilcraft.potions.ModPotions;

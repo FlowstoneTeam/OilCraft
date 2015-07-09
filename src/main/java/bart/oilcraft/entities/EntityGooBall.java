@@ -5,8 +5,11 @@ import bart.oilcraft.fluids.BlockOil;
 import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.potions.ModPotions;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,6 +41,7 @@ public class EntityGooBall extends EntitySlime {
         this.slimeJumpDelay = this.rand.nextInt(20) + 10;
         this.setSlimeSize(i);
     }
+
 
     @Override
     protected void entityInit() {

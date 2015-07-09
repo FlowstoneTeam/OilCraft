@@ -1,8 +1,9 @@
-package bart.oilcraft.lib.handler;
+package bart.oilcraft.recipes;
 
 import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.blocks.OilCraftBlockRegistry;
 import bart.oilcraft.items.OilCraftItemRegistry;
+import bart.oilcraft.lib.handler.ConfigurationHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

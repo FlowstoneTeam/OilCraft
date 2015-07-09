@@ -1,4 +1,4 @@
-package bart.oilcraft.entities.gooball;
+package bart.oilcraft.client.render.model;
 
 
 import net.minecraft.client.model.ModelBase;

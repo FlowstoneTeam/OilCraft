@@ -7,6 +7,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.List;
@@ -42,5 +43,18 @@ public class TileEntitySummonTable extends TileEntity {
                 itemEntity.setDead();
             }
         }
+    }
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        item1 = nbt.getBoolean("item1");
+        item2 = nbt.getBoolean("item2");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setBoolean("item1", item1);
+        nbt.setBoolean("item2", item2);
     }
 }

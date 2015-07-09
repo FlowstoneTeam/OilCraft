@@ -16,7 +16,7 @@ public class OilCraftItemRegistry {
 
     public static Item energyAcceptor = new ItemEnergyAcceptor();
     public static Item oilBucket = new ItemOilBucket(ModFluids.OilBlock);
-    public static Item oilBall = new ItemOilBall();
+    public static ItemOilBall oilBall = new ItemOilBall();
     public static Item energyDistributeUpgrade = new ItemEnergyDistributeUpgrade();
     public static Item advancedKnowledge = new ItemAdvancedKnowledge();
     public static Item note = new ItemNote();
