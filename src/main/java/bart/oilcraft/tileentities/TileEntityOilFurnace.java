@@ -1,7 +1,6 @@
 package bart.oilcraft.tileentities;
 
 
-import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.recipes.HeatedFurnaceRecipe;
@@ -82,7 +81,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return fluid == ModFluids.Oil;
+        return fluid == FluidRegistry.getFluid("oil");
     }
 
     @Override

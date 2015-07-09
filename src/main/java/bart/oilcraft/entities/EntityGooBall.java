@@ -1,15 +1,12 @@
 package bart.oilcraft.entities;
 
 import bart.oilcraft.blocks.OilCraftBlockRegistry;
-import bart.oilcraft.fluids.BlockOil;
+import bart.oilcraft.fluids.BlockFluid;
 import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
 import bart.oilcraft.potions.ModPotions;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
@@ -160,7 +157,7 @@ public class EntityGooBall extends EntitySlime {
                 ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[h];
                 Block block = worldObj.getBlock(this.chunkCoordX + direction.offsetX, this.chunkCoordY + direction.offsetY, this.chunkCoordZ + direction.offsetZ);
                 Block block2 = worldObj.getBlock(this.chunkCoordX, this.chunkCoordY, this.chunkCoordZ);
-                if (this.getMaxHealth() < this.getMaxHealth() && (block instanceof BlockOil || block2 instanceof BlockOil)) {
+                if (this.getMaxHealth() < this.getMaxHealth() && (block instanceof BlockFluid || block2 instanceof BlockFluid)) {
                     this.heal(.5F);
                 }
             }
@@ -171,7 +168,7 @@ public class EntityGooBall extends EntitySlime {
                 int j = MathHelper.floor_double(this.posY);
                 int k = MathHelper.floor_double(this.posZ + (double) ((float) (l / 2 % 2 * 2 - 1) * 0.25F));
 
-                if (this.worldObj.getBlock(h, j, k).getMaterial() == Material.air && this.worldObj.getBlock(h, j - 1, k).getMaterial() != Material.air && !(this.worldObj.getBlock(h, j, k) instanceof BlockOil) && this.worldObj.getBlock(h, j, k).isReplaceable(this.worldObj, h, j, k) && this.worldObj.getBlock(h, j - 1, k).renderAsNormalBlock()) {
+                if (this.worldObj.getBlock(h, j, k).getMaterial() == Material.air && this.worldObj.getBlock(h, j - 1, k).getMaterial() != Material.air && !(this.worldObj.getBlock(h, j, k) instanceof BlockFluid) && this.worldObj.getBlock(h, j, k).isReplaceable(this.worldObj, h, j, k) && this.worldObj.getBlock(h, j - 1, k).renderAsNormalBlock()) {
                     this.worldObj.setBlock(h, j, k, OilCraftBlockRegistry.oilLayer);
                 }
             }

@@ -1,7 +1,6 @@
 package bart.oilcraft.client.gui;
 
 import bart.oilcraft.containers.ContainerOilCompressor;
-import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.lib.References;
 import bart.oilcraft.tileentities.TileEntityOilCompressor;
 import net.minecraft.client.Minecraft;
@@ -12,6 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -34,7 +34,7 @@ public class OilCompressorGUI extends GuiContainer {
         fontRendererObj.drawString(StatCollector.translateToLocal("gui.oil.compressor"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.oil.compressor")) / 2, 2, 0xffffff);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 4, 0xffffff);
         int amount = getScaled();
-        drawFluid(82, 14 + 58 - amount, ModFluids.Oil, 16, amount);
+        drawFluid(82, 14 + 58 - amount, FluidRegistry.getFluid("oil"), 16, amount);
     }
 
     public int getScaled() {
@@ -91,10 +91,10 @@ public class OilCompressorGUI extends GuiContainer {
 
         Tessellator Tes = Tessellator.instance;
         Tes.startDrawingQuads();
-        Tes.addVertexWithUV(x + 0, y + height, this.zLevel, minU, minV + (maxV - minV) * height / 16F);
+        Tes.addVertexWithUV(x , y + height, this.zLevel, minU, minV + (maxV - minV) * height / 16F);
         Tes.addVertexWithUV(x + width, y + height, this.zLevel, minU + (maxU - minU) * width / 16F, minV + (maxV - minV) * height / 16F);
-        Tes.addVertexWithUV(x + width, y + 0, this.zLevel, minU + (maxU - minU) * width / 16F, minV);
-        Tes.addVertexWithUV(x + 0, y + 0, this.zLevel, minU, minV);
+        Tes.addVertexWithUV(x + width, y , this.zLevel, minU + (maxU - minU) * width / 16F, minV);
+        Tes.addVertexWithUV(x , y , this.zLevel, minU, minV);
         Tes.draw();
     }
 
@@ -103,10 +103,10 @@ public class OilCompressorGUI extends GuiContainer {
         float texV = 1 / texH;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(x + 0, y + height, 0, (u + 0) * texU, (v + height) * texV);
+        tessellator.addVertexWithUV(x , y + height, 0, (u ) * texU, (v + height) * texV);
         tessellator.addVertexWithUV(x + width, y + height, 0, (u + width) * texU, (v + height) * texV);
-        tessellator.addVertexWithUV(x + width, y + 0, 0, (u + width) * texU, (v + 0) * texV);
-        tessellator.addVertexWithUV(x + 0, y + 0, 0, (u + 0) * texU, (v + 0) * texV);
+        tessellator.addVertexWithUV(x + width, y , 0, (u + width) * texU, (v ) * texV);
+        tessellator.addVertexWithUV(x , y , 0, (u ) * texU, (v ) * texV);
         tessellator.draw();
     }
 }

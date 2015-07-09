@@ -3,6 +3,7 @@ package bart.oilcraft.blocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.lang.reflect.Field;
 import java.util.LinkedList;
@@ -14,6 +15,7 @@ public class OilCraftBlockRegistry {
     public static Block oilCompressor = new BlockOilCompressor();
     public static Block machineFrame = new BlockMachineFrame();
     public static Block oilGenerator = new BlockOilGenerator();
+    public static Block oilRefinery = new BlockOilRefinery();
     public static Block oilFurnace = new BlockOilFurnace();
     public static Block shaleOilOre = new BlockShaleOilOre();
     public static Block oilLayer = new BlockOilLayer();
@@ -27,8 +29,12 @@ public class OilCraftBlockRegistry {
 
     public static void init() {
         registerBlocks();
+        oreDictRegistry();
     }
 
+    private static void oreDictRegistry(){
+        OreDictionary.registerOre("oreShaleOil", shaleOilOre);
+    }
 
     private static void registerBlocks() {
         try {

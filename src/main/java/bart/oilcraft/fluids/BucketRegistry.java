@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class BucketRegistry {
     public static void registerBucket() {
-        FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(ModFluids.Oil.getName(), FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(OilCraftItemRegistry.oilBucket), new ItemStack(Items.bucket));
-        BucketHandler.INSTANCE.buckets.put(ModFluids.OilBlock, OilCraftItemRegistry.oilBucket);
+        FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(OilCraftFluidRegistry.oil.getName(), FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(OilCraftItemRegistry.oilBucket), new ItemStack(Items.bucket));
+        BucketHandler.INSTANCE.buckets.put(OilCraftFluidRegistry.oilBlock, OilCraftItemRegistry.oilBucket);
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CraftingHandler {
     public static void init() {
@@ -19,31 +20,31 @@ public class CraftingHandler {
     public static void registerRecipes() {
         //machines
         if (ConfigurationHandler.oilCompressor)
-            CraftingManager.getInstance().addRecipe(new ItemStack(OilCraftBlockRegistry.oilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', OilCraftItemRegistry.energyAcceptor);
+            GameRegistry.addRecipe(new ShapedOreRecipe(OilCraftBlockRegistry.oilCompressor, "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', "ingotIron", 'A', OilCraftItemRegistry.energyAcceptor));
         if (ConfigurationHandler.oilGenerator)
-            CraftingManager.getInstance().addRecipe(new ItemStack(OilCraftBlockRegistry.oilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', OilCraftItemRegistry.energyAcceptor);
+            GameRegistry.addRecipe(new ShapedOreRecipe(OilCraftBlockRegistry.oilGenerator, "IGI", "I I", "IAI", 'I', "ingotIron", 'G', "ingotGold", 'A', OilCraftItemRegistry.energyAcceptor));
         if (ConfigurationHandler.oilFurnace)
-            CraftingManager.getInstance().addRecipe(new ItemStack(OilCraftBlockRegistry.oilFurnace), "III", "IFI", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', OilCraftItemRegistry.energyAcceptor, 'F', Blocks.furnace);
+            GameRegistry.addRecipe(new ShapedOreRecipe(OilCraftBlockRegistry.oilFurnace, "III", "IFI", "IAI", 'I', "ingotIron", 'G', "ingotGold", 'A', OilCraftItemRegistry.energyAcceptor, 'F', Blocks.furnace));
 
         //blocks
         if (ConfigurationHandler.oilLayer)
-            CraftingManager.getInstance().addShapelessRecipe(new ItemStack(OilCraftBlockRegistry.oilLayer, 2), OilCraftItemRegistry.oilBall, OilCraftItemRegistry.oilBall, OilCraftItemRegistry.oilBall);
+            GameRegistry.addShapelessRecipe(new ItemStack(OilCraftBlockRegistry.oilLayer, 2), OilCraftItemRegistry.oilBall, OilCraftItemRegistry.oilBall, OilCraftItemRegistry.oilBall);
 
         //items
         if (ConfigurationHandler.energyAcceptor)
-            CraftingManager.getInstance().addRecipe(new ItemStack(OilCraftItemRegistry.energyAcceptor), "RRR", "RGR", "RRR", 'R', Items.redstone, 'G', Items.gold_nugget);
+            GameRegistry.addRecipe(new ShapedOreRecipe(OilCraftItemRegistry.energyAcceptor, "RRR", "RGR", "RRR", 'R', Items.redstone, 'G', "nuggetGold"));
         if (ConfigurationHandler.energyDistributeUpgrade)
-            CraftingManager.getInstance().addRecipe(new ItemStack(OilCraftItemRegistry.energyDistributeUpgrade), " G ", "GAG", " G ", 'A', OilCraftItemRegistry.energyAcceptor, 'G', Items.gold_nugget);
-        CraftingManager.getInstance().addRecipe(new ItemStack(OilCraftItemRegistry.note), "C  ", "   ", "   ", 'C', Blocks.cobblestone);
+            GameRegistry.addRecipe(new ShapedOreRecipe(OilCraftItemRegistry.energyDistributeUpgrade, " G ", "GAG", " G ", 'A', OilCraftItemRegistry.energyAcceptor, 'G', "nuggetGold"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(OilCraftItemRegistry.note, "C  ", "   ", "   ", 'C', Blocks.cobblestone));
 
         //misc
         if (ConfigurationHandler.thermalExpansionItems && OilCraftMain.thermalExpansionLoaded && GameRegistry.findItem("ThermalExpansion", "powerCoilGold") != null) {
             if (ConfigurationHandler.oilCompressor)
-                CraftingManager.getInstance().addRecipe(new ItemStack(OilCraftBlockRegistry.oilCompressor), "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', Items.iron_ingot, 'A', GameRegistry.findItem("ThermalExpansion", "powerCoilGold"));
+                GameRegistry.addRecipe(new ShapedOreRecipe(OilCraftBlockRegistry.oilCompressor, "IPI", "I I", "IAI", 'P', Blocks.piston, 'I', "ingotIron", 'A', GameRegistry.findItem("ThermalExpansion", "powerCoilGold")));
             if (ConfigurationHandler.oilGenerator)
-                CraftingManager.getInstance().addRecipe(new ItemStack(OilCraftBlockRegistry.oilGenerator), "IGI", "I I", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("ThermalExpansion", "powerCoilGold"));
+                GameRegistry.addRecipe(new ShapedOreRecipe(OilCraftBlockRegistry.oilGenerator, "IGI", "I I", "IAI", 'I', "ingotIron", 'G', "ingotGold", 'A', GameRegistry.findItem("ThermalExpansion", "powerCoilGold")));
             if (ConfigurationHandler.oilFurnace)
-                CraftingManager.getInstance().addRecipe(new ItemStack(OilCraftBlockRegistry.oilFurnace), "III", "IFI", "IAI", 'I', Items.iron_ingot, 'G', Items.gold_ingot, 'A', GameRegistry.findItem("ThermalExpansion", "powerCoilGold"), 'F', Blocks.furnace);
+                GameRegistry.addRecipe(new ShapedOreRecipe(OilCraftBlockRegistry.oilFurnace, "III", "IFI", "IAI", 'I', "ingotIron", 'G', "ingotGold", 'A', GameRegistry.findItem("ThermalExpansion", "powerCoilGold"), 'F', Blocks.furnace));
         }
     }
 

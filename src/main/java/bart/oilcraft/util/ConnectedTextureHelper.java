@@ -67,7 +67,15 @@ public class ConnectedTextureHelper {
         textureID = Integer.parseInt(textureIDString, 2);
 
         if (textureID > 0 && textureID < textureIDs.length) {
-            return icons[textureIDs[textureID]];
+
+            int iconID = textureIDs[textureID];
+
+            if (iconID > 0 && iconID < icons.length) {
+                return icons[iconID];
+            } else {
+                return icons[0];
+            }
+
         } else {
             return icons[0];
         }

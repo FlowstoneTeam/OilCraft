@@ -1,8 +1,9 @@
 package bart.oilcraft.items;
 
-import bart.oilcraft.fluids.ModFluids;
+import bart.oilcraft.fluids.OilCraftFluidRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class OilCraftItemRegistry {
     public static final List<Item> ITEMS = new ArrayList<Item>();
 
     public static Item energyAcceptor = new ItemEnergyAcceptor();
-    public static Item oilBucket = new ItemOilBucket(ModFluids.OilBlock);
+    public static Item oilBucket = new ItemOilBucket(OilCraftFluidRegistry.oilBlock);
     public static ItemOilBall oilBall = new ItemOilBall();
     public static Item energyDistributeUpgrade = new ItemEnergyDistributeUpgrade();
     public static Item advancedKnowledge = new ItemAdvancedKnowledge();
@@ -23,6 +24,12 @@ public class OilCraftItemRegistry {
 
     public static void init() {
         registerItems();
+        oreDictRegistry();
+    }
+
+    private static void oreDictRegistry(){
+        OreDictionary.registerOre("bucketOil", oilBucket);
+        OreDictionary.registerOre("ballOil", oilBall);
     }
 
     private static void registerItems() {

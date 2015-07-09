@@ -1,6 +1,5 @@
 package bart.oilcraft.tileentities;
 
-import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.lib.handler.ConfigurationHandler;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
@@ -40,7 +39,7 @@ public class TileEntityOilGenerator extends TileEntity implements IFluidHandler,
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return fluid == ModFluids.Oil;
+        return fluid == FluidRegistry.getFluid("oil");
     }
 
     @Override

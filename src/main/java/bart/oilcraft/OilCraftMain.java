@@ -8,7 +8,7 @@ import bart.oilcraft.entities.EntityGooBall;
 import bart.oilcraft.entities.EntityOilBoss;
 import bart.oilcraft.entities.EntityOilBall;
 import bart.oilcraft.fluids.BucketRegistry;
-import bart.oilcraft.fluids.ModFluids;
+import bart.oilcraft.fluids.OilCraftFluidRegistry;
 import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.lib.References;
 import bart.oilcraft.lib.handler.*;
@@ -62,7 +62,7 @@ public class OilCraftMain {
 
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
         OilCraftBlockRegistry.init();
-        ModFluids.init();
+        OilCraftFluidRegistry.init();
         OilCraftItemRegistry.init();
         ModPotions.init();
         BucketRegistry.registerBucket();

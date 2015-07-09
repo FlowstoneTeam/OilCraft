@@ -49,29 +49,29 @@ public class BlockMachineFrame extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-        return par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 15 ? icons[0] : ConnectedTextureHelper.getConnectedBlockTexture(par1IBlockAccess, par2, par3, par4, par5, icons, this);
+    public IIcon getIcon(IBlockAccess iBlockAccess, int x, int y, int z, int side) {
+        return ConnectedTextureHelper.getConnectedBlockTexture(iBlockAccess, x, y, z, side, icons, this);
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        blockIcon = par1IconRegister.registerIcon(References.MODID + ":machineFrame/General_machine_0");
-        icons[0] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/General_machine_0");
-        icons[1] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_1");
-        icons[2] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_2");
-        icons[3] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_3");
-        icons[4] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_4");
-        icons[5] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_5");
-        icons[6] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_6");
-        icons[7] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_7");
-        icons[8] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_8");
-        icons[9] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_9");
-        icons[10] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_10");
-        icons[11] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_11");
-        icons[12] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_12");
-        icons[13] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_13");
-        icons[14] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_14");
-        icons[15] = par1IconRegister.registerIcon(References.MODID + ":machinesFrame/machine_Side_15");
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        blockIcon = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_0");
+        icons[0] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_0");
+        icons[1] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_1");
+        icons[2] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_2");
+        icons[3] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_3");
+        icons[4] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_4");
+        icons[5] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_5");
+        icons[6] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_6");
+        icons[7] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_7");
+        icons[8] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_8");
+        icons[9] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_9");
+        icons[10] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_10");
+        icons[11] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_11");
+        icons[12] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_12");
+        icons[13] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_13");
+        icons[14] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_14");
+        icons[15] = iconRegister.registerIcon(References.MODID + ":machineframe/General_machine_15");
     }
 }
 

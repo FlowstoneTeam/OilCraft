@@ -1,10 +1,8 @@
 package bart.oilcraft.client.gui;
 
-import bart.oilcraft.containers.ContainerOilFurnace;
-import bart.oilcraft.fluids.OilCraftFluidRegistry;
-import bart.oilcraft.fluids.OilCraftFluids;
+import bart.oilcraft.containers.ContainerOilRefinery;
 import bart.oilcraft.lib.References;
-import bart.oilcraft.tileentities.TileEntityOilFurnace;
+import bart.oilcraft.tileentities.TileEntityOilRefinery;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -17,52 +15,44 @@ import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Created by bart on 18-10-2014.
+ * Created by Bart on 9-7-2015.
  */
-public class OilFurnaceGUI extends GuiContainer {
-    public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/gui/oilfurnace.png");
-    @SuppressWarnings("unused")
-    private ContainerOilFurnace container;
-    private TileEntityOilFurnace te;
+public class OilRefineryGUI extends GuiContainer {
+    public static final ResourceLocation gui = new ResourceLocation(References.MODID, "textures/gui/oilrefinery.png");
+    private TileEntityOilRefinery te;
 
-
-    public OilFurnaceGUI(EntityPlayer player, TileEntityOilFurnace tile) {
-        super(new ContainerOilFurnace(player, tile));
-        this.container = (ContainerOilFurnace) this.inventorySlots;
-        this.te = tile;
+    public OilRefineryGUI(EntityPlayer player, TileEntityOilRefinery te) {
+        super(new ContainerOilRefinery(player, te));
+        this.te = te;
     }
 
-    public int getScaled() {
-        if (te.getTank().getCapacity() <= 0)
+    public int getScaled(int tankNumber) {
+        if (te.getTank(tankNumber).getCapacity() <= 0)
             return 58;
-        return te.getTank().getFluidAmount() * 58 / te.getTank().getCapacity();
+        return te.getTank(tankNumber).getFluidAmount() * 58 / te.getTank(tankNumber).getCapacity();
     }
-
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        fontRendererObj.drawString(StatCollector.translateToLocal("gui.oil.furnace"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.oil.furnace")) / 2, 2, 0xffffff);
+        fontRendererObj.drawString(StatCollector.translateToLocal("gui.oil.oilrefinery"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.oil.furnace")) / 2, 2, 0xffffff);
         fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 4, 0xffffff);
-        int amount = getScaled();
-        drawFluid(143, 14 + 58 - amount, FluidRegistry.getFluid("oil"), 16, amount);
+        drawFluid(44, 13 + 58 - getScaled(7), FluidRegistry.getFluid("oil"), 16, getScaled(0));
+        drawFluid(62, 13 + 58 - getScaled(7), FluidRegistry.getFluid("residue"), 16, getScaled(1));
+        drawFluid(80, 13 + 58 - getScaled(7), FluidRegistry.getFluid("fuel"), 16, getScaled(2));
+        drawFluid(98, 13 + 58 - getScaled(7), FluidRegistry.getFluid("diesel"), 16, getScaled(3));
+        drawFluid(116, 13 + 58 - getScaled(7), FluidRegistry.getFluid("kerosene"), 16, getScaled(4));
+        drawFluid(134, 13 + 58 - getScaled(7), FluidRegistry.getFluid("petrol"), 16, getScaled(5));
+        drawFluid(8, 13 + 58 - getScaled(7), FluidRegistry.getFluid("gas"), 16, getScaled(6));
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
-        GL11.glColor4f(1F, 1F, 1F, 1F);
-
+    protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(gui);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize + 19, ySize);
 
         int xStart = (width - xSize) / 2;
         int yStart = (height - ySize) / 2;
         this.drawTexturedModalRect(xStart, yStart, 0, 0, xSize, ySize);
-
-        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(References.MODID, "textures/gui/energybar.png"));
-        int w = 71;
-        int p = (int) ((double) te.energy.getEnergyStored() * (double) w / te.energy.getMaxEnergyStored());
-
-        this.drawTexturedModalRect(xStart + 10, yStart + 7 + w - p, 16, w - p, 16, p, 256, 256);
     }
 
     public void drawFluid(int x, int y, Fluid fluid, int width, int height) {
@@ -100,17 +90,5 @@ public class OilFurnaceGUI extends GuiContainer {
         Tes.addVertexWithUV(x + width, y , this.zLevel, minU + (maxU - minU) * width / 16F, minV);
         Tes.addVertexWithUV(x , y , this.zLevel, minU, minV);
         Tes.draw();
-    }
-
-    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, float texW, float texH) {
-        float texU = 1 / texW;
-        float texV = 1 / texH;
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(x, y + height, 0, (u ) * texU, (v + height) * texV);
-        tessellator.addVertexWithUV(x + width, y + height, 0, (u + width) * texU, (v + height) * texV);
-        tessellator.addVertexWithUV(x + width, y , 0, (u + width) * texU, (v ) * texV);
-        tessellator.addVertexWithUV(x, y , 0, (u ) * texU, (v ) * texV);
-        tessellator.draw();
     }
 }

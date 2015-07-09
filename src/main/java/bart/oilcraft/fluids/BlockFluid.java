@@ -1,8 +1,8 @@
 package bart.oilcraft.fluids;
 
+import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.lib.References;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
@@ -11,19 +11,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
-public class BaseFluid extends BlockFluidClassic {
+public class BlockFluid extends BlockFluidClassic {
+    public String name;
+    public IIcon stillIcon;
+    public IIcon flowingIcon;
 
-
-    protected IIcon stillIcon;
-    protected IIcon flowingIcon;
-
-    public BaseFluid(Fluid fluid) {
+    public BlockFluid(Fluid fluid, String name) {
         super(fluid, Material.water);
+        this.name = name;
         this.setTickRandomly(true);
-    }
-
-    public String getName() {
-        return "BaseFluid";
+        this.setBlockName("oilcraft." + name.toLowerCase());
+        this.setCreativeTab(OilCraftMain.getCreativeTab());
+        GameRegistry.registerBlock(this, "oilcraft." + name);
     }
 
     @Override
@@ -31,11 +30,10 @@ public class BaseFluid extends BlockFluidClassic {
         return (side == 0 || side == 1) ? stillIcon : flowingIcon;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        stillIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + getName() + "StillBlock");
-        flowingIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + getName() + "FlowingBlock");
+        stillIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + "fluids/" + name + "StillBlock");
+        flowingIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + "fluids/" + name + "FlowingBlock");
     }
 
     @Override
@@ -47,4 +45,6 @@ public class BaseFluid extends BlockFluidClassic {
     public boolean displaceIfPossible(World world, int x, int y, int z) {
         return super.displaceIfPossible(world, x, y, z);
     }
+
+
 }

@@ -1,7 +1,6 @@
 package bart.oilcraft.tileentities;
 
 import bart.oilcraft.containers.SlotWhitelist;
-import bart.oilcraft.fluids.ModFluids;
 import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.recipes.OilCompressorRecipe;
 import bart.oilcraft.recipes.RecipeList;
@@ -157,7 +156,7 @@ public class TileEntityOilCompressor extends TileEntity implements ISidedInvento
                 if (progress >= recipe.time) {
                     int add = recipe.oil;
                     if (tank.getFluidAmount() + add <= tank.getCapacity()) {
-                        tank.fill(new FluidStack(ModFluids.Oil, add), true);
+                        tank.fill(new FluidStack(FluidRegistry.getFluid("oil"), add), true);
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                         setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
                         progress = 0;

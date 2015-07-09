@@ -17,6 +17,7 @@ public class CommonProxy {
         GameRegistry.registerTileEntity(TileEntityOilFurnace.class, "TileEntityOilFurnace");
         GameRegistry.registerTileEntity(TileEntitySummonTable.class, "TileEntitySummonTable");
         GameRegistry.registerTileEntity(TileEntityLiquidizer.class, "TileEntityLiquidizer");
+        GameRegistry.registerTileEntity(TileEntityOilRefinery.class, "TileEntityOilRefinery");
     }
 
     public void registerRenderInformation() {

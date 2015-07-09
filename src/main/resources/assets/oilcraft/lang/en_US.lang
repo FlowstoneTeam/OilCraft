@@ -2,7 +2,7 @@ itemGroup.oilcraft=OilCraft
 
 
 tile.oilcraft.oilcompressor.name=Oil Compressor
-tile.oilcraft.Oil.name=Oil
+tile.oilcraft.oil.name=Oil
 tile.oilcraft.shaleoilore.name=Shale Oil Ore
 tile.oilcraft.blockmachineframe.name=Machine Frame
 tile.oilcraft.blockslipperyremover.name=Slippery Remover
