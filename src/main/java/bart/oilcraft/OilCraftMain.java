@@ -13,7 +13,6 @@ import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.lib.References;
 import bart.oilcraft.lib.handler.*;
 import bart.oilcraft.potions.ModPotions;
-import bart.oilcraft.potions.PotionSlipperyHandler;
 import bart.oilcraft.util.OilCompressorRegistry;
 import bart.oilcraft.util.OilFurnaceRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -80,7 +79,6 @@ public class OilCraftMain {
         System.out.println("Oilcraft Initialization");
         CraftingHandler.init();
         proxy.registerTileEntities();
-        FMLCommonHandler.instance().bus().register(new PotionSlipperyHandler());
 
         proxy.registerRenderInformation();
         EntityRegistry.registerModEntity(EntityGooBall.class, "gooball", 1, this, 20, 3, true);

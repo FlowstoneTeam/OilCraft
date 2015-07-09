@@ -3,7 +3,6 @@ package bart.oilcraft.util;
 import bart.oilcraft.recipes.HeatedFurnaceRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 /**
  * Created by bart on 20-10-2014.
