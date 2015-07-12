@@ -5,13 +5,16 @@ import bart.oilcraft.client.gui.GuiHandler;
 import bart.oilcraft.core.proxy.CommonProxy;
 import bart.oilcraft.creativetab.OilCraftTab;
 import bart.oilcraft.entities.EntityGooBall;
-import bart.oilcraft.entities.EntityOilBoss;
 import bart.oilcraft.entities.EntityOilBall;
+import bart.oilcraft.entities.EntityOilBoss;
 import bart.oilcraft.fluids.BucketRegistry;
 import bart.oilcraft.fluids.OilCraftFluidRegistry;
 import bart.oilcraft.items.OilCraftItemRegistry;
 import bart.oilcraft.lib.References;
-import bart.oilcraft.lib.handler.*;
+import bart.oilcraft.lib.handler.BucketHandler;
+import bart.oilcraft.lib.handler.ConfigurationHandler;
+import bart.oilcraft.lib.handler.ThaumcraftHandler;
+import bart.oilcraft.lib.handler.WorldGenerationHandler;
 import bart.oilcraft.potions.ModPotions;
 import bart.oilcraft.recipes.CraftingHandler;
 import bart.oilcraft.util.OilCompressorRegistry;
@@ -65,7 +68,8 @@ public class OilCraftMain {
         OilCraftFluidRegistry.init();
         OilCraftItemRegistry.init();
         ModPotions.init();
-        BucketRegistry.registerBucket();
+        if (OilCraftFluidRegistry.oil != null)
+            BucketRegistry.registerBucket();
 
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         NetworkRegistry.INSTANCE.registerGuiHandler(OilCraftMain.instance, new GuiHandler());

@@ -44,6 +44,7 @@ public class TileEntitySummonTable extends TileEntity {
             }
         }
     }
+
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);

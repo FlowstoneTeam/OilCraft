@@ -25,7 +25,7 @@ public class ItemOilBall extends Item {
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister){
+    public void registerIcons(IIconRegister iconRegister) {
         this.icon = iconRegister.registerIcon(References.RESOURCESPREFIX + "oilball");
     }
 

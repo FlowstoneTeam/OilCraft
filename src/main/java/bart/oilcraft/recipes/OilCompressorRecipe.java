@@ -13,7 +13,7 @@ public class OilCompressorRecipe {
     public int energy;
     public int meta;
 
-    public OilCompressorRecipe(Item input, int oil, int time, int energy, int meta){
+    public OilCompressorRecipe(Item input, int oil, int time, int energy, int meta) {
         this.input = input;
         this.oil = oil;
         this.time = time;

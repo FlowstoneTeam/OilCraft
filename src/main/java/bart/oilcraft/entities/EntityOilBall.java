@@ -1,6 +1,5 @@
 package bart.oilcraft.entities;
 
-import bart.oilcraft.entities.EntityGooBall;
 import bart.oilcraft.potions.ModPotions;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

@@ -299,7 +299,7 @@ public class TileEntityOilFurnace extends TileEntity implements ISidedInventory,
     }
 
     public void customSmelting() {
-        if(items[0] != null) {
+        if (items[0] != null) {
             if (worldObj.getBlock(xCoord, yCoord - 1, zCoord) instanceof BlockFire) {
                 HeatedFurnaceRecipe recipe = RecipeList.getHeatedFurnaceRecipe(items[0].getItem(), items[0].getItemDamage());
                 if (recipe != null) {

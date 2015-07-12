@@ -1,5 +1,6 @@
 package bart.oilcraft.blocks;
 
+import bart.oilcraft.items.ItemOredict;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -29,11 +30,6 @@ public class OilCraftBlockRegistry {
 
     public static void init() {
         registerBlocks();
-        oreDictRegistry();
-    }
-
-    private static void oreDictRegistry(){
-        OreDictionary.registerOre("oreShaleOil", shaleOilOre);
     }
 
     private static void registerBlocks() {
@@ -41,13 +37,24 @@ public class OilCraftBlockRegistry {
             for (Field f : OilCraftBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Block)
-                    registerBlock((Block) obj);
+                    registerOredictBlock((Block) obj);
                 else if (obj instanceof Block[])
                     for (Block block : (Block[]) obj)
-                        registerBlock(block);
+                        registerOredictBlock(block);
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void registerOredictBlock(Block block) {
+        if (block instanceof ItemOredict) {
+            if (OreDictionary.getOres(((ItemOredict) block).getOreDictName()).size() > 0)
+                return;
+            registerBlock(block);
+            OreDictionary.registerOre(((ItemOredict) block).getOreDictName(), block);
+        } else {
+            registerBlock(block);
         }
     }
 

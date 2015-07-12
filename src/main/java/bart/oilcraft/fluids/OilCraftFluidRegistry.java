@@ -1,7 +1,8 @@
 package bart.oilcraft.fluids;
 
-import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
+
+import static bart.oilcraft.util.OreDictionaryHelper.*;
 
 public class OilCraftFluidRegistry {
     public static Fluid oil;
@@ -20,36 +21,36 @@ public class OilCraftFluidRegistry {
     public static BlockFluid gasBlock;
 
 
-
-
     public static void init() {
-        oil = new OilCraftFluids("oil");
-        oilBlock = new BlockFluid(oil, "oil");
-        oil.setFlowingIcon(oilBlock.flowingIcon).setStillIcon(oilBlock.stillIcon);
-
-        residue = new OilCraftFluids("residue");
-        residueBlock = new BlockFluid(residue, "residue");
-        residue.setFlowingIcon(residueBlock.flowingIcon).setStillIcon(residueBlock.stillIcon);
-
-        diesel = new OilCraftFluids("diesel");
-        dieselBlock = new BlockFluid(diesel, "diesel");
-        diesel.setFlowingIcon(dieselBlock.flowingIcon).setStillIcon(dieselBlock.stillIcon);
-
-        fuel = new OilCraftFluids("fuel");
-        fuelBlock = new BlockFluid(fuel, "fuel");
-        fuel.setFlowingIcon(fuelBlock.flowingIcon).setStillIcon(fuelBlock.stillIcon);
-
-        kerosene = new OilCraftFluids("kerosene");
-        keroseneBlock = new BlockFluid(kerosene, "kerosene");
-        kerosene.setFlowingIcon(keroseneBlock.flowingIcon).setStillIcon(keroseneBlock.stillIcon);
-
-        petrol = new OilCraftFluids("petrol");
-        petrolBlock = new BlockFluid(petrol, "petrol");
-        petrol.setFlowingIcon(petrolBlock.flowingIcon).setStillIcon(petrolBlock.stillIcon);
-
-        gas = new OilCraftFluids("gas").setGaseous(true);
-        gasBlock = new BlockFluid(gas, "gas");
-        gas.setFlowingIcon(gasBlock.flowingIcon).setStillIcon(gasBlock.stillIcon);
+        if (OIL != null) {
+            oil = new OilCraftFluids(OIL_STRING);
+            oilBlock = new BlockFluid(oil, OIL_STRING);
+        }
+        if (RESIDUE != null) {
+            residue = new OilCraftFluids(RESIDUE_STRING);
+            residueBlock = new BlockFluid(residue, RESIDUE_STRING);
+        }
+        if (FUEL != null) {
+            fuel = new OilCraftFluids(FUEL_STRING);
+            fuelBlock = new BlockFluid(fuel, FUEL_STRING);
+        }
+        if (DIESEL != null) {
+            diesel = new OilCraftFluids(DIESEL_STRING);
+            dieselBlock = new BlockFluid(diesel, DIESEL_STRING);
+        }
+        if (KEROSENE != null) {
+            kerosene = new OilCraftFluids(KEROSENE_STRING);
+            keroseneBlock = new BlockFluid(kerosene, KEROSENE_STRING);
+        }
+        if (PETROL != null) {
+            petrol = new OilCraftFluids(PETROL_STRING);
+            petrolBlock = new BlockFluid(petrol, PETROL_STRING);
+        }
+        if (GAS != null) {
+            gas = new OilCraftFluids(GAS_STRING).setGaseous(true);
+            gasBlock = new BlockFluid(gas, GAS_STRING);
+        }
     }
+
 }
 

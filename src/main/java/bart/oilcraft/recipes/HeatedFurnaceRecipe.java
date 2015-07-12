@@ -14,7 +14,7 @@ public class HeatedFurnaceRecipe {
     public int metaInput;
     public int metaOutput;
 
-    public HeatedFurnaceRecipe(Item input, Item output, int energy, int time, int oil, int metaInput, int metaOutput){
+    public HeatedFurnaceRecipe(Item input, Item output, int energy, int time, int oil, int metaInput, int metaOutput) {
         this.input = input;
         this.output = output;
         this.energy = energy;

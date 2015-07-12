@@ -16,6 +16,7 @@ public class BlockFluid extends BlockFluidClassic {
     public IIcon stillIcon;
     public IIcon flowingIcon;
 
+
     public BlockFluid(Fluid fluid, String name) {
         super(fluid, Material.water);
         this.name = name;
@@ -34,6 +35,17 @@ public class BlockFluid extends BlockFluidClassic {
     public void registerBlockIcons(IIconRegister par1IconRegister) {
         stillIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + "fluids/" + name + "StillBlock");
         flowingIcon = par1IconRegister.registerIcon(References.RESOURCESPREFIX + "fluids/" + name + "FlowingBlock");
+        try {
+            Object field = OilCraftFluidRegistry.class.getDeclaredField(name).get(null);
+            if (field instanceof Fluid) {
+                ((Fluid) field).setIcons(stillIcon, flowingIcon);
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

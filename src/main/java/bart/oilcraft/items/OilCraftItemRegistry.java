@@ -24,26 +24,31 @@ public class OilCraftItemRegistry {
 
     public static void init() {
         registerItems();
-        oreDictRegistry();
-    }
-
-    private static void oreDictRegistry(){
-        OreDictionary.registerOre("bucketOil", oilBucket);
-        OreDictionary.registerOre("ballOil", oilBall);
     }
 
     private static void registerItems() {
         try {
             for (Field f : OilCraftItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
-                if (obj instanceof Item) registerItem((Item) obj);
+                if (obj instanceof Item)
+                    registerOredictItem((Item) obj);
                 else if (obj instanceof Item[])
                     for (Item item : (Item[]) obj)
-                        registerItem(item);
+                        registerOredictItem(item);
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void registerOredictItem(Item item) {
+        if (item instanceof ItemOredict) {
+            if (OreDictionary.getOres(((ItemOredict) item).getOreDictName()).size() > 0)
+                return;
+            registerItem(item);
+            OreDictionary.registerOre(((ItemOredict) item).getOreDictName(), item);
+        } else
+            registerItem(item);
     }
 
     private static void registerItem(Item item) {

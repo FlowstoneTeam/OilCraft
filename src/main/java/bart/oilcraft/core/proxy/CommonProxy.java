@@ -1,8 +1,8 @@
 package bart.oilcraft.core.proxy;
 
 import bart.oilcraft.entities.EntityGooBall;
-import bart.oilcraft.entities.EntityOilBoss;
 import bart.oilcraft.entities.EntityOilBall;
+import bart.oilcraft.entities.EntityOilBoss;
 import bart.oilcraft.tileentities.*;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;

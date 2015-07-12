@@ -1,7 +1,6 @@
 package bart.oilcraft.blocks;
 
 import bart.oilcraft.OilCraftMain;
-import bart.oilcraft.tileentities.TileEntityOilGenerator;
 import bart.oilcraft.tileentities.TileEntityOilRefinery;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;

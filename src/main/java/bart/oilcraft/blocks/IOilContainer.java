@@ -11,9 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import static bart.oilcraft.util.OreDictionaryHelper.OIL;
+import static bart.oilcraft.util.OreDictionaryHelper.OIL_BUCKET;
 
 /**
  * Created by Bart on 9-7-2015.
@@ -35,6 +37,7 @@ public class IOilContainer extends Block implements ITileEntityProvider {
         return true;
     }
 
+
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
         super.onBlockActivated(world, x, y, z, entityPlayer, side, hitX, hitY, hitZ);
@@ -42,22 +45,22 @@ public class IOilContainer extends Block implements ITileEntityProvider {
         if (world.getTileEntity(x, y, z) != null && entityPlayer.getCurrentEquippedItem() != null) {
             TileEntity te = world.getTileEntity(x, y, z);
             ItemStack equippedItem = entityPlayer.getCurrentEquippedItem();
-            if (equippedItem.getItem() == OilCraftItemRegistry.oilBucket && te instanceof IFluidHandler && !makesOil) {
+            if (equippedItem.getItem() == OIL_BUCKET.get(0).getItem() && te instanceof IFluidHandler && !makesOil) {
                 int sending = 1000;
-                int filling = ((IFluidHandler) te).fill(ForgeDirection.UP, new FluidStack(FluidRegistry.getFluid("oil"), sending), false);
+                int filling = ((IFluidHandler) te).fill(ForgeDirection.UP, new FluidStack(OIL, sending), false);
                 if (filling == sending) {
                     entityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.bucket, 1));
                     entityPlayer.inventory.consumeInventoryItem(OilCraftItemRegistry.oilBucket);
-                    ((IFluidHandler) te).fill(ForgeDirection.UP, new FluidStack(FluidRegistry.getFluid("oil"), sending), true);
+                    ((IFluidHandler) te).fill(ForgeDirection.UP, new FluidStack(OIL, sending), true);
                     return true;
                 }
             } else if (equippedItem.getItem() == Items.bucket && te instanceof IFluidHandler && makesOil) {
                 int asking = 1000;
-                FluidStack emptying = ((IFluidHandler) te).drain(ForgeDirection.UP, new FluidStack(FluidRegistry.getFluid("oil"), asking), false);
+                FluidStack emptying = ((IFluidHandler) te).drain(ForgeDirection.UP, new FluidStack(OIL, asking), false);
                 if (emptying.amount == asking) {
                     entityPlayer.inventory.consumeInventoryItem(Items.bucket);
-                    entityPlayer.inventory.addItemStackToInventory(new ItemStack(OilCraftItemRegistry.oilBucket, 1));
-                    ((IFluidHandler) te).drain(ForgeDirection.UP, new FluidStack(FluidRegistry.getFluid("oil"), asking), true);
+                    entityPlayer.inventory.addItemStackToInventory(new ItemStack(OIL_BUCKET.get(0).getItem(), 1));
+                    ((IFluidHandler) te).drain(ForgeDirection.UP, new FluidStack(OIL, asking), true);
                     return true;
                 }
             }

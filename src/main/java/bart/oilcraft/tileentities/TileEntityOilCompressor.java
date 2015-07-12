@@ -156,8 +156,8 @@ public class TileEntityOilCompressor extends TileEntity implements ISidedInvento
                 if (progress >= recipe.time) {
                     int add = recipe.oil;
                     if (tank.getFluidAmount() + add <= tank.getCapacity()) {
-                        tank.fill(new FluidStack(FluidRegistry.getFluid("oil"), add), true);
                         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+                        tank.fill(new FluidStack(FluidRegistry.getFluid("oil"), add), true);
                         setInventorySlotContents(0, items[0].stackSize == 1 ? null : new ItemStack(items[0].getItem(), items[0].stackSize - 1));
                         progress = 0;
                         energy.extractEnergy(recipe.energy, true);
@@ -168,6 +168,7 @@ public class TileEntityOilCompressor extends TileEntity implements ISidedInvento
                 progress = 0;
 
             if (tank.getFluidAmount() >= 1000 && items[1] != null && items[1].getItem() == Items.bucket && items[2] == null) {
+                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                 tank.drain(1000, true);
                 this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                 setInventorySlotContents(1, items[1].stackSize == 1 ? null : new ItemStack(items[1].getItem(), items[1].stackSize - 1));

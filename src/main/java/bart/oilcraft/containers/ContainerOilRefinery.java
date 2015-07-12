@@ -1,12 +1,9 @@
 package bart.oilcraft.containers;
 
-import bart.oilcraft.tileentities.TileEntityOilFurnace;
 import bart.oilcraft.tileentities.TileEntityOilRefinery;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
 
 /**
  * Created by Bart on 9-7-2015.

@@ -1,12 +1,11 @@
 package bart.oilcraft.core.proxy;
 
-import bart.oilcraft.entities.EntityGooBall;
-import bart.oilcraft.entities.EntityOilBoss;
-import bart.oilcraft.entities.EntityOilBall;
+import bart.oilcraft.client.render.entities.RendererGooBall;
 import bart.oilcraft.client.render.entities.RendererOilBall;
 import bart.oilcraft.client.render.model.ModelGooBall;
-import bart.oilcraft.client.render.entities.RendererGooBall;
-import bart.oilcraft.items.OilCraftItemRegistry;
+import bart.oilcraft.entities.EntityGooBall;
+import bart.oilcraft.entities.EntityOilBall;
+import bart.oilcraft.entities.EntityOilBoss;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
