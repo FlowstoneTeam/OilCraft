@@ -24,6 +24,8 @@ public class TileEntityOilRefinery extends TileEntity implements IFluidHandler {
     public final int maxFluid = 10000;
     public ArrayList<FluidStack> fluidlist = new ArrayList<FluidStack>();
 
+    public int facing;
+
     @Override
     public void updateEntity() {
         if (worldObj.isRemote) return;
@@ -33,25 +35,25 @@ public class TileEntityOilRefinery extends TileEntity implements IFluidHandler {
         FluidStack checkFor;
         switch (i) {
             case 0:
-                checkFor = new FluidStack(RESIDUE, 0);
+                checkFor = new FluidStack(getFluid(RESIDUE), 0);
                 break;
             case 1:
-                checkFor = new FluidStack(FUEL, 0);
+                checkFor = new FluidStack(getFluid(FUEL), 0);
                 break;
             case 2:
-                checkFor = new FluidStack(DIESEL, 0);
+                checkFor = new FluidStack(getFluid(DIESEL), 0);
                 break;
             case 3:
-                checkFor = new FluidStack(KEROSENE, 0);
+                checkFor = new FluidStack(getFluid(KEROSENE), 0);
                 break;
             case 4:
-                checkFor = new FluidStack(PETROL, 0);
+                checkFor = new FluidStack(getFluid(PETROL), 0);
                 break;
             case 5:
-                checkFor = new FluidStack(GAS, 0);
+                checkFor = new FluidStack(getFluid(GAS), 0);
                 break;
             default:
-                checkFor = new FluidStack(OIL, 0);
+                checkFor = new FluidStack(getFluid(OIL), 0);
         }
         for (FluidStack fluid : fluidlist)
             if (checkFor.getFluid().equals(fluid.getFluid()))
@@ -70,6 +72,7 @@ public class TileEntityOilRefinery extends TileEntity implements IFluidHandler {
             if (fluid != null && fluid.amount > 0)
                 fluidlist.add(fluid);
         }
+        facing = tagCompound.getInteger("facing");
     }
 
     @Override
@@ -80,6 +83,7 @@ public class TileEntityOilRefinery extends TileEntity implements IFluidHandler {
             fluid.writeToNBT(nbt);
             taglist.appendTag(nbt);
         }
+        tagCompound.setInteger("facing", facing);
         tagCompound.setTag("liquids", taglist);
     }
 
@@ -138,7 +142,7 @@ public class TileEntityOilRefinery extends TileEntity implements IFluidHandler {
     }
 
     public boolean isAllowedFluid(FluidStack stack) {
-        Fluid[] fluids = new Fluid[]{OIL, RESIDUE, FUEL, DIESEL, KEROSENE, PETROL, GAS};
+        Fluid[] fluids = new Fluid[]{getFluid(OIL), getFluid(RESIDUE), getFluid(FUEL), getFluid(DIESEL), getFluid(KEROSENE), getFluid(PETROL), getFluid(GAS)};
         for (Fluid fluid : fluids)
             if (stack.getFluid().equals(fluid))
                 return true;
@@ -147,7 +151,7 @@ public class TileEntityOilRefinery extends TileEntity implements IFluidHandler {
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        if (resource.getFluid().equals(OIL) && resource.amount <= maxFluid) {
+        if (resource.getFluid().equals(getFluid(OIL)) && resource.amount <= maxFluid) {
             return addTo(resource, doFill);
         }
         return 0;
@@ -165,7 +169,7 @@ public class TileEntityOilRefinery extends TileEntity implements IFluidHandler {
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return fluid == OIL;
+        return fluid == getFluid(OIL);
     }
 
     @Override
@@ -185,7 +189,7 @@ public class TileEntityOilRefinery extends TileEntity implements IFluidHandler {
         }
         if (!hasFluid) {
             tankInfos = new FluidTankInfo[1];
-            tankInfos[0] = new FluidTankInfo(new FluidStack(OIL, 0), 10000);
+            tankInfos[0] = new FluidTankInfo(new FluidStack(getFluid(OIL), 0), 10000);
         }
         return tankInfos;
     }

@@ -1,17 +1,22 @@
 package bart.oilcraft.blocks;
 
 import bart.oilcraft.OilCraftMain;
+import bart.oilcraft.tileentities.TileEntityOilGenerator;
 import bart.oilcraft.tileentities.TileEntityOilRefinery;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 /**
  * Created by Bart on 9-7-2015.
  */
 public class BlockOilRefinery extends IOilContainer implements ITileEntityProvider {
+
     public BlockOilRefinery() {
         super(Material.iron);
         this.setBlockName("oilcraft.oilrefinery");
@@ -30,8 +35,22 @@ public class BlockOilRefinery extends IOilContainer implements ITileEntityProvid
     }
 
     @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
+        int facing = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        TileEntityOilRefinery tile = (TileEntityOilRefinery) world.getTileEntity(x, y, z);
+
+        if (facing == 0)
+            tile.facing = 2;
+        else if (facing == 1)
+            tile.facing = 5;
+        else if (facing == 2)
+            tile.facing = 3;
+        else if (facing == 3)
+            tile.facing = 4;
+    }
+
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float hitX, float hitY, float hitZ) {
-        System.out.println("something");
         if (!world.isRemote) {
             entityPlayer.openGui(OilCraftMain.instance, guiID, world, x, y, z);
             return true;

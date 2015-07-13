@@ -27,6 +27,8 @@ public class OilCraftBlockRegistry {
     public static Block crackedOilyStairs = new BlockOilCraftStairs(speedDecro, "crackedOilyStairs", 1);
     public static Block liquidizer = new BlockLiquidizer();
     public static Block bodyReconstructer = new BlockBodyReconstructor();
+    public static Block blockMultiblock = new BlockMultiblockBlocks();
+    public static Block blockStructureBlock = new BlockStructure();
 
     public static void init() {
         registerBlocks();

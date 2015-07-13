@@ -23,6 +23,6 @@ public class ItemOilBucket extends ItemBucket implements ItemOredict {
 
     @Override
     public String getOreDictName() {
-        return OreDictionaryHelper.OIL_BUCKET_STRING;
+        return OreDictionaryHelper.OIL_BUCKET;
     }
 }

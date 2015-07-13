@@ -24,6 +24,6 @@ public class BlockShaleOilOre extends Block implements ItemOredict {
 
     @Override
     public String getOreDictName() {
-        return OreDictionaryHelper.SHALE_OIL_ORE_STRING;
+        return OreDictionaryHelper.SHALE_OIL_ORE;
     }
 }

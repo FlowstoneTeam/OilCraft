@@ -19,18 +19,14 @@ import net.minecraftforge.fluids.*;
  * Created by Bart on 13-7-2015.
  */
 public class TileEntityMultiBlock extends TileEntity implements ISidedInventory, IFluidHandler, IEnergyHandler {
-    int xParent, yParent, zParent;
-
     public FluidTank tank;
     public EnergyStorage energy;
-    public boolean canOutputPower, canReceivePower, canOutputItem, canReceiveItem, canOutputFluid, canReceiveFluid, isFormed;
-
-    public boolean checkBuddyDown, checkBuddyUp, checkBuddyNorth, checkBuddyEast, checkBuddySouth, checkBuddyWest;
-
+    public boolean canOutputPower = false, canReceivePower = false, canOutputItem = false, canReceiveItem = false, canOutputFluid = false, canReceiveFluid = false, isFormed = false;
+    public boolean checkBuddyDown = false, checkBuddyUp = false, checkBuddyNorth = false, checkBuddyEast = false, checkBuddySouth = false, checkBuddyWest = false;
     public ItemStack prevParentItemStack;
     public int timeTillUpdate;
-
     public String fluidCanOutput, fluidCanInput;
+    int xParent, yParent, zParent;
 
     @Override
     public void updateEntity() {
@@ -41,7 +37,7 @@ public class TileEntityMultiBlock extends TileEntity implements ISidedInventory,
         }
     }
 
-    public void checkForParent(){
+    public void checkForParent() {
         if (timeTillUpdate >= 5) {
             Block parent = worldObj.getBlock(xParent, yParent, zParent);
             if (parent != Block.getBlockFromItem(prevParentItemStack.getItem()))
@@ -50,30 +46,30 @@ public class TileEntityMultiBlock extends TileEntity implements ISidedInventory,
         }
     }
 
-    public void checkForBuddy(){
+    public void checkForBuddy() {
         if (timeTillUpdate >= 5) {
             timeTillUpdate = 0;
             for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
                 ForgeDirection direction = ForgeDirection.VALID_DIRECTIONS[i];
                 TileEntity te = worldObj.getTileEntity(this.xCoord + direction.offsetX, this.yCoord + direction.offsetY, this.zCoord + direction.offsetZ);
 
-                if(direction == ForgeDirection.DOWN && checkBuddyDown)
-                    if(!(te instanceof TileEntityMultiBlock))
+                if (direction == ForgeDirection.DOWN && checkBuddyDown)
+                    if (!(te instanceof TileEntityMultiBlock))
                         isFormed = false;
-                if(direction == ForgeDirection.UP && checkBuddyUp)
-                    if(!(te instanceof TileEntityMultiBlock))
+                if (direction == ForgeDirection.UP && checkBuddyUp)
+                    if (!(te instanceof TileEntityMultiBlock))
                         isFormed = false;
-                if(direction == ForgeDirection.NORTH && checkBuddyNorth)
-                    if(!(te instanceof TileEntityMultiBlock))
+                if (direction == ForgeDirection.NORTH && checkBuddyNorth)
+                    if (!(te instanceof TileEntityMultiBlock))
                         isFormed = false;
-                if(direction == ForgeDirection.EAST && checkBuddyEast)
-                    if(!(te instanceof TileEntityMultiBlock))
+                if (direction == ForgeDirection.EAST && checkBuddyEast)
+                    if (!(te instanceof TileEntityMultiBlock))
                         isFormed = false;
-                if(direction == ForgeDirection.SOUTH && checkBuddySouth)
-                    if(!(te instanceof TileEntityMultiBlock))
+                if (direction == ForgeDirection.SOUTH && checkBuddySouth)
+                    if (!(te instanceof TileEntityMultiBlock))
                         isFormed = false;
-                if(direction == ForgeDirection.WEST && checkBuddyWest)
-                    if(!(te instanceof TileEntityMultiBlock))
+                if (direction == ForgeDirection.WEST && checkBuddyWest)
+                    if (!(te instanceof TileEntityMultiBlock))
                         isFormed = false;
             }
         } else
@@ -136,7 +132,7 @@ public class TileEntityMultiBlock extends TileEntity implements ISidedInventory,
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         TileEntity tileEntityParent = worldObj.getTileEntity(xParent, yParent, zParent);
-        if (isFormed && canOutputFluid && tileEntityParent instanceof IFluidHandler )
+        if (isFormed && canOutputFluid && tileEntityParent instanceof IFluidHandler)
             return ((IFluidHandler) tileEntityParent).drain(from, maxDrain, doDrain);
         return null;
     }

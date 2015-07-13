@@ -22,34 +22,21 @@ public class OilCraftFluidRegistry {
 
 
     public static void init() {
-        if (OIL != null) {
-            oil = new OilCraftFluids(OIL_STRING);
-            oilBlock = new BlockFluid(oil, OIL_STRING);
-        }
-        if (RESIDUE != null) {
-            residue = new OilCraftFluids(RESIDUE_STRING);
-            residueBlock = new BlockFluid(residue, RESIDUE_STRING);
-        }
-        if (FUEL != null) {
-            fuel = new OilCraftFluids(FUEL_STRING);
-            fuelBlock = new BlockFluid(fuel, FUEL_STRING);
-        }
-        if (DIESEL != null) {
-            diesel = new OilCraftFluids(DIESEL_STRING);
-            dieselBlock = new BlockFluid(diesel, DIESEL_STRING);
-        }
-        if (KEROSENE != null) {
-            kerosene = new OilCraftFluids(KEROSENE_STRING);
-            keroseneBlock = new BlockFluid(kerosene, KEROSENE_STRING);
-        }
-        if (PETROL != null) {
-            petrol = new OilCraftFluids(PETROL_STRING);
-            petrolBlock = new BlockFluid(petrol, PETROL_STRING);
-        }
-        if (GAS != null) {
-            gas = new OilCraftFluids(GAS_STRING).setGaseous(true);
-            gasBlock = new BlockFluid(gas, GAS_STRING);
-        }
+        oil = new OilCraftFluids(OIL);
+        oilBlock = new BlockFluid(oil, OIL);
+        residue = new OilCraftFluids(RESIDUE);
+        residueBlock = new BlockFluid(residue, RESIDUE);
+        fuel = new OilCraftFluids(FUEL);
+        fuelBlock = new BlockFluid(fuel, FUEL);
+        diesel = new OilCraftFluids(DIESEL);
+        dieselBlock = new BlockFluid(diesel, DIESEL);
+        kerosene = new OilCraftFluids(KEROSENE);
+        keroseneBlock = new BlockFluid(kerosene, KEROSENE);
+        petrol = new OilCraftFluids(PETROL);
+        petrolBlock = new BlockFluid(petrol, PETROL);
+        gas = new OilCraftFluids(GAS).setGaseous(true);
+        gasBlock = new BlockFluid(gas, GAS);
+
     }
 
 }

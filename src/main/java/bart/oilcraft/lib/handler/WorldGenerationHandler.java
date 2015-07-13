@@ -1,11 +1,14 @@
 package bart.oilcraft.lib.handler;
 
 import bart.oilcraft.blocks.OilCraftBlockRegistry;
+import bart.oilcraft.util.OreDictionaryHelper;
 import cpw.mods.fml.common.IWorldGenerator;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Random;
 
@@ -35,7 +38,7 @@ public class WorldGenerationHandler implements IWorldGenerator {
             int firstBlockZCoord = (16 * chunkZ) + rand.nextInt(16);
             int firstBlockYCoord = rand.nextInt(60);
 
-            (new WorldGenMinable(OilCraftBlockRegistry.shaleOilOre, 0, 4, Blocks.stone)).generate(world, rand, firstBlockXCoord, firstBlockYCoord, firstBlockZCoord);
+            (new WorldGenMinable(Block.getBlockFromItem(OreDictionaryHelper.getOres(OreDictionaryHelper.SHALE_OIL_ORE).get(0).getItem()), 0, 4, Blocks.stone)).generate(world, rand, firstBlockXCoord, firstBlockYCoord, firstBlockZCoord);
         }
     }
 }
