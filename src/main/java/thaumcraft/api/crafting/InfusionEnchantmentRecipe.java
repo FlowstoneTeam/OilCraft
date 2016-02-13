@@ -1,30 +1,34 @@
 package thaumcraft.api.crafting;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.research.ResearchHelper;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+
+@Deprecated
 public class InfusionEnchantmentRecipe
 {
 	
 	public AspectList aspects;
-	public String research;
-	public ItemStack[] components;
+	public String[] research;
+	public Object[] components;
 	public Enchantment enchantment;
 	public int recipeXP;
 	public int instability;
-	
-	public InfusionEnchantmentRecipe(String research, Enchantment input, int inst, 
-			AspectList aspects2, ItemStack[] recipe) {
+
+	public InfusionEnchantmentRecipe(String research, Enchantment input, int inst, AspectList aspects2, Object[] recipe) {
+		this(new String[]{research}, input, inst, aspects2, recipe);
+	}
+
+	public InfusionEnchantmentRecipe(String[] research, Enchantment input, int inst, AspectList aspects2, Object[] recipe) {
 		this.research = research;
 		this.enchantment = input;
 		this.aspects = aspects2;
@@ -38,9 +42,9 @@ public class InfusionEnchantmentRecipe
      * @param player 
      */
 	public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world, EntityPlayer player) {
-		if (research.length()>0 && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), research)) {
-    		return false;
-    	}
+		if (research != null && research[0].length() > 0 && !ResearchHelper.isResearchComplete(player.getName(), research)) {
+			return false;
+		}
 		
 		if (!enchantment.canApply(central) || !central.getItem().isItemTool(central)) {
 			return false;
@@ -51,9 +55,9 @@ public class InfusionEnchantmentRecipe
         while (iterator.hasNext())
         {
         	int j1 = ((Integer)iterator.next()).intValue();
-            Enchantment ench = Enchantment.enchantmentsList[j1];
-            if (j1 == enchantment.effectId &&
-            		EnchantmentHelper.getEnchantmentLevel(j1, central)>=ench.getMaxLevel())
+			Enchantment ench = Enchantment.enchantmentsBookList[j1];
+			if (j1 == enchantment.effectId &&
+					EnchantmentHelper.getEnchantmentLevel(j1, central)>=ench.getMaxLevel())
             	return false;
             if (enchantment.effectId != ench.effectId && 
             	(!enchantment.canApplyTogether(ench) ||
@@ -68,15 +72,12 @@ public class InfusionEnchantmentRecipe
 		for (ItemStack is:input) {
 			ii.add(is.copy());
 		}
-		
-		for (ItemStack comp:components) {
+
+		for (Object comp : components) {
 			boolean b=false;
 			for (int a=0;a<ii.size();a++) {
 				 i2 = ii.get(a).copy();
-				if (comp.getItemDamage()==OreDictionary.WILDCARD_VALUE) {
-					i2.setItemDamage(OreDictionary.WILDCARD_VALUE);
-				}
-				if (areItemStacksEqual(i2, comp,true)) {
+				if (ThaumcraftApiHelper.areItemStacksEqualForCrafting(i2, comp)) {
 					ii.remove(a);
 					b=true;
 					break;
@@ -87,27 +88,8 @@ public class InfusionEnchantmentRecipe
 //		System.out.println(ii.size());
 		return ii.size()==0?true:false;
     }
-	
-	protected boolean areItemStacksEqual(ItemStack stack0, ItemStack stack1, boolean fuzzy)
-    {
-		if (stack0==null && stack1!=null) return false;
-		if (stack0!=null && stack1==null) return false;
-		if (stack0==null && stack1==null) return true;
-		boolean t1=ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(stack0, stack1);
-		if (!t1) return false;
-		if (fuzzy) {
-			int od = OreDictionary.getOreID(stack0);
-			if (od!=-1) {
-				ItemStack[] ores = OreDictionary.getOres(od).toArray(new ItemStack[]{});
-				if (ThaumcraftApiHelper.containsMatch(false, new ItemStack[]{stack1}, ores))
-					return true;
-			}
-		}
-        return stack0.getItem() != stack1.getItem() ? false : (stack0.getItemDamage() != stack1.getItemDamage() ? false : stack0.stackSize <= stack0.getMaxStackSize() );
-    }
-	
-   
-    public Enchantment getEnchantment() {
+
+	public Enchantment getEnchantment() {
 		return enchantment;
     	
     }
@@ -116,8 +98,8 @@ public class InfusionEnchantmentRecipe
 		return aspects;
     	
     }
-    
-    public String getResearch() {
+
+	public String[] getResearch() {
 		return research;
     	
     }
@@ -126,11 +108,11 @@ public class InfusionEnchantmentRecipe
 		int i = 0;
 		Map map1 = EnchantmentHelper.getEnchantments(recipeInput);
 		Iterator iterator = map1.keySet().iterator();
-        while (iterator.hasNext())
-        {
-        	int j1 = ((Integer)iterator.next()).intValue();
-        	i += EnchantmentHelper.getEnchantmentLevel(j1, recipeInput);
-        }
+		while (iterator.hasNext()) {
+			int j1 = ((Integer) iterator.next()).intValue();
+
+			i += EnchantmentHelper.getEnchantmentLevel(j1, recipeInput);
+		}
 		return (i/2) + instability;
 	}
 

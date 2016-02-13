@@ -2,6 +2,8 @@ package thaumcraft.api.wands;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 /**
@@ -14,12 +16,10 @@ import net.minecraft.world.World;
 
 public interface IWandable {
 
-	public int onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, int x, int y, int z, int side, int md);
-	
-	public ItemStack onWandRightClick(World world, ItemStack wandstack, EntityPlayer player);
-	
-	public void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count);
-	
-	public void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count);
+	boolean onWandRightClick(World world, ItemStack wandstack, EntityPlayer player, BlockPos pos, EnumFacing side);
+
+	void onUsingWandTick(ItemStack wandstack, EntityPlayer player, int count);
+
+	void onWandStoppedUsing(ItemStack wandstack, World world, EntityPlayer player, int count);
 	
 }

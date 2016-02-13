@@ -1,9 +1,9 @@
 package thaumcraft.api.wands;
 
-import java.util.LinkedHashMap;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.LinkedHashMap;
 
 /**
  * 
@@ -15,41 +15,37 @@ import net.minecraft.util.ResourceLocation;
  */
 public class WandRod {
 
-	
-	private String tag;
-	
-	/**
-	 * Cost to craft this wand. Combined with the rod cost.
-	 */
-	private int craftCost;
-	
-	/** 
-	 * The amount of vis that can be stored - this number is actually multiplied 
-	 * by 100 for use by the wands internals
-	 */
-	int capacity;   
 
+	public static LinkedHashMap<String, WandRod> rods = new LinkedHashMap<String, WandRod>();
 	/**
 	 * The texture that will be used for the ingame wand rod
 	 */
 	protected ResourceLocation texture;
-	
+	/**
+	 * The amount of vis that can be stored
+	 */
+	int capacity;
 	/**
 	 * the actual item that makes up this rod and will be used to generate the wand recipes
 	 */
 	ItemStack item;
-	
 	/**
 	 * A class that will be called whenever the wand onUpdate tick is run
 	 */
 	IWandRodOnUpdate onUpdate;
-	
+	private String tag;
 	/**
-	 * Does the rod glow in the dark?
+	 * Cost to craft this wand. Combined with the rod cost.
 	 */
-	boolean glow;
-
-	public static LinkedHashMap<String,WandRod> rods = new LinkedHashMap<String,WandRod>();
+	private int craftCost;
+	/**
+	 * Is this a staff rod?
+	 */
+	private boolean isStaff = false;
+	/**
+	 * Does this rod give a free level of potency?
+	 */
+	private boolean potencyBonus = false;
 	
 	public WandRod (String tag, int capacity, ItemStack item, int craftCost, ResourceLocation texture) {
 		this.setTag(tag);
@@ -70,23 +66,8 @@ public class WandRod {
 		this.onUpdate = onUpdate;
 	}
 
-	public WandRod (String tag, int capacity, ItemStack item, int craftCost) {
-		this.setTag(tag);
-		this.capacity = capacity;
-		this.texture = new ResourceLocation("thaumcraft","textures/models/wand_rod_"+getTag()+".png");
-		this.item=item;
-		this.setCraftCost(craftCost);
-		rods.put(tag, this);
-	}
-	
-	public WandRod (String tag, int capacity, ItemStack item, int craftCost, IWandRodOnUpdate onUpdate) {
-		this.setTag(tag);
-		this.capacity = capacity;
-		this.texture = new ResourceLocation("thaumcraft","textures/models/wand_rod_"+getTag()+".png");
-		this.item=item;
-		this.setCraftCost(craftCost);
-		rods.put(tag, this);
-		this.onUpdate = onUpdate;
+	public static WandRod getRod(String tag) {
+		return rods.get(tag);
 	}
 	
 	public String getTag() {
@@ -136,14 +117,6 @@ public class WandRod {
 	public void setOnUpdate(IWandRodOnUpdate onUpdate) {
 		this.onUpdate = onUpdate;
 	}
-
-	public boolean isGlowing() {
-		return glow;
-	}
-
-	public void setGlowing(boolean hasGlow) {
-		this.glow = hasGlow;
-	}
 	
 	/**
 	 * The research a player needs to have finished to be able to craft a wand with this rod. 
@@ -152,7 +125,23 @@ public class WandRod {
 		return "ROD_"+getTag();
 	}
 
+	public boolean isStaff() {
+		return isStaff;
+	}
+
+	public void setStaff(boolean isStaff) {
+		this.isStaff = isStaff;
+	}
+
+	public boolean hasPotencyBonus() {
+		return potencyBonus;
+	}
+
+	public void setPotencyBonus(boolean potencyBonus) {
+		this.potencyBonus = potencyBonus;
+	}
+
 	//  Some examples:
-	//	WandRod WAND_ROD_WOOD = new WandRod("wood",25,new ItemStack(Item.stick),1);
-	//	WandRod WAND_ROD_BLAZE = new WandRod("blaze",100,new ItemStack(Item.blazeRod),7,new WandRodBlazeOnUpdate());
+	//	WandRod WAND_ROD_WOOD = new WandRod("wood",250,new ItemStack(Item.stick),1,new ResourceLocation("thaumcraft","items/wand/cap_iron_mat"));
+	//	WandRod WAND_ROD_BLAZE = new WandRod("blaze",750,new ItemStack(Item.blazeRod),7,new ResourceLocation("thaumcraft","items/wand/rod_blaze_mat"),new WandRodBlazeOnUpdate());
 }
