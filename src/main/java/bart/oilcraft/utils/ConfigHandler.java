@@ -44,7 +44,7 @@ public class ConfigHandler {
     }
 
     public static void userRecipes() {
-        File file = new File(path.replace("thebetweenlands.cfg", "thebetweenlands/recipes.json"));
+        File file = new File(path.replace("oilcraft.cfg", "oilcraft/recipes.json"));
         try {
             if(file.createNewFile()) {
                 PrintWriter writer = new PrintWriter(file);
