@@ -1,13 +1,9 @@
 package bart.oilcraft.fluids;
 
 
-import bart.oilcraft.recipes.OCMaterials;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.ResourceLocation;
+import bart.oilcraft.recipe.OCMaterials;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * Created by Bart on 12/02/2016.

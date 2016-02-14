@@ -1,9 +1,7 @@
 package bart.oilcraft.fluids;
 
 import bart.oilcraft.OilCraftMain;
-import bart.oilcraft.creativetabs.OCCreativeTab;
-import bart.oilcraft.creativetabs.OCCreativeTabs;
-import bart.oilcraft.proxy.ClientProxy;
+import bart.oilcraft.creativetab.OCCreativeTabs;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;

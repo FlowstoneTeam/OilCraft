@@ -1,11 +1,14 @@
 package bart.oilcraft.tileentity;
 
 import bart.oilcraft.fluids.OCFluidRegistry;
-import bart.oilcraft.recipes.OilCompressorRecipe;
-import bart.oilcraft.utils.InventoryUtils;
+import bart.oilcraft.item.OCItemRegistry;
+import bart.oilcraft.potion.OCPotionRegistry;
+import bart.oilcraft.recipe.OilCompressorRecipe;
+import bart.oilcraft.util.InventoryUtils;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -14,9 +17,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.*;
+
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Bart on 12/02/2016.
@@ -43,6 +51,12 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
                     tank.fill(new FluidStack(OCFluidRegistry.oil, recipe.oilAmount), true);
                     energyStorage.extractEnergy(recipe.energyAmount, false);
                     setInventorySlotContents(0, items[0].stackSize > 1 ? new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()) : null);
+                    Random random = new Random();
+                    if (random.nextInt(40) == 0){
+                        List<EntityLivingBase> list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos().getX() - 5, getPos().getY() - 5, getPos().getZ() - 5, getPos().getX() + 5, getPos().getY() + 5, getPos().getZ() + 5));
+                        for (EntityLivingBase entity : list)
+                            entity.addPotionEffect(new PotionEffect(OCPotionRegistry.slippery.getId(), 60, 2));
+                    }
                 } else {
                     progress++;
                 }
@@ -51,6 +65,14 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
             }
         } else {
             progress = 0;
+        }
+
+        if (items[1] != null){
+            if (items[1].getItem() == Items.bucket && tank.getFluidAmount() >= 1000 && items[2] == null){
+                tank.drain(1000, true);
+                items[2] = new ItemStack(OCItemRegistry.oilBucket);
+                setInventorySlotContents(1, items[1].stackSize > 1 ? new ItemStack(items[1].getItem(), items[1].stackSize - 1, items[1].getItemDamage()) : null);
+            }
         }
     }
 
@@ -87,13 +109,13 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
     }
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-        this.worldObj.markBlockForUpdate(getPos());
-        return tank.fill(resource, doFill);
+        return 0;
     }
 
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-        return null;
+        this.worldObj.markBlockForUpdate(getPos());
+        return tank.drain(resource.amount, doDrain);
     }
 
     @Override

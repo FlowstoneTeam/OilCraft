@@ -1,33 +1,31 @@
 itemGroup.oilcraft=OilCraft
 
 
-tile.oilcraft.oilcompressor.name=Oil Compressor
+tile.oilcraft.oilCompressor.name=Oil Compressor
 tile.oilcraft.oil.name=Oil
-tile.oilcraft.shaleoilore.name=Shale Oil Ore
-tile.oilcraft.blockmachineframe.name=Machine Frame
-tile.oilcraft.blockslipperyremover.name=Slippery Remover
-tile.oilcraft.oilgenerator.name=Oil Generator
-tile.oilcraft.oillayer.name=Oil Layer
-tile.oilcraft.blockoilfurnace.name=Oil Furnace
-tile.oilcraft.summontable.name=Summon Table
+tile.oilcraft.shaleOilOre.name=Shale Oil Ore
+tile.oilcraft.blockMachineFrame.name=Machine Frame
+tile.oilcraft.oilGenerator.name=Oil Generator
+tile.oilcraft.oilLayer.name=Oil Layer
+tile.oilcraft.blockOilFurnace.name=Oil Furnace
+tile.oilcraft.summonTable.name=Summon Table
 tile.oilcraft.blockSpeedDecorative_0.name=Oily Stone Brick
 tile.oilcraft.blockSpeedDecorative_1.name=Cracked Oily Stone Brick
-tile.tile.oilcraft.oilcraftSpeedCecrostair0.name=Oily Stone Brick Stair
+tile.tile.oilcraft.oilcraftSpeedDecroStair0.name=Oily Stone Brick Stair
 tile.oilcraft.blockDecorative_0.name=Sturdy Oily Stone Brick
 
-oilcraft.potion.Slippery=Slippery
-
-item.oilcraft.oilbucket.name=Oil Bucket
-item.oilcraft.energyacceptor.name=Energy Acceptor
-item.oilcraft.oilydiamond.name=Oily Diamond
-item.oilcraft.oilball.name=Oil Ball
-item.oilcraft.energydistributeupgrade.name=Energy Distribute Upgrade
+item.oilcraft.oilBucket.name=Oil Bucket
+item.oilcraft.energyAcceptor.name=Energy Acceptor
+item.oilcraft.oilyDiamond.name=Oily Diamond
+item.oilcraft.oilBall.name=Oil Ball
+item.oilcraft.energyDistributeUpgrade.name=Energy Distribute Upgrade
 item.oilcraft.notes.name=Notes
 
-gui.oil.compressor=Oil Compressor
-gui.slippery.remover=Slippery Remover
-gui.oil.furnace=Oil Furnace
+container.oilCompressor=Oil Compressor
+container.oilFurnace=Oil Furnace
+container.oilGenerator.energyOutput=Automated output directions
+container.oilGenerator.outputDirections=Set outputs
 
-enchantment.oilcraft.Slippery=Slippery
+oilcraft.potion.Slippery=Slippery
 
 entity.GooBall.name=GooBall
