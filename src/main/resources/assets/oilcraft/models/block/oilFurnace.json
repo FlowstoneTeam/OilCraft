@@ -2,7 +2,7 @@
   "parent": "block/orientable",
   "textures": {
     "top": "oilcraft:blocks/machineTop",
-    "front": "oilcraft:blocks/oilGeneratorFront",
+    "front": "oilcraft:blocks/oilFurnaceFront",
     "bottom": "oilcraft:blocks/machineFrame",
     "side": "oilcraft:blocks/machineSide"
   }

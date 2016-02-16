@@ -1,7 +1,7 @@
 package bart.oilcraft.inventory.gui;
 
-import bart.oilcraft.inventory.container.ContainerOilCompressor;
-import bart.oilcraft.tileentity.TileEntityOilCompressor;
+import bart.oilcraft.inventory.container.ContainerOilFurnace;
+import bart.oilcraft.tileentity.TileEntityOilFurnace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,48 +11,52 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiOilCompressor extends OCGui {
-    private static ResourceLocation oilCompressorGui = new ResourceLocation("oilcraft:textures/gui/oilCompressor.png");
-    private TileEntityOilCompressor tileOilCompressor;
+public class GuiOilFurnace extends OCGui {
+    private static ResourceLocation oilFurnaceGui = new ResourceLocation("oilcraft:textures/gui/oilFurnace.png");
+    private TileEntityOilFurnace tileOilFurnace;
     private int tick = 0;
     private int frame = 0;
 
-    public GuiOilCompressor(EntityPlayer player, TileEntityOilCompressor tile) {
-        super(new ContainerOilCompressor(player, tile));
-        this.tileOilCompressor = tile;
+    public GuiOilFurnace(EntityPlayer player, TileEntityOilFurnace tile) {
+        super(new ContainerOilFurnace(player, tile));
+        this.tileOilFurnace = tile;
     }
 
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String s = this.tileOilCompressor.hasCustomName() ? this.tileOilCompressor.getName() : I18n.format(this.tileOilCompressor.getName());
+        String s = this.tileOilFurnace.hasCustomName() ? this.tileOilFurnace.getName() : I18n.format(this.tileOilFurnace.getName());
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 4, 4210752);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        int amount = getScaled(tileOilCompressor.tank.getCapacity(), tileOilCompressor.tank.getFluidAmount(), 58);
-        if (tileOilCompressor.tank.getFluid() != null) {
+        int amount = getScaled(tileOilFurnace.tank.getCapacity(), tileOilFurnace.tank.getFluidAmount(), 58);
+        if (tileOilFurnace.tank.getFluid() != null) {
             mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oilStill.png"));
-            drawScaledCustomSizeModalRect(82, 72 - amount, 0, frame % 200, 8, amount, 16, amount, 16, 320);
+            drawScaledCustomSizeModalRect(143, 72 - amount, 0, frame % 200, 8, amount, 16, amount, 16, 320);
         }
         tick++;
         if (tick % 10 == 0)
             frame += 8;
 
-        amount = getScaled(tileOilCompressor.energyStorage.getMaxEnergyStored(), tileOilCompressor.energyStorage.getEnergyStored(), 71);
+        amount = getScaled(tileOilFurnace.energyStorage.getMaxEnergyStored(), tileOilFurnace.energyStorage.getEnergyStored(), 71);
         Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/gui/energybar.png"));
         drawModalRectWithCustomSizedTexture(10, 78 - amount, 16, 71 - amount, 16, amount, 16, 71);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
+        Minecraft.getMinecraft().getTextureManager().bindTexture(oilFurnaceGui);
 
-        if (mouseX >= 82 + k && mouseX <= 98 + k && mouseY >= 14 + l && mouseY <= 72 + l) {
+        amount = getScaled((int) (tileOilFurnace.timeToProcess * (tileOilFurnace.timesLeft >= 0 ? 0.6f : 1)), tileOilFurnace.progress , 22);
+        drawTexturedModalRect(75, 36, 177, 3, amount, 16);
+
+        if (mouseX >= 143 + k && mouseX <= 159 + k && mouseY >= 14 + l && mouseY <= 72 + l) {
             List<String> list = new ArrayList<>();
             list.add("Fluid: Oil");
-            list.add(String.format("Tank: %s mB / %s mB", tileOilCompressor.tank.getFluidAmount(), tileOilCompressor.tank.getCapacity()));
+            list.add(String.format("Tank: %s mB / %s mB", tileOilFurnace.tank.getFluidAmount(), tileOilFurnace.tank.getCapacity()));
             drawHoveringText(list, mouseX - k, mouseY - l);
         }
 
         if (mouseX >= 10 + k && mouseX <= 26 + k && mouseY >= 7 + l && mouseY <= 78 + l) {
             List<String> list = new ArrayList<>();
-            list.add(String.format("Energie: %s RF / %s RF", tileOilCompressor.energyStorage.getEnergyStored(), tileOilCompressor.energyStorage.getMaxEnergyStored()));
+            list.add(String.format("Energie: %s RF / %s RF", tileOilFurnace.energyStorage.getEnergyStored(), tileOilFurnace.energyStorage.getMaxEnergyStored()));
             drawHoveringText(list, mouseX - k, mouseY - l);
         }
     }
@@ -67,11 +71,9 @@ public class GuiOilCompressor extends OCGui {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.getTextureManager().bindTexture(oilCompressorGui);
+        mc.getTextureManager().bindTexture(oilFurnaceGui);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     }
-
-
 }

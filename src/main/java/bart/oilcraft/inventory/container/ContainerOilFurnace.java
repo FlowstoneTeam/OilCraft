@@ -1,21 +1,17 @@
 package bart.oilcraft.inventory.container;
 
-
-import bart.oilcraft.inventory.slot.SlotRestricted;
-import bart.oilcraft.tileentity.TileEntityOilCompressor;
+import bart.oilcraft.tileentity.TileEntityOilFurnace;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 
-public class ContainerOilCompressor extends Container {
+public class ContainerOilFurnace extends Container {
 
-    public ContainerOilCompressor(EntityPlayer player, TileEntityOilCompressor tile) {
+    public ContainerOilFurnace(EntityPlayer player, TileEntityOilFurnace tile) {
         addSlotToContainer(new Slot(tile, 0, 57, 36));
-        addSlotToContainer(new SlotRestricted(tile, 1, 107, 36, new ItemStack(Items.bucket), 64));
-        addSlotToContainer(new SlotFurnaceOutput(player, tile, 2, 152, 36));
+        addSlotToContainer(new SlotFurnaceOutput(player, tile, 1, 101, 36));
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
@@ -40,9 +36,6 @@ public class ContainerOilCompressor extends Container {
             ItemStack stack1 = slot.getStack();
             stack = stack1.copy();
             if (index > 2) {
-                if (stack1.getItem() == Items.bucket)
-                    if (!mergeItemStack(stack1, 1, 2, true))
-                        return null;
                 if (!mergeItemStack(stack1, 0, 1, true))
                     return null;
             }

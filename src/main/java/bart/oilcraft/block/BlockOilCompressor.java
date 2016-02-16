@@ -19,21 +19,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * Created by Bart on 12/02/2016.
- */
 public class BlockOilCompressor extends OCBlock implements ITileEntityProvider {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockOilCompressor() {
-        super(Material.iron, MapColor.grayColor);
-        this.setUnlocalizedName("oilcraft.oilCompressor");
+        super(Material.iron, MapColor.grayColor, "oilCompressor");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-    }
-
-    @Override
-    public String blockName(int meta) {
-        return "oilCompressor";
+        this.setStepSound(soundTypeMetal);
     }
 
     @Override

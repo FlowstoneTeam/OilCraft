@@ -16,26 +16,24 @@ import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
 
-/**
- * Created by Bart on 14/02/2016.
- */
 public class TileEntityOilGenerator extends OCTickingTileEntity implements IFluidHandler, IEnergyProvider, IEnergyHandler {
     public FluidTank tank = new FluidTank(10000);
     public EnergyStorage energyStorage = new EnergyStorage(80000, 1000);
 
-    public ArrayList<Integer> energyOutputs = new ArrayList<Integer>();
+    public ArrayList<Integer> energyOutputs = new ArrayList<>();
 
     public int ticksLeft = 0;
 
     @Override
     public void update() {
+        super.update();
         if (worldObj.isRemote)
             return;
         if (ticksLeft > 0) {
             if (energyStorage.getEnergyStored() + ConfigHandler.OIL_GENERATOR_RF_TICK <= energyStorage.getMaxEnergyStored()) {
-                worldObj.markBlockForUpdate(getPos());
                 energyStorage.receiveEnergy(ConfigHandler.OIL_GENERATOR_RF_TICK, false);
                 ticksLeft--;
+                worldObj.markBlockForUpdate(getPos());
             }
         } else if (tank.getFluidAmount() >= 100) {
             worldObj.markBlockForUpdate(getPos());

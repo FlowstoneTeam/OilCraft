@@ -1,79 +1,61 @@
 package bart.oilcraft.tileentity;
 
-import bart.oilcraft.fluids.OCFluidRegistry;
-import bart.oilcraft.item.OCItemRegistry;
-import bart.oilcraft.potion.OCPotionRegistry;
-import bart.oilcraft.recipe.OilCompressorRecipe;
 import bart.oilcraft.util.InventoryUtils;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.*;
 
-import java.util.List;
-import java.util.Random;
-
-public class TileEntityOilCompressor extends OCTickingTileEntity implements ISidedInventory, IFluidHandler, IEnergyReceiver, IEnergyHandler {
-
+public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedInventory, IFluidHandler, IEnergyReceiver, IEnergyHandler {
     public FluidTank tank = new FluidTank(10000);
     public EnergyStorage energyStorage = new EnergyStorage(8000, 1000);
-    public ItemStack[] items = new ItemStack[3];
-    public static final int[] slotsInsert = new int[]{0, 1};
-    public static final int[] slotsExtract = new int[]{2};
-
+    public ItemStack[] items = new ItemStack[2];
     public int progress = 0;
+    public int timeToProcess = 200;
+    public int timesLeft = 0;
 
     @Override
     public void update() {
         super.update();
-        if (worldObj.isRemote) return;
+        if (worldObj.isRemote)
+            return;
         if (items[0] != null) {
-            OilCompressorRecipe recipe = OilCompressorRecipe.getRecipeFromItem(items[0]);
-            if (recipe != null && tank.getFluidAmount() + recipe.oilAmount <= tank.getCapacity() && energyStorage.getEnergyStored() - recipe.energyAmount >= 0) {
-                if (progress >= recipe.time) {
+            ItemStack output = FurnaceRecipes.instance().getSmeltingResult(items[0]);
+            if (output != null && (items[1] == null || (matches(items[1], output) && items[1].stackSize + output.stackSize <= items[1].getMaxStackSize())) && energyStorage.getEnergyStored() - 1600 >= 0) {
+                if (progress >= timeToProcess * (timesLeft >= 0 ? 0.6f : 1)) {
+                    decrStackSize(0, 1);
+                    if (items[1] == null)
+                        items[1] = output.copy();
+                    else
+                        items[1].stackSize += output.stackSize;
+                    energyStorage.extractEnergy(1600, false);
+                    timesLeft--;
                     progress = 0;
-                    tank.fill(new FluidStack(OCFluidRegistry.oil, recipe.oilAmount), true);
-                    energyStorage.extractEnergy(recipe.energyAmount, false);
-                    setInventorySlotContents(0, items[0].stackSize > 1 ? new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()) : null);
-                    Random random = new Random();
                     worldObj.markBlockForUpdate(getPos());
-                    if (random.nextInt(40) == 0){
-                        List<EntityLivingBase> list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos().getX() - 5, getPos().getY() - 5, getPos().getZ() - 5, getPos().getX() + 5, getPos().getY() + 5, getPos().getZ() + 5));
-                        for (EntityLivingBase entity : list)
-                            entity.addPotionEffect(new PotionEffect(OCPotionRegistry.slippery.getId(), 60, 2));
-                    }
                 } else {
                     progress++;
                 }
-            } else {
+            } else
                 progress = 0;
-            }
-        } else {
+        } else
             progress = 0;
-        }
 
-        if (items[1] != null){
-            if (items[1].getItem() == Items.bucket && tank.getFluidAmount() >= 1000 && items[2] == null){
-                tank.drain(1000, true);
-                items[2] = new ItemStack(OCItemRegistry.oilBucket);
-                setInventorySlotContents(1, items[1].stackSize > 1 ? new ItemStack(items[1].getItem(), items[1].stackSize - 1, items[1].getItemDamage()) : null);
-            }
+        if (timesLeft == 0 && tank.getFluidAmount() >= 100) {
+            tank.drain(100, true);
+            timesLeft = 20;
+            worldObj.markBlockForUpdate(getPos());
         }
     }
-
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
@@ -82,6 +64,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
         InventoryUtils.loadInventory(nbt, this);
         energyStorage.readFromNBT(nbt);
         progress = nbt.getInteger("progress");
+        timesLeft = nbt.getInteger("timesLeft");
     }
 
     @Override
@@ -91,6 +74,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
         InventoryUtils.saveInventory(nbt, this);
         energyStorage.writeToNBT(nbt);
         nbt.setInteger("progress", progress);
+        nbt.setInteger("timesLeft", timesLeft);
     }
 
     @Override
@@ -105,40 +89,10 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
         NBTTagCompound nbt = packet.getNbtCompound();
         readFromNBT(nbt);
     }
-    @Override
-    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-        return 0;
-    }
-
-    @Override
-    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-        this.worldObj.markBlockForUpdate(getPos());
-        return tank.drain(resource.amount, doDrain);
-    }
-
-    @Override
-    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-        return null;
-    }
-
-    @Override
-    public boolean canFill(EnumFacing from, Fluid fluid) {
-        return false;
-    }
-
-    @Override
-    public boolean canDrain(EnumFacing from, Fluid fluid) {
-        return true;
-    }
-
-    @Override
-    public FluidTankInfo[] getTankInfo(EnumFacing from) {
-        return new FluidTankInfo[]{new FluidTankInfo(tank)};
-    }
 
     @Override
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-        this.worldObj.markBlockForUpdate(getPos());
+        worldObj.markBlockForUpdate(getPos());
         return energyStorage.receiveEnergy(maxReceive, simulate);
     }
 
@@ -158,21 +112,55 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
     }
 
     @Override
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+        if (resource.getFluid() == FluidRegistry.getFluid("oil")) {
+            worldObj.markBlockForUpdate(getPos());
+            return tank.fill(resource, doFill);
+        } else
+            return 0;
+    }
+
+    @Override
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+        return null;
+    }
+
+    @Override
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+        return null;
+    }
+
+    @Override
+    public boolean canFill(EnumFacing from, Fluid fluid) {
+        return fluid == FluidRegistry.getFluid("oil");
+    }
+
+    @Override
+    public boolean canDrain(EnumFacing from, Fluid fluid) {
+        return false;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(EnumFacing from) {
+        return new FluidTankInfo[]{new FluidTankInfo(tank)};
+    }
+
+    @Override
     public int[] getSlotsForFace(EnumFacing side) {
         if (side == EnumFacing.DOWN)
-            return slotsExtract;
+            return new int[]{1};
         else
-            return slotsInsert;
+            return new int[]{0};
     }
 
     @Override
     public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return direction != EnumFacing.DOWN && ((index == 1 && itemStackIn.getItem() == Items.bucket) || index == 0);
+        return direction != EnumFacing.DOWN && index == 0;
     }
 
     @Override
     public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return index == 2;
+        return direction == EnumFacing.DOWN && index == 1;
     }
 
     @Override
@@ -252,7 +240,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return (index == 1 && stack.getItem() == Items.bucket) || (index == 0 && stack != null);
+        return index == 0;
     }
 
     @Override
@@ -279,7 +267,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
 
     @Override
     public String getName() {
-        return "container.oilCompressor";
+        return "container.oilFurnace";
     }
 
     @Override

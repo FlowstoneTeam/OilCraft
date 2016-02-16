@@ -14,9 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Bart on 14/02/2016.
- */
 public class GuiOilGenerator extends OCGui {
     private static ResourceLocation oilGeneratorGui = new ResourceLocation("oilcraft:textures/gui/oilGenerator.png");
     private TileEntityOilGenerator tileOilGenerator;
@@ -51,7 +48,7 @@ public class GuiOilGenerator extends OCGui {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int amount = getScaled(tileOilGenerator.tank.getCapacity(), tileOilGenerator.tank.getFluidAmount(), 58);
         if (tileOilGenerator.tank.getFluid() != null) {
-            mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oil_still.png"));
+            mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oilStill.png"));
             drawScaledCustomSizeModalRect(143, 72 - amount, 0, frame % 200, 8, amount, 16, amount, 16, 320);
         }
         tick++;
@@ -65,14 +62,14 @@ public class GuiOilGenerator extends OCGui {
         int l = (this.height - this.ySize) / 2;
 
         if (mouseX >= 143 + k && mouseX <= 159 + k && mouseY >= 14 + l && mouseY <= 72 + l) {
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             list.add("Fluid: Oil");
             list.add(String.format("Tank: %s mB / %s mB", tileOilGenerator.tank.getFluidAmount(), tileOilGenerator.tank.getCapacity()));
             drawHoveringText(list, mouseX - k, mouseY - l);
         }
 
         if (mouseX >= 10 + k && mouseX <= 26 + k && mouseY >= 7 + l && mouseY <= 78 + l) {
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             list.add(String.format("Energie: %s RF / %s RF", tileOilGenerator.energyStorage.getEnergyStored(), tileOilGenerator.energyStorage.getMaxEnergyStored()));
             drawHoveringText(list, mouseX - k, mouseY - l);
         }
@@ -80,7 +77,7 @@ public class GuiOilGenerator extends OCGui {
 
         for (GuiButton button : buttonList) {
             if (mouseX >= button.xPosition && mouseX <= button.xPosition + button.width && mouseY >= button.yPosition && mouseY <= button.yPosition + button.height) {
-                List<String> list = new ArrayList<String>();
+                List<String> list = new ArrayList<>();
                 list.add(String.format("Active: %s", active(button.id)));
                 drawHoveringText(list, mouseX - k, mouseY - l);
             }

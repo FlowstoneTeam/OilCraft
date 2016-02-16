@@ -2,7 +2,7 @@ package bart.oilcraft.block;
 
 import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.proxy.CommonProxy;
-import bart.oilcraft.tileentity.TileEntityOilGenerator;
+import bart.oilcraft.tileentity.TileEntityOilFurnace;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -19,11 +19,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockOilGenerator extends OCBlock implements ITileEntityProvider {
+public class BlockOilFurnace extends OCBlock implements ITileEntityProvider {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-    public BlockOilGenerator() {
-        super(Material.iron, MapColor.grayColor, "oilGenerator");
+    public BlockOilFurnace() {
+        super(Material.iron, MapColor.grayColor, "oilFurnace");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.setStepSound(soundTypeMetal);
     }
@@ -60,6 +60,17 @@ public class BlockOilGenerator extends OCBlock implements ITileEntityProvider {
     }
 
     @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (!worldIn.isRemote) {
+            if (checkForBucketClick(worldIn, pos, playerIn, side))
+                return true;
+            playerIn.openGui(OilCraftMain.instance, CommonProxy.OIL_FURNACE_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         IBlockState blockState = getStateFromMeta(meta);
         return createTileEntity(worldIn, blockState);
@@ -67,17 +78,6 @@ public class BlockOilGenerator extends OCBlock implements ITileEntityProvider {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityOilGenerator();
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (!worldIn.isRemote) {
-            if (checkForBucketClick(worldIn, pos, playerIn, side))
-                return true;
-            playerIn.openGui(OilCraftMain.instance, CommonProxy.OIL_GENERATOR_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            return true;
-        }
-        return false;
+        return new TileEntityOilFurnace();
     }
 }
