@@ -24,6 +24,7 @@ public class OCItemBucket extends ItemBucket {
         itemName = fluidName + "Bucket";
 
         FluidContainerRegistry.registerFluidContainer(new FluidStack(FluidRegistry.getFluid(fluidName), FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(this), new ItemStack(Items.bucket));
+
         BucketHandler.INSTANCE.buckets.put(containedBlock, this);
     }
 

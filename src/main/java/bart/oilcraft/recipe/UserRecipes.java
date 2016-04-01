@@ -32,38 +32,32 @@ public class UserRecipes {
                     int inputAmount = 1;
                     int outputAmount = 1;
                     while (jsonReader.hasNext()) {
-                        switch (recipeName) {
-                            case "compressor": {
-                                String n = jsonReader.nextName();
-                                switch (n) {
-                                    case "inputType":
-                                        inputType = jsonReader.nextString();
-                                        break;
-                                    case "inputItem":
-                                        inputItem = jsonReader.nextString();
-                                        break;
-                                    case "compressTime":
-                                        compressTime = jsonReader.nextInt();
-                                        break;
-                                    case "oilAmount":
-                                        oilAmount = jsonReader.nextInt();
-                                        break;
-                                    case "energyAmount":
-                                        energyAmount = jsonReader.nextInt();
-                                        break;
-                                    case "meta":
-                                    case "metaInput":
-                                        metaInput = jsonReader.nextInt();
-                                        break;
-                                }
-                                break;
+                        if (recipeName.equals("compressor")) {
+                            String n = jsonReader.nextName();
+                            if (n.equals("inputType")) {
+                                inputType = jsonReader.nextString();
+
+                            } else if (n.equals("inputItem")) {
+                                inputItem = jsonReader.nextString();
+
+                            } else if (n.equals("compressTime")) {
+                                compressTime = jsonReader.nextInt();
+
+                            } else if (n.equals("oilAmount")) {
+                                oilAmount = jsonReader.nextInt();
+
+                            } else if (n.equals("energyAmount")) {
+                                energyAmount = jsonReader.nextInt();
+
+                            } else if (n.equals("meta") || n.equals("metaInput")) {
+                                metaInput = jsonReader.nextInt();
+
                             }
                         }
                     }
-                    switch (recipeName) {
-                        case "compressor":
-                            oilCompressorRecipeBuffer(inputType, inputItem, oilAmount, compressTime, energyAmount, metaInput);
-                            break;
+                    if (recipeName.equals("compressor")) {
+                        oilCompressorRecipeBuffer(inputType, inputItem, oilAmount, compressTime, energyAmount, metaInput);
+
                     }
                     jsonReader.endObject();
                 }
@@ -72,7 +66,7 @@ public class UserRecipes {
         }
     }
 
-    public static void oilCompressorRecipeBuffer(String inputType, String inputItem, int oilAmount, int compressTime, int energyAmount, int metaInput) {
+    private static void oilCompressorRecipeBuffer(String inputType, String inputItem, int oilAmount, int compressTime, int energyAmount, int metaInput) {
         if (inputType.toLowerCase().equals("oredictionary")) {
             if (OreDictionary.getOres(inputItem).size() > 0 && compressTime > 0 && oilAmount > 0 && energyAmount >= 0)
                 OilCompressorRecipe.addRecipe(OreDictionary.getOres(inputItem), oilAmount, energyAmount, compressTime);

@@ -1,9 +1,15 @@
 package bart.oilcraft.entity;
 
+import bart.oilcraft.potion.OCPotionRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 /**
@@ -16,6 +22,11 @@ public class EntityGooBall extends EntitySlime {
     public EntityGooBall(World worldIn) {
         super(worldIn);
         setSlimeSize(1);
+    }
+
+    public EntityGooBall(World worldIn, BlockPos pos) {
+        super(worldIn);
+        this.setPosition(pos.getX() + .5D, pos.getY() + .5D, pos.getZ() + .5D);
     }
 
     public void onUpdate() {
@@ -40,9 +51,7 @@ public class EntityGooBall extends EntitySlime {
                 world.spawnParticle(enumparticletypes, d0, this.getEntityBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D, new int[0]);
             }
 
-            if (this.makesSoundOnLand()) {
-                this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
-            }
+            this.playSound(this.func_184709_cY(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
 
             this.squishAmount = -0.5F;
         } else if (!this.onGround && this.wasOnGround) {
@@ -74,5 +83,12 @@ public class EntityGooBall extends EntitySlime {
     @Override
     protected boolean spawnCustomParticles() {
         return true;
+    }
+
+    @Override
+    protected void collideWithEntity(Entity entityIn) {
+        super.collideWithEntity(entityIn);
+        if (entityIn instanceof EntityLivingBase)
+            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(OCPotionRegistry.slippery, 200, 1));
     }
 }

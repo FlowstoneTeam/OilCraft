@@ -1,5 +1,5 @@
 {
-  "parent": "oilcraft:block/oilGenerator",
+  "parent": "oilcraft:block/machineFrame",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

@@ -3,7 +3,7 @@ package bart.oilcraft.item;
 import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.fluids.OCFluidRegistry;
 import net.minecraft.item.Item;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.lang.reflect.Field;
@@ -39,7 +39,7 @@ public class OCItemRegistry {
         String name = item.getUnlocalizedName();
         String[] strings = name.split("\\.");
         GameRegistry.registerItem(item, strings[strings.length - 1]);
-        if (!StatCollector.canTranslate(item.getUnlocalizedName() + ".name")) {
+        if (!I18n.canTranslate(item.getUnlocalizedName() + ".name")) {
             OilCraftMain.unlocalizedNames.add(item.getUnlocalizedName() + ".name");
         }
     }

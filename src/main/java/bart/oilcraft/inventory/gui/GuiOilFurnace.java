@@ -48,14 +48,14 @@ public class GuiOilFurnace extends OCGui {
         drawTexturedModalRect(75, 36, 177, 3, amount, 16);
 
         if (mouseX >= 143 + k && mouseX <= 159 + k && mouseY >= 14 + l && mouseY <= 72 + l) {
-            List<String> list = new ArrayList<>();
+            List<String> list = new ArrayList<String>();
             list.add("Fluid: Oil");
             list.add(String.format("Tank: %s mB / %s mB", tileOilFurnace.tank.getFluidAmount(), tileOilFurnace.tank.getCapacity()));
             drawHoveringText(list, mouseX - k, mouseY - l);
         }
 
         if (mouseX >= 10 + k && mouseX <= 26 + k && mouseY >= 7 + l && mouseY <= 78 + l) {
-            List<String> list = new ArrayList<>();
+            List<String> list = new ArrayList<String>();
             list.add(String.format("Energie: %s RF / %s RF", tileOilFurnace.energyStorage.getEnergyStored(), tileOilFurnace.energyStorage.getMaxEnergyStored()));
             drawHoveringText(list, mouseX - k, mouseY - l);
         }

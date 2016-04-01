@@ -11,9 +11,9 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.*;
 
 public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedInventory, IFluidHandler, IEnergyReceiver, IEnergyHandler {
@@ -32,7 +32,7 @@ public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedI
         if (items[0] != null) {
             ItemStack output = FurnaceRecipes.instance().getSmeltingResult(items[0]);
             if (output != null && (items[1] == null || (matches(items[1], output) && items[1].stackSize + output.stackSize <= items[1].getMaxStackSize())) && energyStorage.getEnergyStored() - 1600 >= 0) {
-                if (progress >= timeToProcess * (timesLeft >= 0 ? 0.6f : 1)) {
+                if (progress >= timeToProcess * (timesLeft > 0 ? 0.6f : 1)) {
                     decrStackSize(0, 1);
                     if (items[1] == null)
                         items[1] = output.copy();
@@ -41,7 +41,7 @@ public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedI
                     energyStorage.extractEnergy(1600, false);
                     timesLeft--;
                     progress = 0;
-                    worldObj.markBlockForUpdate(getPos());
+                    worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
                 } else {
                     progress++;
                 }
@@ -53,7 +53,7 @@ public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedI
         if (timesLeft == 0 && tank.getFluidAmount() >= 100) {
             tank.drain(100, true);
             timesLeft = 20;
-            worldObj.markBlockForUpdate(getPos());
+            worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
         }
     }
 
@@ -81,18 +81,18 @@ public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedI
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
         writeToNBT(tag);
-        return new S35PacketUpdateTileEntity(getPos(), 0, tag);
+        return new SPacketUpdateTileEntity(getPos(), 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         NBTTagCompound nbt = packet.getNbtCompound();
         readFromNBT(nbt);
     }
 
     @Override
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-        worldObj.markBlockForUpdate(getPos());
+        worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
         return energyStorage.receiveEnergy(maxReceive, simulate);
     }
 
@@ -114,7 +114,7 @@ public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedI
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
         if (resource.getFluid() == FluidRegistry.getFluid("oil")) {
-            worldObj.markBlockForUpdate(getPos());
+            worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
             return tank.fill(resource, doFill);
         } else
             return 0;
@@ -276,7 +276,7 @@ public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedI
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 }

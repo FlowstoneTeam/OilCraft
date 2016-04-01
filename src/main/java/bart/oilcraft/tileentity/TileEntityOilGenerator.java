@@ -8,19 +8,17 @@ import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.*;
-
-import java.util.ArrayList;
 
 public class TileEntityOilGenerator extends OCTickingTileEntity implements IFluidHandler, IEnergyProvider, IEnergyHandler {
     public FluidTank tank = new FluidTank(10000);
     public EnergyStorage energyStorage = new EnergyStorage(80000, 1000);
 
-    public ArrayList<Integer> energyOutputs = new ArrayList<>();
+    public boolean outputUp = false, outputDown = false, outputNorth = false, outputSouth = false, outputEast = false, outputWest = false;
 
     public int ticksLeft = 0;
 
@@ -33,10 +31,10 @@ public class TileEntityOilGenerator extends OCTickingTileEntity implements IFlui
             if (energyStorage.getEnergyStored() + ConfigHandler.OIL_GENERATOR_RF_TICK <= energyStorage.getMaxEnergyStored()) {
                 energyStorage.receiveEnergy(ConfigHandler.OIL_GENERATOR_RF_TICK, false);
                 ticksLeft--;
-                worldObj.markBlockForUpdate(getPos());
+                worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
             }
         } else if (tank.getFluidAmount() >= 100) {
-            worldObj.markBlockForUpdate(getPos());
+            worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
             tank.drain(100, true);
             ticksLeft = ConfigHandler.OIL_GENERATOR_TICKS;
         }
@@ -45,16 +43,13 @@ public class TileEntityOilGenerator extends OCTickingTileEntity implements IFlui
 
     @Override
     public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
-        for (int i : energyOutputs) {
-            if (i > -1 && i < 6) {
-                if (EnumFacing.getFront(i) == from) {
-                    this.worldObj.markBlockForUpdate(getPos());
-                    return energyStorage.extractEnergy(maxExtract, simulate);
-                }
-            }
+        if (outputEnabled(from.getIndex())) {
+            worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
+            return energyStorage.extractEnergy(maxExtract, simulate);
         }
         return 0;
     }
+
 
     @Override
     public int getEnergyStored(EnumFacing from) {
@@ -68,17 +63,12 @@ public class TileEntityOilGenerator extends OCTickingTileEntity implements IFlui
 
     @Override
     public boolean canConnectEnergy(EnumFacing from) {
-        for (int i : energyOutputs) {
-            if (i > -1 && i < 6) {
-                return EnumFacing.getFront(i) == from;
-            }
-        }
-        return false;
+        return outputEnabled(from.getIndex());
     }
 
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
-        this.worldObj.markBlockForUpdate(getPos());
+        worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
         return tank.fill(resource, doFill);
     }
 
@@ -113,10 +103,12 @@ public class TileEntityOilGenerator extends OCTickingTileEntity implements IFlui
         tank.readFromNBT(nbt);
         energyStorage.readFromNBT(nbt);
         ticksLeft = nbt.getInteger("ticksLeft");
-        int[] array = nbt.getIntArray("energyOutputs");
-        for (int i : array) {
-            energyOutputs.add(i);
-        }
+        outputDown = nbt.getBoolean("outputDown");
+        outputUp = nbt.getBoolean("outputUp");
+        outputNorth = nbt.getBoolean("outputNorth");
+        outputEast = nbt.getBoolean("outputEast");
+        outputSouth = nbt.getBoolean("outputSouth");
+        outputWest = nbt.getBoolean("outputWest");
     }
 
     @Override
@@ -125,31 +117,31 @@ public class TileEntityOilGenerator extends OCTickingTileEntity implements IFlui
         tank.writeToNBT(nbt);
         energyStorage.writeToNBT(nbt);
         nbt.setInteger("ticksLeft", ticksLeft);
-        int[] array = new int[energyOutputs.size()];
-        for (int i = 0; i < energyOutputs.size(); i++) {
-            array[i] = energyOutputs.get(i);
-        }
-        nbt.setIntArray("energyOutputs", array);
+        nbt.setBoolean("outputDown", outputDown);
+        nbt.setBoolean("outputUp", outputUp);
+        nbt.setBoolean("outputNorth", outputNorth);
+        nbt.setBoolean("outputEast", outputEast);
+        nbt.setBoolean("outputSouth", outputSouth);
+        nbt.setBoolean("outputWest", outputWest);
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
         writeToNBT(tag);
-        return new S35PacketUpdateTileEntity(getPos(), 0, tag);
+        return new SPacketUpdateTileEntity(getPos(), 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         NBTTagCompound nbt = packet.getNbtCompound();
         readFromNBT(nbt);
     }
 
 
     public void distributePower() {
-        for (int i : energyOutputs) {
-            if (i > -1 && i < 6) {
-                EnumFacing direction = EnumFacing.getFront(i);
+        for (EnumFacing direction : EnumFacing.VALUES) {
+            if (outputEnabled(direction.getIndex())) {
                 TileEntity te = worldObj.getTileEntity(new BlockPos(getPos().getX() + direction.getFrontOffsetX(), getPos().getY() + direction.getFrontOffsetY(), getPos().getZ() + direction.getFrontOffsetZ()));
                 if (te instanceof IEnergyHandler) {
                     int sending = ConfigHandler.OIL_GENERATOR_RF_TICK;
@@ -157,12 +149,54 @@ public class TileEntityOilGenerator extends OCTickingTileEntity implements IFlui
                     if (received <= sending && received > 0 && energyStorage.getEnergyStored() >= sending) {
                         energyStorage.extractEnergy(received, false);
                         ((IEnergyReceiver) te).receiveEnergy(direction, received, false);
-                        worldObj.markBlockForUpdate(getPos());
-                        worldObj.markBlockForUpdate(te.getPos());
+                        worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
+                        worldObj.notifyBlockUpdate(te.getPos(), worldObj.getBlockState(te.getPos()), worldObj.getBlockState(te.getPos()), 3);
                     }
                 }
             }
         }
     }
 
+
+    public boolean outputEnabled(int side) {
+        switch (side) {
+            case 0:
+                return outputDown;
+            case 1:
+                return outputUp;
+            case 2:
+                return outputNorth;
+            case 3:
+                return outputSouth;
+            case 4:
+                return outputWest;
+            case 5:
+                return outputEast;
+            default:
+                return false;
+        }
+    }
+
+    public void switchOutput(int side) {
+        switch (side) {
+            case 0:
+                outputDown = !outputDown;
+                break;
+            case 1:
+                outputUp = !outputUp;
+                break;
+            case 2:
+                outputNorth = !outputNorth;
+                break;
+            case 3:
+                outputSouth = !outputSouth;
+                break;
+            case 4:
+                outputWest = !outputWest;
+                break;
+            case 5:
+                outputEast = !outputEast;
+                break;
+        }
+    }
 }

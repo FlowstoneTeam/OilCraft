@@ -1,13 +1,13 @@
-itemGroup.oilcraft=OilCraft
+itemGroup.oilcraft.main=OilCraft
 
 
 tile.oilcraft.oilCompressor.name=Oil Compressor
 tile.oilcraft.oil.name=Oil
 tile.oilcraft.shaleOilOre.name=Shale Oil Ore
-tile.oilcraft.blockMachineFrame.name=Machine Frame
+tile.oilcraft.machineFrame.name=Machine Frame
 tile.oilcraft.oilGenerator.name=Oil Generator
 tile.oilcraft.oilLayer.name=Oil Layer
-tile.oilcraft.blockOilFurnace.name=Oil Furnace
+tile.oilcraft.oilFurnace.name=Oil Furnace
 tile.oilcraft.summonTable.name=Summon Table
 tile.oilcraft.blockSpeedDecorative_0.name=Oily Stone Brick
 tile.oilcraft.blockSpeedDecorative_1.name=Cracked Oily Stone Brick
@@ -23,9 +23,10 @@ item.oilcraft.notes.name=Notes
 
 container.oilCompressor=Oil Compressor
 container.oilFurnace=Oil Furnace
+container.oilGenerator=Oil Generator
 container.oilGenerator.energyOutput=Automated output directions
 container.oilGenerator.outputDirections=Set outputs
 
-oilcraft.potion.Slippery=Slippery
+oilcraft.potion.slippery=Slippery
 
 entity.GooBall.name=GooBall

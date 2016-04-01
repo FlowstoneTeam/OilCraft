@@ -4,8 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
@@ -27,25 +26,24 @@ public class BucketHandler {
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event) {
 
-        ItemStack result = fillCustomBucket(event.world, event.target);
+        ItemStack result = fillCustomBucket(event.getWorld(), event.getTarget().getBlockPos());
 
         if (result == null)
             return;
 
-        event.result = result;
+        event.setFilledBucket(result);
         event.setResult(Event.Result.ALLOW);
     }
 
-    private ItemStack fillCustomBucket(World world, MovingObjectPosition pos) {
+    private ItemStack fillCustomBucket(World world, BlockPos pos) {
 
-        BlockPos blockPos = pos.getBlockPos();
-        IBlockState blockState = world.getBlockState(blockPos);
+        IBlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
         int metadata = block.getMetaFromState(blockState);
 
         Item bucket = buckets.get(block);
         if (bucket != null && metadata == 0) {
-            world.setBlockToAir(blockPos);
+            world.setBlockToAir(pos);
             return new ItemStack(bucket);
         } else
             return null;

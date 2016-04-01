@@ -5,11 +5,13 @@ import bart.oilcraft.entity.OCEntityRegistry;
 import bart.oilcraft.fluids.OCFluidRegistry;
 import bart.oilcraft.item.OCItemRegistry;
 import bart.oilcraft.lib.ModInfo;
+import bart.oilcraft.network.OCPacketHandler;
 import bart.oilcraft.potion.OCPotionRegistry;
 import bart.oilcraft.proxy.CommonProxy;
 import bart.oilcraft.recipe.RecipeHandler;
 import bart.oilcraft.util.BucketHandler;
 import bart.oilcraft.util.ConfigHandler;
+import bart.oilcraft.world.WorldGenOilPool;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +23,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 
@@ -30,7 +33,6 @@ public class OilCraftMain {
 
     @Instance(ModInfo.ID)
     public static OilCraftMain instance;
-    public static SimpleNetworkWrapper networkWrapper;
 
     @SidedProxy(clientSide = ModInfo.CLIENTPROXY_LOCATION, serverSide = ModInfo.COMMONPROXY_LOCATION)
     public static CommonProxy proxy;
@@ -55,6 +57,7 @@ public class OilCraftMain {
         OCPotionRegistry.init();
         OCEntityRegistry.init();
 
+        GameRegistry.registerWorldGenerator(new WorldGenOilPool(), 0);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 
         RecipeHandler.init();
@@ -65,6 +68,7 @@ public class OilCraftMain {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         System.out.println("Oilcraft Initialization");
+        OCPacketHandler.init();
     }
 
     @EventHandler

@@ -44,14 +44,14 @@ public class GuiOilCompressor extends OCGui {
         int l = (this.height - this.ySize) / 2;
 
         if (mouseX >= 82 + k && mouseX <= 98 + k && mouseY >= 14 + l && mouseY <= 72 + l) {
-            List<String> list = new ArrayList<>();
+            List<String> list = new ArrayList<String>();
             list.add("Fluid: Oil");
             list.add(String.format("Tank: %s mB / %s mB", tileOilCompressor.tank.getFluidAmount(), tileOilCompressor.tank.getCapacity()));
             drawHoveringText(list, mouseX - k, mouseY - l);
         }
 
         if (mouseX >= 10 + k && mouseX <= 26 + k && mouseY >= 7 + l && mouseY <= 78 + l) {
-            List<String> list = new ArrayList<>();
+            List<String> list = new ArrayList<String>();
             list.add(String.format("Energie: %s RF / %s RF", tileOilCompressor.energyStorage.getEnergyStored(), tileOilCompressor.energyStorage.getMaxEnergyStored()));
             drawHoveringText(list, mouseX - k, mouseY - l);
         }

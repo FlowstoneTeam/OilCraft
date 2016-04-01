@@ -16,11 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.*;
 
 import java.util.List;
@@ -49,11 +49,11 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
                     energyStorage.extractEnergy(recipe.energyAmount, false);
                     setInventorySlotContents(0, items[0].stackSize > 1 ? new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()) : null);
                     Random random = new Random();
-                    worldObj.markBlockForUpdate(getPos());
+                    worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
                     if (random.nextInt(40) == 0){
                         List<EntityLivingBase> list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos().getX() - 5, getPos().getY() - 5, getPos().getZ() - 5, getPos().getX() + 5, getPos().getY() + 5, getPos().getZ() + 5));
                         for (EntityLivingBase entity : list)
-                            entity.addPotionEffect(new PotionEffect(OCPotionRegistry.slippery.getId(), 60, 2));
+                            entity.addPotionEffect(new PotionEffect(OCPotionRegistry.slippery, 60, 2));
                     }
                 } else {
                     progress++;
@@ -97,11 +97,11 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
         writeToNBT(tag);
-        return new S35PacketUpdateTileEntity(getPos(), 0, tag);
+        return new SPacketUpdateTileEntity(getPos(), 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         NBTTagCompound nbt = packet.getNbtCompound();
         readFromNBT(nbt);
     }
@@ -112,7 +112,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
 
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-        this.worldObj.markBlockForUpdate(getPos());
+        worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
         return tank.drain(resource.amount, doDrain);
     }
 
@@ -138,7 +138,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
 
     @Override
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-        this.worldObj.markBlockForUpdate(getPos());
+        worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
         return energyStorage.receiveEnergy(maxReceive, simulate);
     }
 
@@ -288,7 +288,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 }

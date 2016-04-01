@@ -4,17 +4,19 @@ import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.proxy.CommonProxy;
 import bart.oilcraft.tileentity.TileEntityOilGenerator;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,7 +27,7 @@ public class BlockOilGenerator extends OCBlock implements ITileEntityProvider {
     public BlockOilGenerator() {
         super(Material.iron, MapColor.grayColor, "oilGenerator");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-        this.setStepSound(soundTypeMetal);
+        this.setStepSound(SoundType.METAL);
     }
 
     @Override
@@ -34,8 +36,8 @@ public class BlockOilGenerator extends OCBlock implements ITileEntityProvider {
     }
 
     @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, FACING);
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
     }
 
     @SideOnly(Side.CLIENT)
@@ -71,9 +73,9 @@ public class BlockOilGenerator extends OCBlock implements ITileEntityProvider {
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
-            if (checkForBucketClick(worldIn, pos, playerIn, side))
+            if (checkForBucketClick(worldIn, pos, hand, playerIn, side))
                 return true;
             playerIn.openGui(OilCraftMain.instance, CommonProxy.OIL_GENERATOR_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
             return true;

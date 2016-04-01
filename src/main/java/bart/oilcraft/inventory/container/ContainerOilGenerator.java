@@ -28,13 +28,4 @@ public class ContainerOilGenerator extends Container {
         return true;
     }
 
-    @Override
-    public boolean enchantItem(EntityPlayer playerIn, int id) {
-        if (tileOilGenerator.energyOutputs.contains(id))
-            tileOilGenerator.energyOutputs.remove((Integer) id);
-        else
-            tileOilGenerator.energyOutputs.add(id);
-        tileOilGenerator.getWorld().markBlockForUpdate(tileOilGenerator.getPos());
-        return true;
-    }
 }

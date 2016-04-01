@@ -1,9 +1,10 @@
 package bart.oilcraft.fluids;
 
 import bart.oilcraft.OilCraftMain;
-import bart.oilcraft.creativetab.OCCreativeTabs;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.BlockPos;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
@@ -16,20 +17,28 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class OCFluidBlock extends BlockFluidClassic {
     public OCFluidBlock(Fluid fluid, Material material, String name) {
         super(fluid, material);
-        this.setTickRandomly(true);
         this.setUnlocalizedName("oilcraft." + name.toLowerCase());
-        this.setCreativeTab(OCCreativeTabs.main);
         GameRegistry.registerBlock(this, name);
         OilCraftMain.proxy.registerFluidBlockRendering(this, name);
     }
 
     @Override
     public boolean canDisplace(IBlockAccess world, BlockPos pos) {
-        return !world.getBlockState(pos).getBlock().getMaterial().isLiquid() && super.canDisplace(world, pos);
+        return !world.getBlockState(pos).getBlock().getMaterial(world.getBlockState(pos)).isLiquid() && super.canDisplace(world, pos);
     }
 
     @Override
     public boolean displaceIfPossible(World world, BlockPos pos) {
-        return !world.getBlockState(pos).getBlock().getMaterial().isLiquid() && super.displaceIfPossible(world, pos);
+        return !world.getBlockState(pos).getBlock().getMaterial(world.getBlockState(pos)).isLiquid() && super.displaceIfPossible(world, pos);
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
+        return NULL_AABB;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return FULL_BLOCK_AABB;
     }
 }

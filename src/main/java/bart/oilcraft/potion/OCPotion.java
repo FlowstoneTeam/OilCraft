@@ -13,19 +13,12 @@ public class OCPotion extends Potion {
     private static final ResourceLocation resource = new ResourceLocation("oilcraft:textures/gui/potions.png");
 
     public OCPotion(String name, boolean badEffect, int color, int iconIndex) {
-        super(new ResourceLocation("oilcraft:" + name), badEffect, color);
+        super( badEffect, color);
         setPotionName("oilcraft.potion." + name);
         setIconIndex(iconIndex % 8, iconIndex / 8);
         getLiquidColor(color);
     }
 
-    static int findFreeID() {
-        for (int i = 0; i < potionTypes.length; i++)
-            if (potionTypes[i] == null)
-                return i;
-
-        return -1;
-    }
 
     public int getLiquidColor(int liquidColour) {
         return liquidColour;
