@@ -1,5 +1,6 @@
 package bart.oilcraft.creativetab;
 
+import bart.oilcraft.item.OCItemRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
@@ -13,6 +14,6 @@ public class TabMain extends OCCreativeTab {
 
     @Override
     public Item getTabIconItem() {
-        return Items.potato;
+        return OCItemRegistry.oilBucket;
     }
 }

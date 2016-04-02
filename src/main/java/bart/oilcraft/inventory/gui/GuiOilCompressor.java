@@ -38,7 +38,7 @@ public class GuiOilCompressor extends OCGui {
             frame += 8;
 
         amount = getScaled(tileOilCompressor.energyStorage.getMaxEnergyStored(), tileOilCompressor.energyStorage.getEnergyStored(), 71);
-        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/gui/energybar.png"));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/gui/energyBar.png"));
         drawModalRectWithCustomSizedTexture(10, 78 - amount, 16, 71 - amount, 16, amount, 16, 71);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
