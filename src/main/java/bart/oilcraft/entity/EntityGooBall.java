@@ -27,6 +27,7 @@ public class EntityGooBall extends EntitySlime {
 
     public EntityGooBall(World worldIn, BlockPos pos) {
         super(worldIn);
+        setSlimeSize(1);
         this.setPosition(pos.getX() + .5D, pos.getY() + .5D, pos.getZ() + .5D);
     }
 
@@ -87,7 +88,7 @@ public class EntityGooBall extends EntitySlime {
     }
 
     @Override
-    public void onDeath(DamageSource cause) {
+    public void setDead() {
     }
 
     @Override

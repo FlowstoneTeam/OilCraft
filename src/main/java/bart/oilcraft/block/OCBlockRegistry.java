@@ -7,6 +7,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
 import java.lang.reflect.Field;
 import java.util.LinkedList;
@@ -41,7 +42,6 @@ public class OCBlockRegistry {
         String name = block.getUnlocalizedName();
         String[] strings = name.split("\\.");
         GameRegistry.registerBlock(block, strings[strings.length - 1]);
-
         if (!I18n.canTranslate(block.getUnlocalizedName() + ".name")) {
             OilCraftMain.unlocalizedNames.add(block.getUnlocalizedName() + ".name");
         }

@@ -25,7 +25,7 @@ group = "com.bart.oilcraft"
 archivesBaseName = "OilCraft"
 
 minecraft {
-    version = "1.9-12.16.0.1816-1.9"
+    version = "1.9-12.16.0.1823-1.9"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
