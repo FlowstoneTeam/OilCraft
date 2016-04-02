@@ -39,7 +39,8 @@ public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedI
                     else
                         items[1].stackSize += output.stackSize;
                     energyStorage.extractEnergy(1600, false);
-                    timesLeft--;
+                    if (timesLeft > 0)
+                        timesLeft--;
                     progress = 0;
                     worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
                 } else {

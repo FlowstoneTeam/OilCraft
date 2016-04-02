@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -86,8 +87,11 @@ public class EntityGooBall extends EntitySlime {
     }
 
     @Override
+    public void onDeath(DamageSource cause) {
+    }
+
+    @Override
     protected void collideWithEntity(Entity entityIn) {
-        super.collideWithEntity(entityIn);
         if (entityIn instanceof EntityLivingBase)
             ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(OCPotionRegistry.slippery, 200, 1));
     }
