@@ -21,5 +21,4 @@ public class OCPotionRegistry {
     private static void registerPotion(ResourceLocation location, Potion potion) {
         Potion.potionRegistry.register(Potion.potionRegistry.getKeys().size(), location, potion);
     }
-
 }

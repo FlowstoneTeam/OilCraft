@@ -2,6 +2,7 @@ package bart.oilcraft.fluids;
 
 
 import bart.oilcraft.recipe.OCMaterials;
+import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
@@ -14,6 +15,6 @@ public class OCFluidRegistry {
 
     public static void init(){
         oil = new OCFluid("oil");
-        oilBlock = new OCFluidBlock(oil, OCMaterials.oil, "oil");
+        oilBlock = new OCFluidBlock(oil, Material.water, "oil");
     }
 }

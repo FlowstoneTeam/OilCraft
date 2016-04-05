@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
 public class OCBlock extends Block {
 
@@ -57,4 +58,5 @@ public class OCBlock extends Block {
     public OCBlock setStepSound(SoundType sound) {
         return (OCBlock)super.setStepSound(sound);
     }
+
 }

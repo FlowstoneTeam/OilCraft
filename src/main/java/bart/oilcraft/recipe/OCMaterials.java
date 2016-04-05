@@ -7,6 +7,10 @@ import net.minecraft.block.material.MaterialLiquid;
 /**
  * Created by Bart on 12/02/2016.
  */
-public class OCMaterials {
+public class OCMaterials extends Material{
     public static final Material oil = (new MaterialLiquid(MapColor.blackColor));
+
+    public OCMaterials(MapColor color) {
+        super(color);
+    }
 }
