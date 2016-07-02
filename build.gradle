@@ -20,8 +20,8 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "0.3"
-group = "com.bart.oilcraft" 
+version = "0.3.1"
+group = "imdutch21.oilcraft"
 archivesBaseName = "OilCraft"
 
 minecraft {

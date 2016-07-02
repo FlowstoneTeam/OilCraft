@@ -1,0 +1,95 @@
+package imdutch21.oilcraft.world;
+
+import imdutch21.oilcraft.fluids.OCFluidRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.common.IWorldGenerator;
+
+import java.util.Random;
+
+/**
+ * Created by Bart on 30/03/2016.
+ */
+public class WorldGenOilPool implements IWorldGenerator {
+
+
+    private Block fillerFluid = OCFluidRegistry.OIL.getBlock();
+
+    private double size;
+
+
+    @Override
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+        if (world.provider.getDimension() == 0) {
+            size = (random.nextDouble() + 0.7D) * 1.5d;
+            generate(world, random, chunkX * 16, 40 + random.nextInt(20), chunkZ * 16);
+        }
+    }
+
+
+    private boolean generate(World world, Random rand, int x, int y, int z) {
+        x -= 8;
+        z -= 8;
+        y -= 4;
+
+        for (int xx = x; xx < x + 16; ++xx)
+            for (int zz = z; zz < z + 16; ++zz)
+                for (int yy = y; yy < y + 8; ++yy)
+                    if (world.getBlockState(new BlockPos(xx, yy, zz)).getBlock() != Blocks.STONE)
+                        return false;
+
+        boolean[] placeFluid = new boolean[2048];
+
+        int xx;
+
+        for (int iteration = 0, iterAmount = rand.nextInt(3) + 5; iteration < iterAmount; ++iteration) {
+            double d0 = (rand.nextDouble() * 6D + 3D) * size * (0.4D + rand.nextDouble() * 0.6D);
+            double d1 = (rand.nextDouble() * 4D + 2D) * size / 2.5D;
+            double d2 = (rand.nextDouble() * 6D + 3D) * size * (0.4D + rand.nextDouble() * 0.6D);
+            double d3 = rand.nextDouble() * (16D - d0 - 2D) + 1D + d0 / 2D;
+            double d4 = rand.nextDouble() * (8D - d1 - 4D) + 2D + d1 / 2D;
+            double d5 = rand.nextDouble() * (16D - d2 - 2D) + 1D + d2 / 2D;
+
+            for (xx = 1; xx < 15; ++xx)
+                for (int zz = 1; zz < 15; ++zz)
+                    for (int yy = 1; yy < 7; ++yy) {
+                        double d6 = (xx - d3) / (d0 / 2.0D);
+                        double d7 = (yy - d4) / (d1 / 2.0D);
+                        double d8 = (zz - d5) / (d2 / 2.0D);
+                        double dist = d6 * d6 + d7 * d7 + d8 * d8;
+
+                        if (dist < 1D)
+                            placeFluid[(xx * 16 + zz) * 8 + yy] = true;
+                    }
+        }
+
+        int yy;
+        int zz;
+        boolean flag;
+
+        for (xx = 0; xx < 16; ++xx)
+            for (zz = 0; zz < 16; ++zz)
+                for (yy = 0; yy < 8; ++yy) {
+                    flag = !placeFluid[(xx * 16 + zz) * 8 + yy] && (xx < 15 && placeFluid[((xx + 1) * 16 + zz) * 8 + yy] || xx > 0 && placeFluid[((xx - 1) * 16 + zz) * 8 + yy] || zz < 15 && placeFluid[(xx * 16 + zz + 1) * 8 + yy] || zz > 0 && placeFluid[(xx * 16 + zz - 1) * 8 + yy] || yy < 7 && placeFluid[(xx * 16 + zz) * 8 + yy + 1] || yy > 0 && placeFluid[(xx * 16 + zz) * 8 + yy - 1]);
+                    if (flag) {
+                        Material material = world.getBlockState(new BlockPos(x + xx, y + yy, z + zz)).getMaterial();
+                        if (yy >= 4 && material.isLiquid())
+                            return false;
+                        if (yy < 4 && !material.isSolid() && world.getBlockState(new BlockPos(x + xx, y + yy, z + zz)).getBlock() != fillerFluid)
+                            return false;
+                    }
+                }
+
+        for (xx = 0; xx < 16; ++xx)
+            for (zz = 0; zz < 16; ++zz)
+                for (yy = 0; yy < 8; ++yy)
+                    if (placeFluid[(xx * 16 + zz) * 8 + yy])
+                        world.setBlockState(new BlockPos(x + xx, y + yy, z + zz), yy >= 4 ? Blocks.AIR.getDefaultState() : fillerFluid.getDefaultState(), 2);
+        return true;
+    }
+}
