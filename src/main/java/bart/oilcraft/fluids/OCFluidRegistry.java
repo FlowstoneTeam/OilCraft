@@ -12,7 +12,8 @@ public class OCFluidRegistry {
 
     public static void init() {
         OIL = new OCFluid("oil");
-        FluidRegistry.addBucketForFluid(OIL);
-        System.out.println("null: " + OIL == null + ", registered: " + !FluidRegistry.isFluidRegistered(OIL) + ", contains: " + FluidRegistry.getBucketFluids().contains(OIL));
+        OIL = FluidRegistry.getFluid("oil");
+        if(!FluidRegistry.getBucketFluids().contains(OIL))
+            FluidRegistry.addBucketForFluid(OIL);
     }
 }

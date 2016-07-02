@@ -58,6 +58,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
                     }
                 } else {
                     progress++;
+                    worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
                 }
             } else {
                 progress = 0;

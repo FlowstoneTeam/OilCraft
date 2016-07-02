@@ -3,6 +3,7 @@ package bart.oilcraft.inventory.gui;
 import bart.oilcraft.inventory.container.ContainerOilFurnace;
 import bart.oilcraft.tileentity.TileEntityOilFurnace;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +28,7 @@ public class GuiOilFurnace extends OCGui {
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String s = this.tileOilFurnace.hasCustomName() ? this.tileOilFurnace.getName() : I18n.format(this.tileOilFurnace.getName());
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 4, 4210752);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int amount = getScaled(tileOilFurnace.tank.getCapacity(), tileOilFurnace.tank.getFluidAmount(), 58);
         if (tileOilFurnace.tank.getFluid() != null) {
             mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oil_still.png"));
@@ -42,9 +43,9 @@ public class GuiOilFurnace extends OCGui {
         drawModalRectWithCustomSizedTexture(10, 78 - amount, 16, 71 - amount, 16, amount, 16, 71);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
-        Minecraft.getMinecraft().getTextureManager().bindTexture(oilFurnaceGui);
 
-        amount = getScaled((int) (tileOilFurnace.timeToProcess * (tileOilFurnace.timesLeft >= 0 ? 0.6f : 1)), tileOilFurnace.progress , 22);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(oilFurnaceGui);
+        amount = getScaled((int) (tileOilFurnace.timeToProcess * (tileOilFurnace.timesLeft > 0 ? 0.6f : 1)), tileOilFurnace.progress , 22);
         drawTexturedModalRect(75, 36, 177, 3, amount, 16);
 
         if (mouseX >= 143 + k && mouseX <= 159 + k && mouseY >= 14 + l && mouseY <= 72 + l) {

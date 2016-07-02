@@ -18,7 +18,6 @@ import java.util.Random;
 public class WorldGenOilPool implements IWorldGenerator {
 
 
-
     private Block fillerFluid = OCFluidRegistry.OIL.getBlock();
 
     private double size;
@@ -26,7 +25,7 @@ public class WorldGenOilPool implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        if (world.provider.getDimension() == 0 ) {
+        if (world.provider.getDimension() == 0) {
             size = (random.nextDouble() + 0.7D) * 1.5d;
             generate(world, random, chunkX * 16, 40 + random.nextInt(20), chunkZ * 16);
         }
@@ -91,7 +90,6 @@ public class WorldGenOilPool implements IWorldGenerator {
                 for (yy = 0; yy < 8; ++yy)
                     if (placeFluid[(xx * 16 + zz) * 8 + yy])
                         world.setBlockState(new BlockPos(x + xx, y + yy, z + zz), yy >= 4 ? Blocks.AIR.getDefaultState() : fillerFluid.getDefaultState(), 2);
-        System.out.println("generate at: " + (new BlockPos(x, y, z)).toString());
         return true;
     }
 }

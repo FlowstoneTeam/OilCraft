@@ -6,6 +6,7 @@ import bart.oilcraft.network.OCPacketHandler;
 import bart.oilcraft.tileentity.TileEntityOilGenerator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -50,7 +51,7 @@ public class GuiOilGenerator extends OCGui {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         this.fontRendererObj.drawString(I18n.translateToLocal("container.oilGenerator"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("container.oilGenerator")) / 2, 4, 4210752);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int amount = getScaled(tileOilGenerator.tank.getCapacity(), tileOilGenerator.tank.getFluidAmount(), 58);
         if (tileOilGenerator.tank.getFluid() != null) {
             mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oil_still.png"));

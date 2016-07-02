@@ -22,7 +22,7 @@ public class RecipeHandler {
         GameRegistry.addRecipe(new ItemStack(Item.getItemFromBlock(OCBlockRegistry.MACHINE_FRAME)), "III", "I I", "III", 'I', new ItemStack(Items.IRON_INGOT));
         GameRegistry.addRecipe(new ItemStack(Item.getItemFromBlock(OCBlockRegistry.OIL_COMPRESSOR)), " P ", "GMG", " R ", 'P', new ItemStack(Item.getItemFromBlock(Blocks.PISTON)), 'M' , new ItemStack(Item.getItemFromBlock(OCBlockRegistry.MACHINE_FRAME)), 'R', new ItemStack(Items.REDSTONE), 'G', new ItemStack(Items.GOLD_INGOT));
         GameRegistry.addRecipe(new ItemStack(Item.getItemFromBlock(OCBlockRegistry.OIL_GENERATOR)), " B ", "GMG", " R ", 'B', new ItemStack(Items.BUCKET), 'M' , new ItemStack(Item.getItemFromBlock(OCBlockRegistry.MACHINE_FRAME)), 'R', new ItemStack(Items.REDSTONE), 'G', new ItemStack(Items.GOLD_INGOT));
-        GameRegistry.addRecipe(new ItemStack(Item.getItemFromBlock(OCBlockRegistry.OIL_FURNACE)), " F ", "GMG", " R ", 'B', new ItemStack(Item.getItemFromBlock(Blocks.FURNACE)), 'M' , new ItemStack(Item.getItemFromBlock(OCBlockRegistry.MACHINE_FRAME)), 'R', new ItemStack(Items.REDSTONE), 'G', new ItemStack(Items.GOLD_INGOT));
+        GameRegistry.addRecipe(new ItemStack(Item.getItemFromBlock(OCBlockRegistry.OIL_FURNACE)), " F ", "GMG", " R ", 'F', new ItemStack(Item.getItemFromBlock(Blocks.FURNACE)), 'M' , new ItemStack(Item.getItemFromBlock(OCBlockRegistry.MACHINE_FRAME)), 'R', new ItemStack(Items.REDSTONE), 'G', new ItemStack(Items.GOLD_INGOT));
     }
 
     private static void initOilCompressorRecipes(){

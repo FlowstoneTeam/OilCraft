@@ -1,8 +1,10 @@
 package bart.oilcraft.inventory.gui;
 
 import bart.oilcraft.inventory.container.ContainerOilCompressor;
+import bart.oilcraft.recipe.OilCompressorRecipe;
 import bart.oilcraft.tileentity.TileEntityOilCompressor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +29,7 @@ public class GuiOilCompressor extends OCGui {
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String s = this.tileOilCompressor.hasCustomName() ? this.tileOilCompressor.getName() : I18n.format(this.tileOilCompressor.getName());
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 4, 4210752);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int amount = getScaled(tileOilCompressor.tank.getCapacity(), tileOilCompressor.tank.getFluidAmount(), 58);
         if (tileOilCompressor.tank.getFluid() != null) {
             mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oil_still.png"));
@@ -36,6 +38,12 @@ public class GuiOilCompressor extends OCGui {
         tick++;
         if (tick % 10 == 0)
             frame += 8;
+
+        if (tileOilCompressor.items[0] != null && OilCompressorRecipe.getRecipeFromItem(tileOilCompressor.items[0]) != null) {
+            amount = getScaled(OilCompressorRecipe.getRecipeFromItem(tileOilCompressor.items[0]).time, tileOilCompressor.progress, 22);
+            mc.getTextureManager().bindTexture(oilCompressorGui);
+            drawTexturedModalRect(31, 34, 181, 0, 19, amount);
+        }
 
         amount = getScaled(tileOilCompressor.energyStorage.getMaxEnergyStored(), tileOilCompressor.energyStorage.getEnergyStored(), 71);
         Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/gui/energy_bar.png"));
@@ -66,7 +74,7 @@ public class GuiOilCompressor extends OCGui {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(oilCompressorGui);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
