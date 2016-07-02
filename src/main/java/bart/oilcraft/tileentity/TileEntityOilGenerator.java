@@ -112,7 +112,7 @@ public class TileEntityOilGenerator extends OCTickingTileEntity implements IFlui
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         tank.writeToNBT(nbt);
         energyStorage.writeToNBT(nbt);
@@ -123,10 +123,11 @@ public class TileEntityOilGenerator extends OCTickingTileEntity implements IFlui
         nbt.setBoolean("outputEast", outputEast);
         nbt.setBoolean("outputSouth", outputSouth);
         nbt.setBoolean("outputWest", outputWest);
+        return nbt;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tag = new NBTTagCompound();
         writeToNBT(tag);
         return new SPacketUpdateTileEntity(getPos(), 0, tag);

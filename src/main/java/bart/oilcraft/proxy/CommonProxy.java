@@ -23,15 +23,6 @@ public class CommonProxy implements IGuiHandler {
     public static final int OIL_GENERATOR_GUI = 2;
     public static final int OIL_FURNACE_GUI = 3;
 
-    public void registerTileEntities() {
-        registerTileEntity(TileEntityOilCompressor.class, "oilCompressor");
-        registerTileEntity(TileEntityOilGenerator.class, "oilGenerator");
-        registerTileEntity(TileEntityOilFurnace.class, "oilFurnace");
-    }
-
-    private void registerTileEntity(Class<? extends TileEntity> cls, String baseName) {
-        GameRegistry.registerTileEntity(cls, "tile.oilcraft." + baseName);
-    }
 
     public void initModels() {
     }

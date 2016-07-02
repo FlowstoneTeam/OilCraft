@@ -1,25 +1,33 @@
 package bart.oilcraft.block;
 
 import bart.oilcraft.OilCraftMain;
+import bart.oilcraft.fluids.OCFluid;
+import bart.oilcraft.fluids.OCFluidBlock;
+import bart.oilcraft.fluids.OCFluidRegistry;
+import bart.oilcraft.lib.ModInfo;
+import bart.oilcraft.recipe.OCMaterials;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class OCBlockRegistry {
     public static final List<Block> BLOCKS = new LinkedList<Block>();
 
-    public static OCBlock oilCompressor = new BlockOilCompressor();
-    public static OCBlock oilGenerator = new BlockOilGenerator();
-    public static OCBlock oilFurnace = new BlockOilFurnace();
-    public static OCBlock machineFrame = new OCBlock(Material.iron, MapColor.grayColor, "machineFrame").setStepSound(SoundType.METAL);
+    public static OCBlock OIL_COMPRESSOR = new BlockOilCompressor();
+    public static OCBlock OIL_GENERATOR = new BlockOilGenerator();
+    public static OCBlock OIL_FURNACE = new BlockOilFurnace();
+    public static OCBlock MACHINE_FRAME = new OCBlock(Material.IRON, MapColor.GRAY).setSoundType(SoundType.METAL);
+    public static BlockFluidClassic OIL = new OCFluidBlock(OCFluidRegistry.OIL, OCMaterials.WATER);
 
     public static void init() {
         registerBlocks();
@@ -27,23 +35,33 @@ public class OCBlockRegistry {
 
     private static void registerBlocks() {
         try {
-            for (Field f : OCBlockRegistry.class.getDeclaredFields()) {
-                Object obj = f.get(null);
-                if (obj instanceof Block)
-                    registerBlock((Block) obj);
+            for (Field field : OCBlockRegistry.class.getDeclaredFields()) {
+                Object obj = field.get(null);
+                if (obj instanceof Block) {
+                    Block block = (Block) obj;
+                    String name = field.getName().toLowerCase(Locale.ENGLISH);
+                    registerBlock(block, name);
+                }
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static void registerBlock(Block block) {
+    private static void registerBlock(Block block, String name) {
         BLOCKS.add(block);
-        String name = block.getUnlocalizedName();
-        String[] strings = name.split("\\.");
-        GameRegistry.registerBlock(block, strings[strings.length - 1]);
-        if (!I18n.canTranslate(block.getUnlocalizedName() + ".name")) {
-            OilCraftMain.unlocalizedNames.add(block.getUnlocalizedName() + ".name");
-        }
+        GameRegistry.register(block.setRegistryName(ModInfo.ID, name).setUnlocalizedName(ModInfo.NAME_PREFIX + name));
+        ItemBlock item;
+        if (block instanceof IHasCustomItem)
+            item = ((IHasCustomItem) block).getItemBlock();
+        else
+            item = new ItemBlock(block);
+
+        GameRegistry.register((ItemBlock) item.setRegistryName(ModInfo.ID, name).setUnlocalizedName(ModInfo.NAME_PREFIX + name));
+    }
+
+
+    public interface IHasCustomItem {
+        ItemBlock getItemBlock();
     }
 }

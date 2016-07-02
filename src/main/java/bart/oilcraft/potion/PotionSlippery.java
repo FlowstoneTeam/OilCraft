@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class PotionSlippery extends OCPotion {
     public PotionSlippery() {
-        super("slippery", false, 0xFFFFFF, 0);
+        super(false, 0xFFFFFF, 0);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class PotionSlippery extends OCPotion {
 
     @Override
     public void performEffect(EntityLivingBase entityLivingBase, int level) {
-        if (entityLivingBase != null && !entityLivingBase.worldObj.isRemote && entityLivingBase.isPotionActive(OCPotionRegistry.slippery)) {
+        if (entityLivingBase != null && !entityLivingBase.worldObj.isRemote && entityLivingBase.isPotionActive(OCPotionRegistry.SLIPPERY)) {
             if (entityLivingBase.worldObj.rand.nextInt(140 - 10 * level > 0 ? 140 - 10 * level : 1) == 0) {
                 entityDropHeld(entityLivingBase, entityLivingBase.worldObj.rand.nextBoolean() ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND);
             }

@@ -10,7 +10,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class OCFluid extends Fluid {
     public OCFluid(String fluidName) {
-        super(fluidName, new ResourceLocation("oilcraft:blocks/" + fluidName + "Still"), new ResourceLocation("oilcraft:blocks/" + fluidName + "Flowing"));
+        super(fluidName, new ResourceLocation("oilcraft:blocks/" + fluidName + "_still"), new ResourceLocation("oilcraft:blocks/" + fluidName + "_flowing"));
         this.setViscosity(600);
         FluidRegistry.registerFluid(this);
     }

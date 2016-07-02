@@ -25,9 +25,9 @@ public class BlockOilFurnace extends OCBlock implements ITileEntityProvider {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockOilFurnace() {
-        super(Material.iron, MapColor.grayColor, "oilFurnace");
+        super(Material.IRON, MapColor.GRAY);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-        this.setStepSound(SoundType.METAL);
+        this.setSoundType(SoundType.METAL);
     }
 
     @Override

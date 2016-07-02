@@ -9,10 +9,12 @@ import bart.oilcraft.network.OCPacketHandler;
 import bart.oilcraft.potion.OCPotionRegistry;
 import bart.oilcraft.proxy.CommonProxy;
 import bart.oilcraft.recipe.RecipeHandler;
+import bart.oilcraft.tileentity.OCTileEntityRegistry;
 import bart.oilcraft.util.BucketHandler;
 import bart.oilcraft.util.ConfigHandler;
 import bart.oilcraft.world.WorldGenOilPool;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -36,24 +38,25 @@ public class OilCraftMain {
 
     @SidedProxy(clientSide = ModInfo.CLIENTPROXY_LOCATION, serverSide = ModInfo.COMMONPROXY_LOCATION)
     public static CommonProxy proxy;
-    public static boolean thaumcraftLoaded = false;
-    public static boolean thermalExpansionLoaded = false;
+
 
     public static ArrayList<String> unlocalizedNames = new ArrayList<String>();
+
+    static {
+        FluidRegistry.enableUniversalBucket();
+    }
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         System.out.println("Oilcraft PreInitialization");
 
-        thaumcraftLoaded = Loader.isModLoaded("Thaumcraft");
-        thermalExpansionLoaded = Loader.isModLoaded("ThermalExpansion");
         ConfigHandler.INSTANCE.loadConfig(event);
-        MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
+        //MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
 
-        OCBlockRegistry.init();
         OCFluidRegistry.init();
+        OCBlockRegistry.init();
         OCItemRegistry.init();
-        proxy.registerTileEntities();
+        OCTileEntityRegistry.init();
         OCPotionRegistry.init();
         OCEntityRegistry.init();
 

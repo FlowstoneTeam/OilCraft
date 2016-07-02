@@ -2,7 +2,6 @@ package bart.oilcraft.block;
 
 
 import bart.oilcraft.creativetab.OCCreativeTabs;
-import bart.oilcraft.item.OCItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -10,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -18,20 +18,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
+import net.minecraftforge.fluids.UniversalBucket;
 
 public class OCBlock extends Block {
-
-    private String name;
-    public OCBlock(Material material, MapColor mapColor, String name) {
+    public OCBlock(Material material, MapColor mapColor) {
         super(material, mapColor);
-        this.setUnlocalizedName("oilcraft." + name);
         this.setCreativeTab(OCCreativeTabs.main);
-        this.name = name;
-    }
-
-    public String blockName(int meta) {
-        return name;
     }
 
     public int[] modelMetas() {
@@ -41,22 +33,22 @@ public class OCBlock extends Block {
     public boolean checkForBucketClick(World worldIn, BlockPos pos, EnumHand hand, EntityPlayer playerIn, EnumFacing side) {
         if (worldIn.isRemote)
             return false;
-        if (worldIn.getTileEntity(pos) instanceof IFluidHandler && playerIn.getHeldItem(hand) != null && playerIn.getHeldItem(hand).getItem() == OCItemRegistry.oilBucket) {
+        ItemStack itemStack = playerIn.getHeldItem(hand);
+        if (worldIn.getTileEntity(pos) instanceof IFluidHandler && itemStack != null && itemStack.getItem() != null && itemStack.getItem() instanceof UniversalBucket) {
             TileEntity tile = worldIn.getTileEntity(pos);
-            if (((IFluidHandler)tile).fill(side, new FluidStack(FluidRegistry.getFluid("oil"), 1000), false) == 1000){
+            FluidStack fluidStack = ((UniversalBucket) itemStack.getItem()).getFluid(itemStack);
+            if (fluidStack != null && fluidStack.getFluid() != null && ((IFluidHandler) tile).canFill(side, fluidStack.getFluid()) && ((IFluidHandler) tile).fill(side, fluidStack,false) == fluidStack.amount){
                 worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos), worldIn.getBlockState(pos), 3);
-                ((IFluidHandler)tile).fill(side, new FluidStack(FluidRegistry.getFluid("oil"), 1000), true);
-                playerIn.setHeldItem(hand, null);
-                playerIn.inventory.addItemStackToInventory(new ItemStack(Items.bucket));
-                playerIn.inventoryContainer.detectAndSendChanges();
+                ((IFluidHandler) tile).fill(side, fluidStack, true);
+                ((UniversalBucket) itemStack.getItem()).drain(itemStack, fluidStack.amount, true);
                 return true;
             }
         }
         return false;
     }
 
-    public OCBlock setStepSound(SoundType sound) {
-        return (OCBlock)super.setStepSound(sound);
+    public OCBlock setSoundType(SoundType sound) {
+        return (OCBlock) super.setSoundType(sound);
     }
 
 }

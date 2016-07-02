@@ -2,7 +2,6 @@ package bart.oilcraft.world;
 
 import bart.oilcraft.fluids.OCFluidRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +19,7 @@ public class WorldGenOilPool implements IWorldGenerator {
 
 
 
-    private Block fillerFluid = OCFluidRegistry.oil.getBlock();
+    private Block fillerFluid = OCFluidRegistry.OIL.getBlock();
 
     private double size;
 
@@ -42,7 +41,7 @@ public class WorldGenOilPool implements IWorldGenerator {
         for (int xx = x; xx < x + 16; ++xx)
             for (int zz = z; zz < z + 16; ++zz)
                 for (int yy = y; yy < y + 8; ++yy)
-                    if (world.getBlockState(new BlockPos(xx, yy, zz)).getBlock() != Blocks.stone)
+                    if (world.getBlockState(new BlockPos(xx, yy, zz)).getBlock() != Blocks.STONE)
                         return false;
 
         boolean[] placeFluid = new boolean[2048];
@@ -91,7 +90,7 @@ public class WorldGenOilPool implements IWorldGenerator {
             for (zz = 0; zz < 16; ++zz)
                 for (yy = 0; yy < 8; ++yy)
                     if (placeFluid[(xx * 16 + zz) * 8 + yy])
-                        world.setBlockState(new BlockPos(x + xx, y + yy, z + zz), yy >= 4 ? Blocks.air.getDefaultState() : fillerFluid.getDefaultState(), 2);
+                        world.setBlockState(new BlockPos(x + xx, y + yy, z + zz), yy >= 4 ? Blocks.AIR.getDefaultState() : fillerFluid.getDefaultState(), 2);
         System.out.println("generate at: " + (new BlockPos(x, y, z)).toString());
         return true;
     }

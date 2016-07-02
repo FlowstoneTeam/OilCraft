@@ -21,6 +21,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.*;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
             if (recipe != null && tank.getFluidAmount() + recipe.oilAmount <= tank.getCapacity() && energyStorage.getEnergyStored() - recipe.energyAmount >= 0) {
                 if (progress >= recipe.time) {
                     progress = 0;
-                    tank.fill(new FluidStack(OCFluidRegistry.oil, recipe.oilAmount), true);
+                    tank.fill(new FluidStack(OCFluidRegistry.OIL, recipe.oilAmount), true);
                     energyStorage.extractEnergy(recipe.energyAmount, false);
                     setInventorySlotContents(0, items[0].stackSize > 1 ? new ItemStack(items[0].getItem(), items[0].stackSize - 1, items[0].getItemDamage()) : null);
                     Random random = new Random();
@@ -53,7 +54,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
                     if (random.nextInt(40) == 0){
                         List<EntityLivingBase> list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos().getX() - 5, getPos().getY() - 5, getPos().getZ() - 5, getPos().getX() + 5, getPos().getY() + 5, getPos().getZ() + 5));
                         for (EntityLivingBase entity : list)
-                            entity.addPotionEffect(new PotionEffect(OCPotionRegistry.slippery, 60, 2));
+                            entity.addPotionEffect(new PotionEffect(OCPotionRegistry.SLIPPERY, 60, 2));
                     }
                 } else {
                     progress++;
@@ -66,9 +67,10 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
         }
 
         if (items[1] != null){
-            if (items[1].getItem() == Items.bucket && tank.getFluidAmount() >= 1000 && items[2] == null){
+            if (items[1].getItem() == Items.BUCKET && tank.getFluidAmount() >= 1000 && items[2] == null){
                 tank.drain(1000, true);
-                items[2] = new ItemStack(OCItemRegistry.oilBucket);
+
+                items[2] = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, OCFluidRegistry.OIL);
                 setInventorySlotContents(1, items[1].stackSize > 1 ? new ItemStack(items[1].getItem(), items[1].stackSize - 1, items[1].getItemDamage()) : null);
             }
         }
@@ -85,16 +87,17 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         tank.writeToNBT(nbt);
         InventoryUtils.saveInventory(nbt, this);
         energyStorage.writeToNBT(nbt);
         nbt.setInteger("progress", progress);
+        return nbt;
     }
 
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tag = new NBTTagCompound();
         writeToNBT(tag);
         return new SPacketUpdateTileEntity(getPos(), 0, tag);
@@ -167,7 +170,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
 
     @Override
     public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return direction != EnumFacing.DOWN && ((index == 1 && itemStackIn.getItem() == Items.bucket) || index == 0);
+        return direction != EnumFacing.DOWN && ((index == 1 && itemStackIn.getItem() == Items.BUCKET) || index == 0);
     }
 
     @Override
@@ -252,7 +255,7 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return (index == 1 && stack.getItem() == Items.bucket) || (index == 0 && stack != null);
+        return (index == 1 && stack.getItem() == Items.BUCKET) || (index == 0 && stack != null);
     }
 
     @Override

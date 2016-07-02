@@ -68,15 +68,21 @@ public class EnergyStorage implements IEnergyStorage {
 		return this;
 	}
 
-	public int getMaxReceive() {
-
-		return maxReceive;
-	}
-
 	public EnergyStorage setMaxReceive(int maxReceive) {
 
 		this.maxReceive = maxReceive;
 		return this;
+	}
+
+	public EnergyStorage setMaxExtract(int maxExtract) {
+
+		this.maxExtract = maxExtract;
+		return this;
+	}
+
+	public int getMaxReceive() {
+
+		return maxReceive;
 	}
 
 	public int getMaxExtract() {
@@ -84,10 +90,21 @@ public class EnergyStorage implements IEnergyStorage {
 		return maxExtract;
 	}
 
-	public EnergyStorage setMaxExtract(int maxExtract) {
+	/**
+	 * This function is included to allow for server to client sync. Do not call this externally to the containing Tile Entity, as not all IEnergyHandlers
+	 * are guaranteed to have it.
+	 *
+	 * @param energy
+	 */
+	public void setEnergyStored(int energy) {
 
-		this.maxExtract = maxExtract;
-		return this;
+		this.energy = energy;
+
+		if (this.energy > capacity) {
+			this.energy = capacity;
+		} else if (this.energy < 0) {
+			this.energy = 0;
+		}
 	}
 
 	/**
@@ -134,23 +151,6 @@ public class EnergyStorage implements IEnergyStorage {
 	public int getEnergyStored() {
 
 		return energy;
-	}
-
-	/**
-	 * This function is included to allow for server to client sync. Do not call this externally to the containing Tile Entity, as not all IEnergyHandlers
-	 * are guaranteed to have it.
-	 *
-	 * @param energy
-	 */
-	public void setEnergyStored(int energy) {
-
-		this.energy = energy;
-
-		if (this.energy > capacity) {
-			this.energy = capacity;
-		} else if (this.energy < 0) {
-			this.energy = 0;
-		}
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiOilCompressor extends OCGui {
-    private static ResourceLocation oilCompressorGui = new ResourceLocation("oilcraft:textures/gui/oilCompressor.png");
+    private static ResourceLocation oilCompressorGui = new ResourceLocation("oilcraft:textures/gui/oil_compressor.png");
     private TileEntityOilCompressor tileOilCompressor;
     private int tick = 0;
     private int frame = 0;
@@ -30,7 +30,7 @@ public class GuiOilCompressor extends OCGui {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int amount = getScaled(tileOilCompressor.tank.getCapacity(), tileOilCompressor.tank.getFluidAmount(), 58);
         if (tileOilCompressor.tank.getFluid() != null) {
-            mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oilStill.png"));
+            mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oil_still.png"));
             drawScaledCustomSizeModalRect(82, 72 - amount, 0, frame % 200, 8, amount, 16, amount, 16, 320);
         }
         tick++;
@@ -38,7 +38,7 @@ public class GuiOilCompressor extends OCGui {
             frame += 8;
 
         amount = getScaled(tileOilCompressor.energyStorage.getMaxEnergyStored(), tileOilCompressor.energyStorage.getEnergyStored(), 71);
-        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/gui/energyBar.png"));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/gui/energy_bar.png"));
         drawModalRectWithCustomSizedTexture(10, 78 - amount, 16, 71 - amount, 16, amount, 16, 71);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;

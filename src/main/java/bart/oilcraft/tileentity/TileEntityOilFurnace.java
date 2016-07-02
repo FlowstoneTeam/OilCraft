@@ -69,17 +69,19 @@ public class TileEntityOilFurnace extends OCTickingTileEntity implements ISidedI
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         tank.writeToNBT(nbt);
         InventoryUtils.saveInventory(nbt, this);
         energyStorage.writeToNBT(nbt);
         nbt.setInteger("progress", progress);
         nbt.setInteger("timesLeft", timesLeft);
+        return nbt;
     }
 
+
     @Override
-    public Packet getDescriptionPacket() {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tag = new NBTTagCompound();
         writeToNBT(tag);
         return new SPacketUpdateTileEntity(getPos(), 0, tag);

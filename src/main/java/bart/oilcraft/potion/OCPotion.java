@@ -12,9 +12,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class OCPotion extends Potion {
     private static final ResourceLocation resource = new ResourceLocation("oilcraft:textures/gui/potions.png");
 
-    public OCPotion(String name, boolean badEffect, int color, int iconIndex) {
+    public OCPotion(boolean badEffect, int color, int iconIndex) {
         super( badEffect, color);
-        setPotionName("oilcraft.potion." + name);
         setIconIndex(iconIndex % 8, iconIndex / 8);
         getLiquidColor(color);
     }

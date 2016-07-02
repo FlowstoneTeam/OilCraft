@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "oilcraft:blocks/oilStill"
+    "layer0": "oilcraft:blocks/oil_still"
   }
 }

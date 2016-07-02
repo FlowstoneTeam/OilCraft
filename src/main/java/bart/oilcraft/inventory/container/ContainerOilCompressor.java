@@ -14,7 +14,7 @@ public class ContainerOilCompressor extends Container {
 
     public ContainerOilCompressor(EntityPlayer player, TileEntityOilCompressor tile) {
         addSlotToContainer(new Slot(tile, 0, 57, 36));
-        addSlotToContainer(new SlotRestricted(tile, 1, 107, 36, new ItemStack(Items.bucket), 64));
+        addSlotToContainer(new SlotRestricted(tile, 1, 107, 36, new ItemStack(Items.BUCKET), 64));
         addSlotToContainer(new SlotFurnaceOutput(player, tile, 2, 152, 36));
 
         for (int i = 0; i < 3; i++) {
@@ -40,7 +40,7 @@ public class ContainerOilCompressor extends Container {
             ItemStack stack1 = slot.getStack();
             stack = stack1.copy();
             if (index > 2) {
-                if (stack1.getItem() == Items.bucket)
+                if (stack1.getItem() == Items.BUCKET)
                     if (!mergeItemStack(stack1, 1, 2, true))
                         return null;
                 if (!mergeItemStack(stack1, 0, 1, true))

@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "oilcraft:oilCompressor" },
-    "facing=south": { "model": "oilcraft:oilCompressor", "y": 180 },
-    "facing=west":  { "model": "oilcraft:oilCompressor", "y": 270 },
-    "facing=east":  { "model": "oilcraft:oilCompressor", "y": 90 }
-  }
-}

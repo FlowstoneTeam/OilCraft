@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "oilcraft:blocks/machineFrame"
+    "all": "oilcraft:blocks/machine_frame"
   }
 }

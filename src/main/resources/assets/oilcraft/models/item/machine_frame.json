@@ -1,5 +1,5 @@
 {
-  "parent": "oilcraft:block/oilCompressor",
+  "parent": "oilcraft:block/machine_frame",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

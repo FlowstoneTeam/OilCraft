@@ -1,8 +1,10 @@
 package bart.oilcraft.fluids;
 
 import bart.oilcraft.OilCraftMain;
+import bart.oilcraft.lib.ModInfo;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -15,25 +17,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  * Created by Bart on 12/02/2016.
  */
 public class OCFluidBlock extends BlockFluidClassic {
-    public OCFluidBlock(Fluid fluid, Material material, String name) {
+    public OCFluidBlock(Fluid fluid, Material material) {
         super(fluid, material);
-        this.setUnlocalizedName("oilcraft." + name.toLowerCase());
-        GameRegistry.registerBlock(this, name);
-        OilCraftMain.proxy.registerFluidBlockRendering(this, name);
-    }
-
-    @Override
-    public boolean canDisplace(IBlockAccess world, BlockPos pos) {
-        return !world.getBlockState(pos).getBlock().getMaterial(world.getBlockState(pos)).isLiquid() && super.canDisplace(world, pos);
-    }
-
-    @Override
-    public boolean displaceIfPossible(World world, BlockPos pos) {
-        return !world.getBlockState(pos).getBlock().getMaterial(world.getBlockState(pos)).isLiquid() && super.displaceIfPossible(world, pos);
-    }
-
-    @Override
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
-        return NULL_AABB;
     }
 }

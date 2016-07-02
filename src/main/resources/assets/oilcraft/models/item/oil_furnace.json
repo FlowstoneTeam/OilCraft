@@ -1,5 +1,5 @@
 {
-  "parent": "oilcraft:block/oilFurnace",
+  "parent": "oilcraft:block/oil_furnace",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

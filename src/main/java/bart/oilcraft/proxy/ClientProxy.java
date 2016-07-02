@@ -1,11 +1,12 @@
 package bart.oilcraft.proxy;
 
+import bart.oilcraft.OilCraftMain;
 import bart.oilcraft.block.OCBlock;
 import bart.oilcraft.block.OCBlockRegistry;
 import bart.oilcraft.client.render.RenderFactoryEntityGooBall;
 import bart.oilcraft.entity.EntityGooBall;
+import bart.oilcraft.fluids.OCFluidBlock;
 import bart.oilcraft.item.OCItem;
-import bart.oilcraft.item.OCItemBucket;
 import bart.oilcraft.item.OCItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -36,10 +37,12 @@ public class ClientProxy extends CommonProxy {
 
     private void initBlockModels() {
         for (Block block : OCBlockRegistry.BLOCKS) {
-            if (block instanceof OCBlock) {
+            if (block instanceof OCFluidBlock){
+                registerFluidBlockRendering(block, block.getRegistryName().toString().replace("oilcraft:", ""));
+            } else if (block instanceof OCBlock) {
                 for (int i : ((OCBlock) block).modelMetas()) {
-                    ModelBakery.registerItemVariants(Item.getItemFromBlock(block), new ResourceLocation("oilcraft:" + ((OCBlock)block).blockName(i)));
-                    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i, new ModelResourceLocation("oilcraft:" + ((OCBlock)block).blockName(i), "inventory"));
+                    ModelBakery.registerItemVariants(Item.getItemFromBlock(block), block.getRegistryName());
+                    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i, new ModelResourceLocation(block.getRegistryName(), "inventory"));
                 }
             }
         }
@@ -51,11 +54,6 @@ public class ClientProxy extends CommonProxy {
                 for (int i : ((OCItem) item).modelMetas()) {
                     ModelBakery.registerItemVariants(item, new ResourceLocation("oilcraft:" + ((OCItem)item).itemName(i)));
                     ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation("oilcraft:" + ((OCItem)item).itemName(i), "inventory"));
-                }
-            } else if (item instanceof OCItemBucket){
-                for (int i : ((OCItemBucket) item).modelMetas()) {
-                    //ModelBakery.registerItemVariants(item, new ResourceLocation("oilcraft:" + ((OCItemBucket)item).itemName(i)));
-                    ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation("oilcraft:" + ((OCItemBucket)item).itemName(i), "inventory"));
                 }
             }
         }

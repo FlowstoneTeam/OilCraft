@@ -25,9 +25,9 @@ public class BlockOilCompressor extends OCBlock implements ITileEntityProvider {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockOilCompressor() {
-        super(Material.iron, MapColor.grayColor, "oilCompressor");
+        super(Material.IRON, MapColor.GRAY);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-        this.setStepSound(SoundType.METAL);
+        this.setSoundType(SoundType.METAL);
     }
 
     @Override

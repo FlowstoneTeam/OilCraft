@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiOilFurnace extends OCGui {
-    private static ResourceLocation oilFurnaceGui = new ResourceLocation("oilcraft:textures/gui/oilFurnace.png");
+    private static ResourceLocation oilFurnaceGui = new ResourceLocation("oilcraft:textures/gui/oil_furnace.png");
     private TileEntityOilFurnace tileOilFurnace;
     private int tick = 0;
     private int frame = 0;
@@ -30,7 +30,7 @@ public class GuiOilFurnace extends OCGui {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int amount = getScaled(tileOilFurnace.tank.getCapacity(), tileOilFurnace.tank.getFluidAmount(), 58);
         if (tileOilFurnace.tank.getFluid() != null) {
-            mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oilStill.png"));
+            mc.getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/blocks/oil_still.png"));
             drawScaledCustomSizeModalRect(143, 72 - amount, 0, frame % 200, 8, amount, 16, amount, 16, 320);
         }
         tick++;
@@ -38,7 +38,7 @@ public class GuiOilFurnace extends OCGui {
             frame += 8;
 
         amount = getScaled(tileOilFurnace.energyStorage.getMaxEnergyStored(), tileOilFurnace.energyStorage.getEnergyStored(), 71);
-        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/gui/energyBar.png"));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("oilcraft:textures/gui/energy_bar.png"));
         drawModalRectWithCustomSizedTexture(10, 78 - amount, 16, 71 - amount, 16, amount, 16, 71);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;

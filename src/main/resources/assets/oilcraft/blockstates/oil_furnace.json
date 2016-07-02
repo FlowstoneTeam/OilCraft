@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "oilcraft:oil_furnace" },
+    "facing=south": { "model": "oilcraft:oil_furnace", "y": 180 },
+    "facing=west":  { "model": "oilcraft:oil_furnace", "y": 270 },
+    "facing=east":  { "model": "oilcraft:oil_furnace", "y": 90 }
+  }
+}

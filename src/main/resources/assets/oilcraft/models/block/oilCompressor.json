@@ -1,9 +1,0 @@
-{
-  "parent": "block/orientable",
-  "textures": {
-    "top": "oilcraft:blocks/machineTop",
-    "front": "oilcraft:blocks/oilCompressorFront",
-    "bottom": "oilcraft:blocks/machineFrame",
-    "side": "oilcraft:blocks/machineSide"
-  }
-}

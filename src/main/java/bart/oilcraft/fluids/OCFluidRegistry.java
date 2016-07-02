@@ -1,20 +1,18 @@
 package bart.oilcraft.fluids;
 
 
-import bart.oilcraft.recipe.OCMaterials;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 
 /**
  * Created by Bart on 12/02/2016.
  */
 public class OCFluidRegistry {
-    public static Fluid oil;
-    public static BlockFluidClassic oilBlock;
+    public static Fluid OIL;
 
-    public static void init(){
-        oil = new OCFluid("oil");
-        oilBlock = new OCFluidBlock(oil, Material.water, "oil");
+    public static void init() {
+        OIL = new OCFluid("oil");
+        FluidRegistry.addBucketForFluid(OIL);
+        System.out.println("null: " + OIL == null + ", registered: " + !FluidRegistry.isFluidRegistered(OIL) + ", contains: " + FluidRegistry.getBucketFluids().contains(OIL));
     }
 }

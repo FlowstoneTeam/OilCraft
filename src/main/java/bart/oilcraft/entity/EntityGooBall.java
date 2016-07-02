@@ -53,7 +53,7 @@ public class EntityGooBall extends EntitySlime {
                 world.spawnParticle(enumparticletypes, d0, this.getEntityBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D, new int[0]);
             }
 
-            this.playSound(this.func_184709_cY(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+            this.playSound(this.getSplashSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
 
             this.squishAmount = -0.5F;
         } else if (!this.onGround && this.wasOnGround) {
@@ -94,6 +94,6 @@ public class EntityGooBall extends EntitySlime {
     @Override
     protected void collideWithEntity(Entity entityIn) {
         if (entityIn instanceof EntityLivingBase)
-            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(OCPotionRegistry.slippery, 200, 1));
+            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(OCPotionRegistry.SLIPPERY, 200, 1));
     }
 }
