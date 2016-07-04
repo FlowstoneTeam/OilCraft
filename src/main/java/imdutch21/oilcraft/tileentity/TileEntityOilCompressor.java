@@ -120,7 +120,8 @@ public class TileEntityOilCompressor extends OCTickingTileEntity implements ISid
 
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-        return null;
+        worldObj.notifyBlockUpdate(getPos(), worldObj.getBlockState(getPos()), worldObj.getBlockState(getPos()), 3);
+        return tank.drain(maxDrain, doDrain);
     }
 
     @Override

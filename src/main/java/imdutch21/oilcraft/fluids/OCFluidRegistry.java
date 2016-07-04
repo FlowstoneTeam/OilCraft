@@ -11,7 +11,7 @@ public class OCFluidRegistry {
     public static Fluid OIL;
 
     public static void init() {
-        OIL = new OCFluid("oil");
+        OIL = new OCFluid("oil").setDensity(3000);
         OIL = FluidRegistry.getFluid("oil");
         if(!FluidRegistry.getBucketFluids().contains(OIL))
             FluidRegistry.addBucketForFluid(OIL);
