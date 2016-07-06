@@ -26,7 +26,7 @@ public class WorldGenOilPool implements IWorldGenerator {
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (world.provider.getDimension() == 0) {
-            size = (random.nextDouble() + 0.7D) * 1.5d;
+            size = (random.nextDouble() + 0.7D) * 1.25d;
             generate(world, random, chunkX * 16, 30 + random.nextInt(30), chunkZ * 16);
         }
     }
@@ -40,7 +40,7 @@ public class WorldGenOilPool implements IWorldGenerator {
         for (int xx = x; xx < x + 16; ++xx)
             for (int zz = z; zz < z + 16; ++zz)
                 for (int yy = y; yy < y + 8; ++yy)
-                    if (world.getBlockState(new BlockPos(xx, yy, zz)).getBlock() != Blocks.STONE)
+                    if (world.isBlockLoaded(new BlockPos(xx, yy, zz)) || world.getBlockState(new BlockPos(xx, yy, zz)).getBlock() != Blocks.STONE)
                         return false;
 
         boolean[] placeFluid = new boolean[2048];
