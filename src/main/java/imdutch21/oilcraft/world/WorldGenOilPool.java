@@ -40,7 +40,7 @@ public class WorldGenOilPool implements IWorldGenerator {
         for (int xx = x; xx < x + 16; ++xx)
             for (int zz = z; zz < z + 16; ++zz)
                 for (int yy = y; yy < y + 8; ++yy)
-                    if (world.isBlockLoaded(new BlockPos(xx, yy, zz)) || world.getBlockState(new BlockPos(xx, yy, zz)).getBlock() != Blocks.STONE)
+                    if (!world.isBlockLoaded(new BlockPos(xx, yy, zz)) || world.getBlockState(new BlockPos(xx, yy, zz)).getBlock() != Blocks.STONE)
                         return false;
 
         boolean[] placeFluid = new boolean[2048];
@@ -77,6 +77,8 @@ public class WorldGenOilPool implements IWorldGenerator {
                 for (yy = 0; yy < 8; ++yy) {
                     flag = !placeFluid[(xx * 16 + zz) * 8 + yy] && (xx < 15 && placeFluid[((xx + 1) * 16 + zz) * 8 + yy] || xx > 0 && placeFluid[((xx - 1) * 16 + zz) * 8 + yy] || zz < 15 && placeFluid[(xx * 16 + zz + 1) * 8 + yy] || zz > 0 && placeFluid[(xx * 16 + zz - 1) * 8 + yy] || yy < 7 && placeFluid[(xx * 16 + zz) * 8 + yy + 1] || yy > 0 && placeFluid[(xx * 16 + zz) * 8 + yy - 1]);
                     if (flag) {
+                        if (!world.isBlockLoaded(new BlockPos(x + xx, y + yy, z + zz)))
+                            return false;
                         Material material = world.getBlockState(new BlockPos(x + xx, y + yy, z + zz)).getMaterial();
                         if (yy >= 4 && material.isLiquid())
                             return false;
