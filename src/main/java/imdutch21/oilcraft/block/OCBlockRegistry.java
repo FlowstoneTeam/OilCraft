@@ -25,6 +25,7 @@ public class OCBlockRegistry {
     public static OCBlock OIL_FURNACE = new BlockOilFurnace();
     public static OCBlock MACHINE_FRAME = new OCBlock(Material.IRON, MapColor.GRAY).setSoundType(SoundType.METAL);
     public static BlockFluidClassic OIL = new OCFluidBlock(OCFluidRegistry.OIL, OCMaterials.WATER);
+    public static BlockFluidClassic FUEL = new OCFluidBlock(OCFluidRegistry.FUEL, OCMaterials.WATER);
 
     public static void init() {
         registerBlocks();

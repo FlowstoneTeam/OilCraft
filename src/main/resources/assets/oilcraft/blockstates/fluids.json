@@ -6,6 +6,12 @@
       "custom": {
         "fluid": "oil"
       }
+    },
+    "fuel": {
+      "model": "forge:fluid",
+      "custom": {
+        "fluid": "fuel"
+      }
     }
   }
 }
