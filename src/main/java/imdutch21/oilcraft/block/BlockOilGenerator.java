@@ -3,7 +3,6 @@ package imdutch21.oilcraft.block;
 import imdutch21.oilcraft.OilCraftMain;
 import imdutch21.oilcraft.proxy.CommonProxy;
 import imdutch21.oilcraft.tileentity.TileEntityOilGenerator;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -21,13 +20,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockOilGenerator extends OCBlock implements ITileEntityProvider {
+public class BlockOilGenerator extends OCContainer {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public BlockOilGenerator() {
         super(Material.IRON, MapColor.GRAY);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.setSoundType(SoundType.METAL);
+        this.setHardness(5.0F);
+        this.setResistance(10.0F);
     }
 
     @Override
@@ -74,12 +75,15 @@ public class BlockOilGenerator extends OCBlock implements ITileEntityProvider {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (!worldIn.isRemote) {
-            if (checkForBucketClick(worldIn, pos, hand, playerIn, side))
-                return true;
-            playerIn.openGui(OilCraftMain.instance, CommonProxy.OIL_GENERATOR_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        if (worldIn.isRemote)
             return true;
-        }
-        return false;
+
+        if (checkForBucketClick(worldIn, pos, hand, playerIn, side))
+            return true;
+        if (worldIn.getTileEntity(pos) instanceof TileEntityOilGenerator)
+            playerIn.openGui(OilCraftMain.instance, CommonProxy.OIL_GENERATOR_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        return true;
     }
+
+
 }
