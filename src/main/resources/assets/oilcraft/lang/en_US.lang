@@ -13,8 +13,14 @@ container.oilGenerator=Oil Generator
 container.oilGenerator.energyOutput=Automated output directions
 container.oilGenerator.outputDirections=Set outputs
 
+gui.time=Time
+gui.ticks=Ticks
+
 oilcraft.potion.slippery=Slippery
 
 fluid.oil=Oil
 
 entity.GooBall.name=GooBall
+
+
+jei.oil_craft.recipe.oil_compressor=Oil Compressor

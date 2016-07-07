@@ -26,15 +26,15 @@ public class WorldGenOilPool implements IWorldGenerator {
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (world.provider.getDimension() == 0) {
-            size = (random.nextDouble() + 0.7D) * 1.25d;
+            size = (random.nextDouble() + 0.4D);
             generate(world, random, chunkX * 16, 30 + random.nextInt(30), chunkZ * 16);
         }
     }
 
 
     private boolean generate(World world, Random rand, int x, int y, int z) {
-        x -= 8;
-        z -= 8;
+        x += 8;
+        z += 8;
         y -= 4;
 
         for (int xx = x; xx < x + 16; ++xx)

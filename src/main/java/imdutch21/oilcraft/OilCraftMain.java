@@ -1,6 +1,7 @@
 package imdutch21.oilcraft;
 
 import imdutch21.oilcraft.block.OCBlockRegistry;
+import imdutch21.oilcraft.compat.CompatibilityRegistry;
 import imdutch21.oilcraft.entity.OCEntityRegistry;
 import imdutch21.oilcraft.fluids.OCFluidRegistry;
 import imdutch21.oilcraft.item.OCItemRegistry;
@@ -55,6 +56,7 @@ public class OilCraftMain {
         OCTileEntityRegistry.init();
         OCPotionRegistry.init();
         OCEntityRegistry.init();
+        CompatibilityRegistry.init();
 
         GameRegistry.registerWorldGenerator(new WorldGenOilPool(), 0);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);

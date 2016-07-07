@@ -11,5 +11,5 @@ public class ModInfo {
     public static final String CLIENTPROXY_LOCATION = "imdutch21.oilcraft.proxy.ClientProxy";
     public static final String COMMONPROXY_LOCATION = "imdutch21.oilcraft.proxy.CommonProxy";
     public static final String GUI_FACTORY = "imdutch21.oilcraft.util.ConfigGuiFactory";
-    public static final String DEPENDENCIES = "";
+    public static final String DEPENDENCIES = "after:JEI@[2.23.0,);";
 }
